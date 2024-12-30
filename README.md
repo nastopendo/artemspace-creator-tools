@@ -2,25 +2,6 @@
 
 A web application with multiple tools including an image resizer.
 
-## Project Structure
-
-├── src/
-│ ├── main.js
-│ └── pages/
-│ ├── image-resizer/
-│ │ └── index.html
-│ └── homepage/
-│ └── index.html
-├── public/
-│ ├── .htaccess
-│ └── \_redirects
-├── dist/
-│ ├── .htaccess
-│ ├── \_redirects
-│ └── index.html
-├── index.html
-└── vite.config.js
-
 ## Development
 
 ### Prerequisites
