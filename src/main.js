@@ -2,6 +2,7 @@ import "./style.css";
 import homepageHtml from "./pages/homepage/index.html?raw";
 import imageResizerHtml from "./pages/image-resizer/index.html?raw";
 import imageOrganizerHtml from "./pages/image-organizer/index.html?raw";
+import gltfConfigEditorHtml from "./pages/gltf-config-editor/index.html?raw";
 
 const routes = {
   "/": {
@@ -14,6 +15,10 @@ const routes = {
   "/image-organizer": {
     template: imageOrganizerHtml,
     script: () => import("./pages/image-organizer/image-organizer.js"),
+  },
+  "/gltf-config-editor": {
+    template: gltfConfigEditorHtml,
+    script: () => import("./pages/gltf-config-editor/gltf-config-editor.js"),
   },
 };
 

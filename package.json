@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "jszip": "^3.10.1",
-    "sortablejs": "^1.15.6"
+    "quill": "^2.0.3",
+    "sortablejs": "^1.15.6",
+    "three": "^0.171.0"
   }
 }
