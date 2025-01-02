@@ -471,10 +471,32 @@ fileInput.addEventListener("change", () => {
 exportBtn.addEventListener("click", () => {
   console.log("Exporting JSON");
 
-  // Create a deep copy of configData without texturePreview fields
+  // Create a deep copy of configData
   const exportData = JSON.parse(JSON.stringify(configData));
+
+  // Process exhibition texts
+  exportData.exhibition.aboutExhibitionDescripton = addNonBreakingSpaces(
+    exportData.exhibition.aboutExhibitionDescripton
+  );
+  exportData.exhibition.title = addNonBreakingSpaces(
+    exportData.exhibition.title
+  );
+  exportData.exhibition.description = addNonBreakingSpaces(
+    exportData.exhibition.description
+  );
+
+  // Process artworks texts
   exportData.artworks = exportData.artworks.map((artwork) => {
     const { texturePreview, ...artworkWithoutTexture } = artwork;
+
+    // Add non-breaking spaces to artwork texts
+    artworkWithoutTexture.title = addNonBreakingSpaces(
+      artworkWithoutTexture.title
+    );
+    artworkWithoutTexture.description = addNonBreakingSpaces(
+      artworkWithoutTexture.description
+    );
+
     return artworkWithoutTexture;
   });
 
@@ -632,7 +654,8 @@ function initializeExhibitionFields() {
 
   // Update Quill editor content if it exists in configData
   if (configData.exhibition.aboutExhibitionDescripton) {
-    exhibitionQuillEditor.root.innerHTML = configData.exhibition.aboutExhibitionDescripton;
+    exhibitionQuillEditor.root.innerHTML =
+      configData.exhibition.aboutExhibitionDescripton;
   } else {
     exhibitionQuillEditor.root.innerHTML = "";
   }
@@ -650,3 +673,27 @@ initializeExhibitionFields();
 window.handleLanguageChange = (value) => {
   selectedLanguage = value;
 };
+
+function addNonBreakingSpaces(text) {
+  if (!text) return text;
+
+  // Handle single Cyrillic letters
+  text = text.replace(
+    /(\s)([АаБбВвІіЇїЎўУуОоКкСсІіЙйЯяЕеЁёЭэЫыЮюЖжЗзХхЦцЧчШшЩщЬьЪъ])\s/g,
+    "$1$2&nbsp;"
+  );
+
+  // Handle single Latin letters
+  text = text.replace(
+    /(\s)([aAiIuUoOwWzZyYeEbBcCdDfFgGhHjJkKlLmMnNpPqQrRsStTvVxX])\s/g,
+    "$1$2&nbsp;"
+  );
+
+  // Handle numbers with units
+  text = text.replace(
+    /(\d+)\s+((?:см|мм|м|км|кг|г|мг|л|мл|px|pt|%|°|℃|℉|cm|mm|m|km|kg|g|mg|ml)\.?)/g,
+    "$1&nbsp;$2"
+  );
+
+  return text;
+}
