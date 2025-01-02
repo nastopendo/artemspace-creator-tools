@@ -2,21 +2,31 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Homepage</title>
+    <title data-i18n="toolsTitle">Artemspace Creator Tools</title>
   </head>
   <body>
-    <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold mb-6">Artemspace Creator Tools</h1>
+    <header class="relative">
+      <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6" data-i18n="toolsTitle">
+          Artemspace Creator Tools
+        </h1>
+      </div>
+    </header>
+
+    <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <a
           href="/image-organizer"
           data-link
           class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
         >
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">
-            🔀  Image Organizer
+          <h2
+            class="text-xl font-semibold text-gray-800 mb-2"
+            data-i18n="imageOrganizerTitle"
+          >
+            🔀 Image Organizer
           </h2>
-          <p class="text-gray-600">
+          <p class="text-gray-600" data-i18n="imageOrganizerDesc">
             Organize, reorder, and batch rename your images with customizable
             naming schemes.
           </p>
@@ -26,8 +36,10 @@
           data-link
           class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
         >
-          <h2 class="text-xl font-semibold mb-2">🖼️  Image Resizer</h2>
-          <p class="text-gray-600">
+          <h2 class="text-xl font-semibold mb-2" data-i18n="imageResizerTitle">
+            🖼️ Image Resizer
+          </h2>
+          <p class="text-gray-600" data-i18n="imageResizerDesc">
             Batch resize images while maintaining aspect ratios. You can also
             set the output format and quality.
           </p>
@@ -37,10 +49,13 @@
           data-link
           class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
         >
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">
-            ⚙️  App Config Editor
+          <h2
+            class="text-xl font-semibold text-gray-800 mb-2"
+            data-i18n="appConfigTitle"
+          >
+            ⚙️ App Config Editor
           </h2>
-          <p class="text-gray-600">
+          <p class="text-gray-600" data-i18n="appConfigDesc">
             Visual editor for global application configuration file. Set
             supported languages, light settings, player height, etc.
           </p>
@@ -50,10 +65,13 @@
           data-link
           class="block p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
         >
-          <h2 class="text-xl font-semibold text-gray-800 mb-2">
-            🗃  GLTF Config Editor
+          <h2
+            class="text-xl font-semibold text-gray-800 mb-2"
+            data-i18n="gltfConfigTitle"
+          >
+            🗃 GLTF Config Editor
           </h2>
-          <p class="text-gray-600">
+          <p class="text-gray-600" data-i18n="gltfConfigDesc">
             Specialized editor for gallery and objects descriptions based on
             gltf model objects or json.
           </p>

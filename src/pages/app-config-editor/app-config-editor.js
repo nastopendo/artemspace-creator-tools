@@ -1,3 +1,5 @@
+import { languageService } from "../../services/languageService.js";
+
 /**
  * @type {import('./types').Config}
  */
@@ -397,9 +399,6 @@ jsonInput.addEventListener("change", async () => {
   }
 });
 
-// Initialize form when page loads
-initializeForm();
-
 // Add event listeners for form changes
 function addFormEventListeners() {
   // Add event listeners for all form inputs that update configData
@@ -414,7 +413,50 @@ function addFormEventListeners() {
   // Add more event listeners for other form elements...
 }
 
-addFormEventListeners();
+initializeForm();
+
+// Initialize form when page loads
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize language service first
+  languageService.updatePageTranslations();
+
+  // Add event listeners
+  addFormEventListeners();
+
+  // Export functionality
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    const jsonString = JSON.stringify(configData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "config.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  // Import functionality
+  const jsonInput = document.getElementById("jsonInput");
+  document
+    .getElementById("importBtn")
+    .addEventListener("click", () => jsonInput.click());
+
+  jsonInput.addEventListener("change", async () => {
+    const file = jsonInput.files[0];
+    if (file) {
+      try {
+        const text = await file.text();
+        configData = JSON.parse(text);
+        initializeForm();
+      } catch (error) {
+        console.error("Error importing JSON:", error);
+        alert("Failed to import JSON file");
+      }
+    }
+  });
+});
 
 function createLightPropertyInput(lightType, prop, value) {
   const wrapper = document.createElement("div");

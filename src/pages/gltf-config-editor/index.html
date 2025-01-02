@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GLTF Config Editor</title>
+    <title data-i18n="gltfConfigTitle">GLTF Config Editor</title>
     <link rel="stylesheet" href="../../style.css" />
     <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
@@ -29,7 +29,11 @@
   <body class="bg-gray-100 text-gray-800 min-h-screen py-8 px-3">
     <header>
       <nav>
-        <a href="/" data-link class="text-blue-600 hover:text-blue-800"
+        <a
+          href="/"
+          data-link
+          class="text-blue-600 hover:text-blue-800"
+          data-i18n="backToTools"
           >← Back to Tools</a
         >
       </nav>
@@ -40,7 +44,10 @@
     >
       <div class="flex items-start">
         <div class="flex-1"></div>
-        <h1 class="flex-1 text-3xl font-bold text-center text-gray-800 mb-8">
+        <h1
+          class="flex-1 text-3xl font-bold text-center text-gray-800 mb-8"
+          data-i18n="gltfConfigTitle"
+        >
           GLTF Config Editor
         </h1>
         <div class="flex-1 flex justify-end space-x-4">
@@ -48,12 +55,14 @@
             id="exportBtn"
             disabled
             class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            data-i18n="exportJson"
           >
             Export JSON
           </button>
           <button
             id="importBtn"
             class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            data-i18n="importJson"
           >
             Import JSON
           </button>
@@ -67,8 +76,12 @@
           class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-colors hover:border-blue-500 hover:bg-blue-50"
         >
           <p class="text-gray-600 font-semibold">
-            Drag &amp; Drop GLTF Model Here or
-            <span class="text-blue-500">Click to Select</span>
+            <span data-i18n="dragDropGltf"
+              >Drag &amp; Drop GLTF Model Here or</span
+            >
+            <span class="text-blue-500" data-i18n="clickToSelect"
+              >Click to Select</span
+            >
           </p>
           <input
             id="fileInput"
@@ -81,12 +94,15 @@
         <!-- Progress Bar -->
         <div id="progressContainer" class="hidden space-y-2 mt-4">
           <div class="flex items-center justify-between">
-            <span class="text-sm font-medium text-gray-700"
+            <span
+              class="text-sm font-medium text-gray-700"
+              data-i18n="loadingGltf"
               >Loading GLTF...</span
             >
             <button
               id="cancelLoadBtn"
               class="text-sm text-gray-500 hover:text-gray-700"
+              data-i18n="cancel"
             >
               Cancel
             </button>
@@ -104,9 +120,9 @@
                 class="text-sm font-medium text-gray-700 min-w-[40px] text-right"
                 >0%</span
               >
-              <span id="progressStats" class="text-sm text-gray-500"
-                >0/0 objects</span
-              >
+              <span id="progressStats" class="text-sm text-gray-500">
+                0/0 <span data-i18n="objectsProgress">objects</span>
+              </span>
             </div>
           </div>
         </div>
@@ -114,9 +130,13 @@
         <!-- Exhibition Details -->
         <div class="border rounded-lg p-6 bg-gray-50">
           <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold">Exhibition Details</h2>
+            <h2 class="text-xl font-semibold" data-i18n="exhibitionDetails">
+              Exhibition Details
+            </h2>
             <div class="flex items-center gap-2">
-              <label class="text-sm text-gray-600">Export Language:</label>
+              <label class="text-sm text-gray-600" data-i18n="exportLanguage"
+                >Export Language:</label
+              >
               <select
                 id="languageSelect"
                 class="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
@@ -134,7 +154,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <div class="flex items-center gap-1">
-                  <label class="block text-sm font-medium text-gray-700"
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="title"
                     >Title</label
                   >
                   <div class="group relative">
@@ -151,6 +173,7 @@
                     </svg>
                     <div
                       class="hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-sm bg-gray-900 text-white rounded-lg -left-20 top-full"
+                      data-i18n="titleTooltip"
                     >
                       This is a title in start panel
                     </div>
@@ -165,7 +188,9 @@
               </div>
               <div>
                 <div class="flex items-center gap-1">
-                  <label class="block text-sm font-medium text-gray-700"
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="description"
                     >Description</label
                   >
                   <div class="group relative">
@@ -182,6 +207,7 @@
                     </svg>
                     <div
                       class="hidden group-hover:block absolute z-10 w-64 p-2 mt-1 text-sm bg-gray-900 text-white rounded-lg -left-24 top-full"
+                      data-i18n="descriptionTooltip"
                     >
                       This is a short description (one/two phrase) in start
                       panel
@@ -197,7 +223,9 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700"
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="featuredPhoto"
                   >Featured Photo</label
                 >
                 <input
@@ -211,7 +239,9 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-gray-700"
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="backgroundLoadingPhoto"
                   >Background Loading Photo</label
                 >
                 <input
@@ -227,7 +257,9 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700"
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="aboutExhibitionTitle"
                   >About Exhibition Title</label
                 >
                 <input
@@ -239,7 +271,9 @@
               </div>
               <div>
                 <div class="flex items-center gap-1">
-                  <label class="block text-sm font-medium text-gray-700"
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="aboutExhibitionAudio"
                     >About Exhibition Audio</label
                   >
                   <div class="group relative">
@@ -256,6 +290,7 @@
                     </svg>
                     <div
                       class="hidden group-hover:block absolute z-10 w-72 p-2 mt-1 text-sm bg-gray-900 text-white rounded-lg -left-32 top-full"
+                      data-i18n="aboutExhibitionAudioTooltip"
                     >
                       This is optional. If you would like to have voice-over
                       please add first audio to the folder and then provide path
@@ -273,7 +308,9 @@
             </div>
 
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
+              <label
+                class="block text-sm font-medium text-gray-700 mb-2"
+                data-i18n="aboutExhibitionDescription"
                 >About Exhibition Description</label
               >
               <div class="border rounded-md border-gray-300 overflow-hidden">
@@ -285,7 +322,16 @@
 
         <!-- Artworks List -->
         <div class="border rounded-lg p-6 bg-gray-100">
-          <h2 class="text-xl font-semibold mb-4">Artworks</h2>
+          <h2 class="text-xl font-semibold mb-4" data-i18n="artworks">
+            Artworks
+          </h2>
+          <button
+            id="addArtworkBtn"
+            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 mb-4"
+            data-i18n="addArtwork"
+          >
+            Add Artwork
+          </button>
           <div id="artworksList" class="space-y-4">
             <!-- Artworks will be inserted here -->
           </div>

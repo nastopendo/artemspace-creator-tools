@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Image Organizer</title>
+    <title data-i18n="imageOrganizerTitle">Image Organizer</title>
     <link rel="stylesheet" href="../../style.css" />
   </head>
   <body class="bg-gray-100 text-gray-800 min-h-screen py-8 px-4">
     <header>
       <nav>
-        <a href="/" data-link class="text-blue-600 hover:text-blue-800"
+        <a
+          href="/"
+          data-link
+          class="text-blue-600 hover:text-blue-800"
+          data-i18n="backToTools"
           >← Back to Tools</a
         >
       </nav>
@@ -20,7 +24,10 @@
     >
       <div class="flex items-start">
         <div class="flex-1"></div>
-        <h1 class="flex-1 text-3xl font-bold text-center text-gray-800 mb-8">
+        <h1
+          class="flex-1 text-3xl font-bold text-center text-gray-800 mb-8"
+          data-i18n="imageOrganizerTitle"
+        >
           Image Organizer
         </h1>
         <div class="flex-1 flex justify-end">
@@ -28,6 +35,7 @@
             id="exportBtn"
             disabled
             class="px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+            data-i18n="exportAsZip"
           >
             Export as ZIP
           </button>
@@ -41,8 +49,12 @@
           class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-colors hover:border-blue-500 hover:bg-blue-50"
         >
           <p class="text-gray-600 font-semibold">
-            Drag &amp; Drop Images Here or
-            <span class="text-blue-500">Click to Select</span>
+            <span data-i18n="dragDropImages"
+              >Drag &amp; Drop Images Here or</span
+            >
+            <span class="text-blue-500" data-i18n="clickToSelect"
+              >Click to Select</span
+            >
           </p>
           <input
             id="fileInput"
@@ -61,18 +73,23 @@
               <button
                 id="listViewBtn"
                 class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                data-i18n="listView"
               >
                 List View
               </button>
               <button
                 id="gridViewBtn"
                 class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                data-i18n="gridView"
               >
                 Grid View
               </button>
             </div>
             <div class="flex-1">
-              <label class="block font-semibold text-gray-700 mb-1">
+              <label
+                class="block font-semibold text-gray-700 mb-1"
+                data-i18n="gridColumns"
+              >
                 Grid Columns:
               </label>
               <input
@@ -84,8 +101,8 @@
                 class="w-full"
               />
               <div class="flex justify-between text-sm text-gray-600">
-                <span>Fewer</span>
-                <span>More</span>
+                <span data-i18n="fewer">Fewer</span>
+                <span data-i18n="more">More</span>
               </div>
             </div>
           </div>
@@ -97,6 +114,7 @@
               <label
                 for="prefixInput"
                 class="block font-semibold text-gray-700 mb-2"
+                data-i18n="filenamePrefix"
               >
                 Filename Prefix:
               </label>
@@ -111,6 +129,7 @@
               <label
                 for="suffixInput"
                 class="block font-semibold text-gray-700 mb-2"
+                data-i18n="filenameSuffix"
               >
                 Filename Suffix:
               </label>
@@ -124,6 +143,7 @@
               <label
                 for="digitsInput"
                 class="block font-semibold text-gray-700 mb-2"
+                data-i18n="numberOfDigits"
               >
                 Number of Digits:
               </label>
@@ -159,7 +179,9 @@
       <div id="dragInstructions" class="hidden mt-8">
         <p class="text-gray-600 text-center mb-4 relative">
           <span class="inline-block bg-gray-100 rounded-md px-3 py-1">
-            💡 Tip: Drag and drop images below to reorder them
+            <span data-i18n="dragReorderTip"
+              >💡 Tip: Drag and drop images below to reorder them</span
+            >
             <button
               id="closeTip"
               class="ml-2 text-gray-400 hover:text-gray-600"

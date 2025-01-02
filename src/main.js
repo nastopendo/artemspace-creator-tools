@@ -4,6 +4,8 @@ import imageResizerHtml from "./pages/image-resizer/index.html?raw";
 import imageOrganizerHtml from "./pages/image-organizer/index.html?raw";
 import gltfConfigEditorHtml from "./pages/gltf-config-editor/index.html?raw";
 import appConfigEditorHtml from "./pages/app-config-editor/index.html?raw";
+import { languageService } from "./services/languageService";
+
 const routes = {
   "/": {
     template: homepageHtml,
@@ -28,6 +30,44 @@ const routes = {
 
 const app = document.getElementById("app");
 
+// Add language switcher to all pages
+function addLanguageSwitcher() {
+  const header = document.querySelector("header");
+  if (!header) return;
+
+  const switcher = document.createElement("div");
+  switcher.className = "absolute top-4 right-4 flex gap-2";
+  switcher.innerHTML = `
+    <button class="lang-btn px-2 py-1 rounded" data-lang="en">EN</button>
+    <button class="lang-btn px-2 py-1 rounded" data-lang="pl">PL</button>
+  `;
+
+  header.appendChild(switcher);
+
+  // Update button styles
+  const updateButtons = () => {
+    document.querySelectorAll(".lang-btn").forEach((btn) => {
+      if (btn.dataset.lang === languageService.currentLanguage) {
+        btn.classList.add("bg-blue-500", "text-white");
+        btn.classList.remove("bg-gray-200");
+      } else {
+        btn.classList.remove("bg-blue-500", "text-white");
+        btn.classList.add("bg-gray-200");
+      }
+    });
+  };
+
+  // Add click handlers
+  switcher.addEventListener("click", (e) => {
+    if (e.target.classList.contains("lang-btn")) {
+      languageService.setLanguage(e.target.dataset.lang);
+      updateButtons();
+    }
+  });
+
+  updateButtons();
+}
+
 const loadRoute = async () => {
   // Get the path without the domain
   const fullPath = window.location.pathname;
@@ -36,6 +76,8 @@ const loadRoute = async () => {
 
   try {
     app.innerHTML = route.template;
+    addLanguageSwitcher();
+    languageService.updatePageTranslations();
 
     if (route.script) {
       await route.script();

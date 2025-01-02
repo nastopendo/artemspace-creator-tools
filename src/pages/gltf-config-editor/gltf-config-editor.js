@@ -1,6 +1,7 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import Sortable from "sortablejs";
 import Quill from "quill";
+import { languageService } from "../../services/languageService.js";
 
 const fileInput = document.getElementById("fileInput");
 const fileDropArea = document.getElementById("fileDropArea");
@@ -180,41 +181,41 @@ function createArtworkElement(artwork, index) {
               `
           }
           <div>
-            <label class="block text-sm font-medium text-gray-500">Name</label>
+            <label class="block text-sm font-medium text-gray-500" data-i18n="name">Name</label>
             <span class="block w-full py-2">${artwork.name}</span>
           </div>
         </div>
         
         <div class="col-span-4">
-          <label class="block text-sm font-medium text-gray-500">Title</label>
+          <label class="block text-sm font-medium text-gray-500" data-i18n="title">Title</label>
           <input type="text" value="${artwork.title}" 
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
             onchange="window.updateArtworkField(${index}, 'title', this.value)"
-            placeholder="Artwork Title">
+            placeholder="${languageService.translate("artworkTitle")}">
         </div>
         <div class="col-span-3">
-          <label class="block text-sm font-medium text-gray-500">Artist</label>
+          <label class="block text-sm font-medium text-gray-500" data-i18n="artist">Artist</label>
           <input type="text" value="${artwork.artist}" 
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
             onchange="window.updateArtworkField(${index}, 'artist', this.value)"
-            placeholder="Artist Name">
+            placeholder="${languageService.translate("artworkAuthor")}">
         </div>
         <div class="col-span-2">
           <div class="flex items-center gap-1">
-            <label class="block text-sm font-medium text-gray-500">Year</label>
+            <label class="block text-sm font-medium text-gray-500" data-i18n="year">Year</label>
             <div class="group relative">
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
               </svg>
               <div class="hidden group-hover:block absolute z-10 w-48 p-2 mt-1 text-sm bg-gray-900 text-white rounded-lg -left-20 top-full">
-                Leave 0 if there is no year provided
+                ${languageService.translate("artworkYearTooltip")}
               </div>
             </div>
           </div>
                     <input type="number" value="${artwork.year}" 
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
             onchange="window.updateArtworkField(${index}, 'year', this.value)"
-            placeholder="Year"
+            placeholder="${languageService.translate("year")}"
             maxlength="4"
             min="0"
             max="9999">
@@ -235,52 +236,52 @@ function createArtworkElement(artwork, index) {
       <div class="grid grid-cols-4 gap-4">
         <div>
           <div class="flex items-center gap-1">
-            <label class="block text-sm font-medium text-gray-500">Image</label>
+            <label class="block text-sm font-medium text-gray-500" data-i18n="image">Image</label>
             <div class="group relative">
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
               </svg>
               <div class="hidden group-hover:block absolute z-10 w-64 p-2 mt-1 text-sm bg-gray-900 text-white rounded-lg -left-24 top-full">
-                Object thumbnail name in images/objects/small folder for object list view
+                ${languageService.translate("artworkImageTooltip")}
               </div>
             </div>
           </div>
           <input type="text" value="${artwork.image || defaultImage}" 
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
             onchange="window.updateArtworkField(${index}, 'image', this.value)"
-            placeholder="image.jpg">
+            placeholder="${languageService.translate("image")}">
         </div>
         <div>
           <div class="flex items-center gap-1">
-            <label class="block text-sm font-medium text-gray-500">Audio</label>
+            <label class="block text-sm font-medium text-gray-500" data-i18n="audio">Audio</label>
             <div class="group relative">
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
               </svg>
               <div class="hidden group-hover:block absolute z-10 w-64 p-2 mt-1 text-sm bg-gray-900 text-white rounded-lg -left-24 top-full">
-                If you would like to add audio to play when object is clicked in the app, add sound to audio folder and provide path
+                ${languageService.translate("artworkAudioTooltip")}
               </div>
             </div>
           </div>
           <input type="text" value="${artwork.audio || ""}" 
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
             onchange="window.updateArtworkField(${index}, 'audio', this.value)"
-            placeholder="audio/sound-name.mp3">
+            placeholder="${languageService.translate("audio")}">
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-500">Type</label>
+          <label class="block text-sm font-medium text-gray-500" data-i18n="type">Type</label>
           <select
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2.5 bg-white"
             onchange="window.updateArtworkField(${index}, 'type', this.value)">
             <option value="painting" ${
               artwork.type === "painting" ? "selected" : ""
-            }>Painting</option>
+            }>${languageService.translate("painting")}</option>
             <option value="sculpture" ${
               artwork.type === "sculpture" ? "selected" : ""
-            }>Sculpture</option>
+            }>${languageService.translate("sculpture")}</option>
             <option value="movie" ${
               artwork.type === "movie" ? "selected" : ""
-            }>Movie</option>
+            }>${languageService.translate("movie")}</option>
           </select>
         </div>
         <div class="pt-3 px-3 gap-4">
@@ -289,20 +290,20 @@ function createArtworkElement(artwork, index) {
                 class="w-5 h-5 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0"
                 ${artwork.showInfoBox ? "checked" : ""}
                 onchange="window.updateArtworkField(${index}, 'showInfoBox', this.checked)">
-              <span class="ml-3 text-gray-700">Show Info Box</span>
+              <span class="ml-3 text-gray-700" data-i18n="showInfoBox">Show Info Box</span>
             </label>
             <label class="inline-flex items-center">
               <input type="checkbox" 
                 class="w-5 h-5 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0"
                 ${artwork.showInObjectList ? "checked" : ""}
                 onchange="window.updateArtworkField(${index}, 'showInObjectList', this.checked)">
-              <span class="ml-3 text-gray-700">Show In Object List</span>
+              <span class="ml-3 text-gray-700" data-i18n="showInObjectList">Show In Object List</span>
             </label>
         </div>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-500 mb-2">Description</label>
+        <label class="block text-sm font-medium text-gray-500 mb-2" data-i18n="description">Description</label>
         <div class="border rounded-md bg-white border-gray-300 overflow-hidden">
           <div id="editor-${index}">
             ${artwork.description || ""}
@@ -331,7 +332,51 @@ function updateArtworksList() {
   artworksList.innerHTML = "";
   configData.artworks.forEach((artwork, index) => {
     artworksList.appendChild(createArtworkElement(artwork, index));
+
+    // Initialize Quill editor for this artwork
+    const editorContainer = document.querySelector(`#editor-${index}`);
+    if (editorContainer) {
+      const quill = new Quill(editorContainer, {
+        theme: "snow",
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline"],
+            [{ align: [] }],
+            ["clean"],
+          ],
+        },
+      });
+
+      // Set initial content
+      quill.root.innerHTML = artwork.description || "";
+
+      // Update configData when content changes
+      quill.on("text-change", () => {
+        configData.artworks[index].description = quill.root.innerHTML;
+      });
+
+      quillEditors[index] = quill;
+    }
   });
+
+  // Apply translations to all elements with data-i18n attributes
+  artworksList.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.getAttribute("data-i18n");
+    if (element.tagName === "INPUT") {
+      element.placeholder = languageService.translate(key);
+    } else {
+      element.textContent = languageService.translate(key);
+    }
+  });
+
+  // Update tooltips
+  artworksList.querySelectorAll(".group .hidden").forEach((tooltip) => {
+    const key = tooltip.getAttribute("data-i18n");
+    if (key) {
+      tooltip.textContent = languageService.translate(key);
+    }
+  });
+
   exportBtn.disabled = configData.artworks.length === 0;
 }
 
@@ -672,6 +717,20 @@ initializeExhibitionFields();
 // Add new function to handle language selection
 window.handleLanguageChange = (value) => {
   selectedLanguage = value;
+  languageService.setLanguage(value);
+  languageService.updatePageTranslations();
+
+  // Update all artwork translations
+  document.querySelectorAll(".artwork").forEach((artwork) => {
+    artwork.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+      if (element.tagName === "INPUT") {
+        element.placeholder = languageService.translate(key);
+      } else {
+        element.textContent = languageService.translate(key);
+      }
+    });
+  });
 };
 
 function addNonBreakingSpaces(text) {
@@ -697,3 +756,19 @@ function addNonBreakingSpaces(text) {
 
   return text;
 }
+
+// Add event listener for language changes
+document.getElementById("languageSelect").addEventListener("change", (e) => {
+  const newLanguage = e.target.value;
+  selectedLanguage = newLanguage;
+  languageService.setLanguage(newLanguage);
+  updateArtworksList(); // This will rerender all artworks with new translations
+});
+
+// Initialize language on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const initialLanguage = languageService.currentLanguage;
+  document.getElementById("languageSelect").value = initialLanguage;
+  selectedLanguage = initialLanguage;
+  languageService.updatePageTranslations();
+});

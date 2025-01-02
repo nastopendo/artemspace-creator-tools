@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>App Config Editor</title>
+    <title data-i18n="appConfigTitle">App Config Editor</title>
     <link rel="stylesheet" href="../../style.css" />
     <style>
       .tooltip {
@@ -18,7 +18,11 @@
   <body class="bg-gray-100 text-gray-800 min-h-screen py-8 px-3">
     <header>
       <nav>
-        <a href="/" data-link class="text-blue-600 hover:text-blue-800"
+        <a
+          href="/"
+          data-link
+          class="text-blue-600 hover:text-blue-800"
+          data-i18n="backToTools"
           >← Back to Tools</a
         >
       </nav>
@@ -29,19 +33,24 @@
     >
       <div class="flex items-start">
         <div class="flex-1"></div>
-        <h1 class="flex-1 text-3xl font-bold text-center text-gray-800 mb-8">
+        <h1
+          class="flex-1 text-3xl font-bold text-center text-gray-800 mb-8"
+          data-i18n="appConfigTitle"
+        >
           App Config Editor
         </h1>
         <div class="flex-1 flex justify-end space-x-4">
           <button
             id="exportBtn"
             class="px-6 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+            data-i18n="exportJson"
           >
             Export JSON
           </button>
           <button
             id="importBtn"
             class="px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            data-i18n="importJson"
           >
             Import JSON
           </button>
@@ -51,11 +60,15 @@
       <div class="space-y-6">
         <!-- Languages Section -->
         <div class="border rounded-lg p-6 bg-gray-50">
-          <h2 class="text-xl font-semibold mb-4">Languages</h2>
+          <h2 class="text-xl font-semibold mb-4" data-i18n="languages">
+            Languages
+          </h2>
           <div class="grid grid-cols-1 gap-4">
             <div>
               <div class="flex items-center gap-1 mb-2">
-                <label class="block text-sm font-medium text-gray-700"
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="supportedLanguages"
                   >Supported Languages</label
                 >
                 <div class="group relative">
@@ -72,6 +85,7 @@
                   </svg>
                   <div
                     class="hidden group-hover:block absolute z-10 w-72 p-2 mt-1 text-sm bg-gray-900 text-white rounded-lg -left-24 top-full"
+                    data-i18n="supportedLanguagesHelp"
                   >
                     Select languages below if you want gallery in
                     multi-language. You need to add GLTF configs for each
@@ -115,7 +129,9 @@
               <input type="hidden" id="supportedLanguages" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2"
+              <label
+                class="block text-sm font-medium text-gray-700 mb-2"
+                data-i18n="defaultLanguage"
                 >Default Language</label
               >
               <select
@@ -136,7 +152,7 @@
                   id="persistLanguage"
                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
-                <span class="ml-2 text-gray-700"
+                <span class="ml-2 text-gray-700" data-i18n="persistLanguage"
                   >Persist Language Selection</span
                 >
               </label>
@@ -146,19 +162,25 @@
 
         <!-- Analytics Section -->
         <div class="border rounded-lg p-6 bg-gray-50">
-          <h2 class="text-xl font-semibold mb-4">Analytics</h2>
+          <h2 class="text-xl font-semibold mb-4" data-i18n="analytics">
+            Analytics
+          </h2>
 
           <!-- Google Analytics -->
           <div class="mb-6">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="text-lg font-medium">Google Analytics</h3>
+              <h3 class="text-lg font-medium" data-i18n="googleAnalytics">
+                Google Analytics
+              </h3>
               <label class="inline-flex items-center">
                 <input
                   type="checkbox"
                   id="gaEnabled"
                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
-                <span class="ml-2 text-gray-700">Enable</span>
+                <span class="ml-2 text-gray-700" data-i18n="enable"
+                  >Enable</span
+                >
               </label>
             </div>
             <input
@@ -172,20 +194,25 @@
           <!-- Facebook Pixel -->
           <div class="mb-6">
             <div class="flex items-center justify-between mb-2">
-              <h3 class="text-lg font-medium">Facebook Pixel</h3>
+              <h3 class="text-lg font-medium" data-i18n="facebookPixel">
+                Facebook Pixel
+              </h3>
               <label class="inline-flex items-center">
                 <input
                   type="checkbox"
                   id="fbEnabled"
                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
-                <span class="ml-2 text-gray-700">Enable</span>
+                <span class="ml-2 text-gray-700" data-i18n="enable"
+                  >Enable</span
+                >
               </label>
             </div>
             <input
               type="text"
               id="fbPixelId"
               placeholder="XXXXXXXXXXXXXXX"
+              data-i18n="pixelId"
               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
             />
           </div>
@@ -200,7 +227,9 @@
                   id="hjEnabled"
                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
-                <span class="ml-2 text-gray-700">Enable</span>
+                <span class="ml-2 text-gray-700" data-i18n="enable"
+                  >Enable</span
+                >
               </label>
             </div>
             <div class="grid grid-cols-2 gap-4">
@@ -229,7 +258,9 @@
                   id="swEnabled"
                   class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                 />
-                <span class="ml-2 text-gray-700">Enable</span>
+                <span class="ml-2 text-gray-700" data-i18n="enable"
+                  >Enable</span
+                >
               </label>
             </div>
             <input
@@ -242,14 +273,18 @@
         </div>
 
         <!-- Model Properties Section -->
-        <div class="border rounded-lg p-6 bg-gray-50">
-          <h2 class="text-xl font-semibold mb-4">Model Properties</h2>
+        <div class="border rounded-lg p-6 bg-gray-50 mb-8">
+          <h2 class="text-xl font-semibold mb-4" data-i18n="modelProperties">
+            Model Properties
+          </h2>
 
           <!-- Basic Model Settings -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Gallery Model Name</label
+              <label
+                class="block text-sm font-medium text-gray-700"
+                data-i18n="galleryModel"
+                >Gallery Model</label
               >
               <input
                 type="text"
@@ -258,7 +293,9 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700"
+              <label
+                class="block text-sm font-medium text-gray-700"
+                data-i18n="galleryMobileModelName"
                 >Gallery Mobile Model Name</label
               >
               <input
@@ -268,7 +305,9 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700"
+              <label
+                class="block text-sm font-medium text-gray-700"
+                data-i18n="galleryNavMesh"
                 >Gallery Nav Mesh</label
               >
               <input
@@ -278,7 +317,9 @@
               />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700"
+              <label
+                class="block text-sm font-medium text-gray-700"
+                data-i18n="galleryCollisionMesh"
                 >Gallery Collision Mesh</label
               >
               <input
@@ -291,549 +332,678 @@
 
           <!-- Lights Section -->
           <div class="mb-6">
-            <h3 class="text-lg font-medium mb-4">Lights</h3>
+            <h3 class="text-lg font-medium mb-4" data-i18n="lights">Lights</h3>
             <div id="lightsContainer">
               <!-- Lights will be dynamically added here -->
             </div>
           </div>
 
-          <!-- Textures Section -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Background Texture</label
-              >
-              <input
-                type="text"
-                id="backgroundTexture"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Environment Texture</label
-              >
-              <input
-                type="text"
-                id="environmentTexture"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Background Color</label
-              >
-              <input
-                type="text"
-                id="backgroundColor"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
+              <!-- Textures Section -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="backgroundTexture"
+                    >Background Texture</label
+                  >
+                  <input
+                    type="text"
+                    id="backgroundTexture"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="environmentTexture"
+                    >Environment Texture</label
+                  >
+                  <input
+                    type="text"
+                    id="environmentTexture"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="backgroundColor"
+                    >Background Color</label
+                  >
+                  <input
+                    type="text"
+                    id="backgroundColor"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                  />
+                </div>
+              </div>
+
+              <!-- Reflection Cube Textures -->
+              <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="reflectionCubeTextures"
+                    >Reflection Cube Textures</label
+                  >
+                  <button
+                    id="addReflectionTexture"
+                    class="text-blue-500 hover:text-blue-700"
+                    data-i18n="addTexture"
+                  >
+                    + Add Texture
+                  </button>
+                </div>
+                <div id="reflectionTexturesContainer" class="space-y-2">
+                  <!-- Reflection textures will be added here -->
+                </div>
+              </div>
+
+              <!-- Background Cube Textures -->
+              <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="backgroundCubeTextures"
+                    >Background Cube Textures</label
+                  >
+                  <button
+                    id="addBackgroundTexture"
+                    class="text-blue-500 hover:text-blue-700"
+                    data-i18n="addTexture"
+                  >
+                    + Add Texture
+                  </button>
+                </div>
+                <div id="backgroundTexturesContainer" class="space-y-2">
+                  <!-- Background textures will be added here -->
+                </div>
+              </div>
+
+              <!-- Fog Settings -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="fogColor"
+                    >Fog Color</label
+                  >
+                  <input
+                    type="text"
+                    id="fogColor"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="fogNear"
+                    >Fog Near</label
+                  >
+                  <input
+                    type="number"
+                    id="fogNear"
+                    step="0.1"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="fogFar"
+                    >Fog Far</label
+                  >
+                  <input
+                    type="number"
+                    id="fogFar"
+                    step="0.1"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Reflection Cube Textures -->
-          <div class="mb-6">
-            <div class="flex items-center justify-between mb-2">
-              <label class="block text-sm font-medium text-gray-700"
-                >Reflection Cube Textures</label
-              >
-              <button
-                id="addReflectionTexture"
-                class="text-blue-500 hover:text-blue-700"
-              >
-                + Add Texture
-              </button>
-            </div>
-            <div id="reflectionTexturesContainer" class="space-y-2">
-              <!-- Reflection textures will be added here -->
-            </div>
-          </div>
+          <div class="mb-8"></div>
 
-          <!-- Background Cube Textures -->
-          <div class="mb-6">
-            <div class="flex items-center justify-between mb-2">
-              <label class="block text-sm font-medium text-gray-700"
-                >Background Cube Textures</label
-              >
-              <button
-                id="addBackgroundTexture"
-                class="text-blue-500 hover:text-blue-700"
-              >
-                + Add Texture
-              </button>
-            </div>
-            <div id="backgroundTexturesContainer" class="space-y-2">
-              <!-- Background textures will be added here -->
-            </div>
-          </div>
-
-          <!-- Fog Settings -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Fog Color</label
-              >
-              <input
-                type="text"
-                id="fogColor"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Fog Near</label
-              >
-              <input
-                type="number"
-                id="fogNear"
-                step="0.1"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Fog Far</label
-              >
-              <input
-                type="number"
-                id="fogFar"
-                step="0.1"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Control Properties Section -->
-        <div class="border rounded-lg p-6 bg-gray-50">
-          <h2 class="text-xl font-semibold mb-4">Control Properties</h2>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Numeric inputs -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Damping Factor</label
-              >
-              <input
-                type="number"
-                id="dampingFactor"
-                step="0.1"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Rotate Speed</label
-              >
-              <input
-                type="number"
-                id="rotateSpeed"
-                step="0.1"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Dolly Speed</label
-              >
-              <input
-                type="number"
-                id="dollySpeed"
-                step="0.1"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
-              <div class="col-span-1">
-                <label class="block text-sm font-medium text-gray-700"
-                  >Player Height</label
+          <!-- Control Properties Section -->
+          <div class="border rounded-lg p-6 bg-gray-50 mb-8">
+            <h2 class="text-xl font-semibold mb-4" data-i18n="controlProperties">
+              Control Properties
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- Numeric inputs -->
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="dampingFactor"
+                  >Damping Factor</label
                 >
                 <input
                   type="number"
-                  id="playerHeight"
+                  id="dampingFactor"
                   step="0.1"
                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
                 />
               </div>
-              <div class="col-span-2">
-                <label class="block text-sm font-medium text-gray-700"
-                  >Arrows Mapping</label
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="rotateSpeed"
+                  >Rotate Speed</label
                 >
-                <select
-                  id="arrowsMapping"
-                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2.5"
+                <input
+                  type="number"
+                  id="rotateSpeed"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="dollySpeed"
+                  >Dolly Speed</label
                 >
-                  <option value="moverotate">Move & Rotate</option>
-                  <option value="rotate">Rotate Only</option>
-                  <option value="move">Move Only</option>
-                  <option value="none">None</option>
-                </select>
+                <input
+                  type="number"
+                  id="dollySpeed"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
               </div>
-            </div>
-          </div>
-
-          <!-- Checkboxes -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="enableZoom"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Enable Zoom</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="enablePan"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Enable Pan</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="enableDamping"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Enable Damping</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="enableJoystick"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Enable Joystick</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="showRingHelperTeleportAnim"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Show Ring Helper</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="showObjectListModal"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Show Object List</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="showARButtonOnScreen"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Show AR Button</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="moveUpDown"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Move Up/Down</span>
-            </label>
-          </div>
-
-          <!-- Start Position -->
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Start X</label
-              >
-              <input
-                type="number"
-                id="startX"
-                step="0.00001"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Start Y</label
-              >
-              <input
-                type="number"
-                id="startY"
-                step="0.00001"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Start Z</label
-              >
-              <input
-                type="number"
-                id="startZ"
-                step="0.00001"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700"
-                >Start Azimuth Angle</label
-              >
-              <input
-                type="number"
-                id="startAzimuthAngle"
-                step="0.1"
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Audio Properties Section -->
-        <div class="border rounded-lg p-6 bg-gray-50">
-          <h2 class="text-xl font-semibold mb-4">Audio Properties</h2>
-
-          <!-- Global Audio Settings -->
-          <div class="grid grid-cols-2 gap-4 mb-6">
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="autostartAudioEnabled"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Autostart Audio Enabled</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="objectAudioAutoplayDesktop"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700"
-                >Object Audio Autoplay Desktop</span
-              >
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="objectAudioAutoplayMobile"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700"
-                >Object Audio Autoplay Mobile</span
-              >
-            </label>
-            <label class="inline-flex items-center">
-              <input
-                type="checkbox"
-                id="playObjectAudioOnly"
-                class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              />
-              <span class="ml-2 text-gray-700">Play Object Audio Only</span>
-            </label>
-          </div>
-
-          <!-- Audio Sources -->
-          <div class="space-y-6">
-            <!-- Background Audio -->
-            <div>
-              <h3 class="text-lg font-medium mb-3">Background Audio</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Path</label
-                  >
-                  <input
-                    type="text"
-                    id="backgroundAudioPath"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Volume</label
+              <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
+                <div class="col-span-1">
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="playerHeight"
+                    >Player Height</label
                   >
                   <input
                     type="number"
-                    id="backgroundAudioVolume"
-                    step="0.01"
-                    min="0"
-                    max="1"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Playback Rate</label
-                  >
-                  <input
-                    type="number"
-                    id="backgroundAudioPlaybackRate"
+                    id="playerHeight"
                     step="0.1"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
                   />
                 </div>
-                <div class="md:col-span-2 lg:col-span-4">
-                  <label class="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      id="backgroundAudioLoop"
-                      class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                    <span class="ml-2 text-gray-700">Loop</span>
-                  </label>
+                <div class="col-span-2">
+                  <label
+                    class="block text-sm font-medium text-gray-700"
+                    data-i18n="arrowsMapping"
+                    >Arrows Mapping</label
+                  >
+                  <select
+                    id="arrowsMapping"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2.5"
+                  >
+                    <option value="moverotate" data-i18n="moveRotate">
+                      Move & Rotate
+                    </option>
+                    <option value="rotate" data-i18n="rotateOnly">
+                      Rotate Only
+                    </option>
+                    <option value="move" data-i18n="moveOnly">Move Only</option>
+                    <option value="none" data-i18n="none">None</option>
+                  </select>
                 </div>
               </div>
             </div>
 
-            <!-- Transition Audio -->
-            <div>
-              <h3 class="text-lg font-medium mb-3">Transition Audio</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Path</label
-                  >
-                  <input
-                    type="text"
-                    id="transitionAudioPath"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Volume</label
-                  >
-                  <input
-                    type="number"
-                    id="transitionAudioVolume"
-                    step="0.01"
-                    min="0"
-                    max="1"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Playback Rate</label
-                  >
-                  <input
-                    type="number"
-                    id="transitionAudioPlaybackRate"
-                    step="0.1"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div class="md:col-span-2 lg:col-span-4">
-                  <label class="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      id="transitionAudioLoop"
-                      class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                    <span class="ml-2 text-gray-700">Loop</span>
-                  </label>
-                </div>
-              </div>
+            <!-- Checkboxes -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="enableZoom"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="enableZoom"
+                  >Enable Zoom</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="enablePan"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="enablePan"
+                  >Enable Pan</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="enableDamping"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="enableDamping"
+                  >Enable Damping</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="enableJoystick"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="enableJoystick"
+                  >Enable Joystick</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="showRingHelperTeleportAnim"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="showRingHelper"
+                  >Show Ring Helper</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="showObjectListModal"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="showObjectList"
+                  >Show Object List</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="showARButtonOnScreen"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="showARButton"
+                  >Show AR Button</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="moveUpDown"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="moveUpDown"
+                  >Move Up/Down</span
+                >
+              </label>
             </div>
 
-            <!-- VR Teleport Audio -->
-            <div>
-              <h3 class="text-lg font-medium mb-3">VR Teleport Audio</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Path</label
-                  >
-                  <input
-                    type="text"
-                    id="vrTeleportAudioPath"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Volume</label
-                  >
-                  <input
-                    type="number"
-                    id="vrTeleportAudioVolume"
-                    step="0.01"
-                    min="0"
-                    max="1"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Playback Rate</label
-                  >
-                  <input
-                    type="number"
-                    id="vrTeleportAudioPlaybackRate"
-                    step="0.1"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div class="md:col-span-2 lg:col-span-4">
-                  <label class="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      id="vrTeleportAudioLoop"
-                      class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                    <span class="ml-2 text-gray-700">Loop</span>
-                  </label>
-                </div>
+            <!-- Start Position -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="startX"
+                  >Start X</label
+                >
+                <input
+                  type="number"
+                  id="startX"
+                  step="0.00001"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="startY"
+                  >Start Y</label
+                >
+                <input
+                  type="number"
+                  id="startY"
+                  step="0.00001"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="startZ"
+                  >Start Z</label
+                >
+                <input
+                  type="number"
+                  id="startZ"
+                  step="0.00001"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="startAzimuthAngle"
+                  >Start Azimuth Angle</label
+                >
+                <input
+                  type="number"
+                  id="startAzimuthAngle"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
               </div>
             </div>
+          </div>
 
-            <!-- Click Audio -->
-            <div>
-              <h3 class="text-lg font-medium mb-3">Click Audio</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="md:col-span-2">
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Path</label
-                  >
-                  <input
-                    type="text"
-                    id="clickAudioPath"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Volume</label
-                  >
-                  <input
-                    type="number"
-                    id="clickAudioVolume"
-                    step="0.01"
-                    min="0"
-                    max="1"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700"
-                    >Playback Rate</label
-                  >
-                  <input
-                    type="number"
-                    id="clickAudioPlaybackRate"
-                    step="0.1"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
-                  />
-                </div>
-                <div class="md:col-span-2 lg:col-span-4">
-                  <label class="inline-flex items-center">
+          <!-- Audio Properties Section -->
+          <div class="border rounded-lg p-6 bg-gray-50">
+            <h2 class="text-xl font-semibold mb-4" data-i18n="audioProperties">
+              Audio Properties
+            </h2>
+
+            <!-- Global Audio Settings -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="autostartAudioEnabled"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span
+                  class="ml-2 text-gray-700"
+                  data-i18n="autostartAudioEnabled"
+                  >Autostart Audio</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="objectAudioAutoplayDesktop"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span
+                  class="ml-2 text-gray-700"
+                  data-i18n="objectAudioAutoplayDesktop"
+                  >Object Audio Autoplay (Desktop)</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="objectAudioAutoplayMobile"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span
+                  class="ml-2 text-gray-700"
+                  data-i18n="objectAudioAutoplayMobile"
+                  >Object Audio Autoplay (Mobile)</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="playObjectAudioOnly"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="playObjectAudioOnly"
+                  >Play Object Audio Only</span
+                >
+              </label>
+            </div>
+
+            <!-- Audio Sources -->
+            <div class="space-y-6">
+              <!-- Background Audio -->
+              <div>
+                <h3
+                  class="text-lg font-medium mb-3"
+                  data-i18n="backgroundAudio"
+                >
+                  Background Audio
+                </h3>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                >
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="path"
+                      >Path</label
+                    >
                     <input
-                      type="checkbox"
-                      id="clickAudioLoop"
-                      class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      type="text"
+                      id="backgroundAudioPath"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
                     />
-                    <span class="ml-2 text-gray-700">Loop</span>
-                  </label>
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="volume"
+                      >Volume</label
+                    >
+                    <input
+                      type="number"
+                      id="backgroundAudioVolume"
+                      step="0.01"
+                      min="0"
+                      max="1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="playbackRate"
+                      >Playback Rate</label
+                    >
+                    <input
+                      type="number"
+                      id="backgroundAudioPlaybackRate"
+                      step="0.1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div class="md:col-span-2 lg:col-span-4">
+                    <label class="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        id="backgroundAudioLoop"
+                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      />
+                      <span class="ml-2 text-gray-700">Loop</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Transition Audio -->
+              <div>
+                <h3
+                  class="text-lg font-medium mb-3"
+                  data-i18n="transitionAudio"
+                >
+                  Transition Audio
+                </h3>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                >
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="path"
+                      >Path</label
+                    >
+                    <input
+                      type="text"
+                      id="transitionAudioPath"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="volume"
+                      >Volume</label
+                    >
+                    <input
+                      type="number"
+                      id="transitionAudioVolume"
+                      step="0.01"
+                      min="0"
+                      max="1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="playbackRate"
+                      >Playback Rate</label
+                    >
+                    <input
+                      type="number"
+                      id="transitionAudioPlaybackRate"
+                      step="0.1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div class="md:col-span-2 lg:col-span-4">
+                    <label class="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        id="transitionAudioLoop"
+                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      />
+                      <span class="ml-2 text-gray-700" data-i18n="loop"
+                        >Loop</span
+                      >
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- VR Teleport Audio -->
+              <div>
+                <h3
+                  class="text-lg font-medium mb-3"
+                  data-i18n="vrTeleportAudio"
+                >
+                  VR Teleport Audio
+                </h3>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                >
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="path"
+                      >Path</label
+                    >
+                    <input
+                      type="text"
+                      id="vrTeleportAudioPath"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="volume"
+                      >Volume</label
+                    >
+                    <input
+                      type="number"
+                      id="vrTeleportAudioVolume"
+                      step="0.01"
+                      min="0"
+                      max="1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="playbackRate"
+                      >Playback Rate</label
+                    >
+                    <input
+                      type="number"
+                      id="vrTeleportAudioPlaybackRate"
+                      step="0.1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div class="md:col-span-2 lg:col-span-4">
+                    <label class="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        id="vrTeleportAudioLoop"
+                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      />
+                      <span class="ml-2 text-gray-700" data-i18n="loop"
+                        >Loop</span
+                      >
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Click Audio -->
+              <div>
+                <h3 class="text-lg font-medium mb-3" data-i18n="clickAudio">
+                  Click Audio
+                </h3>
+                <div
+                  class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                >
+                  <div class="md:col-span-2">
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="path"
+                      >Path</label
+                    >
+                    <input
+                      type="text"
+                      id="clickAudioPath"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="volume"
+                      >Volume</label
+                    >
+                    <input
+                      type="number"
+                      id="clickAudioVolume"
+                      step="0.01"
+                      min="0"
+                      max="1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      class="block text-sm font-medium text-gray-700"
+                      data-i18n="playbackRate"
+                      >Playback Rate</label
+                    >
+                    <input
+                      type="number"
+                      id="clickAudioPlaybackRate"
+                      step="0.1"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                    />
+                  </div>
+                  <div class="md:col-span-2 lg:col-span-4">
+                    <label class="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        id="clickAudioLoop"
+                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      />
+                      <span class="ml-2 text-gray-700" data-i18n="loop"
+                        >Loop</span
+                      >
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
