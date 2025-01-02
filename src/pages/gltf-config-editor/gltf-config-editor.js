@@ -31,7 +31,7 @@ let configData = {
     sourceARPage: "",
     privacyPolicyLink: "",
     aboutExhibitionTitle: "",
-    aboutExhibitionDescription: "",
+    aboutExhibitionDescripton: "",
     aboutExhibitionAudio: "",
   },
   artworks: [],
@@ -590,27 +590,27 @@ initializeSortable();
 function initializeExhibitionFields() {
   // Set initial values from configData
   document.getElementById("exhibitionTitle").value =
-    configData.exhibition.title;
+    configData.exhibition.title || "";
   document.getElementById("exhibitionDescription").value =
-    configData.exhibition.description;
+    configData.exhibition.description || "";
   document.getElementById("featuredPhoto").value =
     configData.exhibition.featuredPhoto || "images/loading/featured-photo.jpg";
   document.getElementById("backgroundLoadingPhoto").value =
     configData.exhibition.backgroundLoadingPhoto ||
     "images/loading/background-photo.jpg";
   document.getElementById("aboutExhibitionTitle").value =
-    configData.exhibition.aboutExhibitionTitle;
+    configData.exhibition.aboutExhibitionTitle || "";
   document.getElementById("aboutExhibitionAudio").value =
-    configData.exhibition.aboutExhibitionAudio;
+    configData.exhibition.aboutExhibitionAudio || "";
 
-  // Initialize Quill editor for about description
+  // Initialize or update Quill editor
   if (!exhibitionQuillEditor) {
-    exhibitionQuillEditor = new Quill("#aboutExhibitionDescription", {
+    exhibitionQuillEditor = new Quill("#aboutExhibitionDescripton", {
       theme: "snow",
       modules: {
         toolbar: [["bold", "italic", "underline"], [{ align: [] }], ["clean"]],
       },
-      bounds: "#aboutExhibitionDescription",
+      bounds: "#aboutExhibitionDescripton",
     });
 
     // Set minimum height for the editor area
@@ -621,17 +621,20 @@ function initializeExhibitionFields() {
     // Remove default border from Quill container
     exhibitionQuillEditor.container.classList.remove("ql-container-border");
 
-    // Set initial content
-    exhibitionQuillEditor.root.innerHTML =
-      configData.exhibition.aboutExhibitionDescription || "";
-
     // Update configData when content changes
     exhibitionQuillEditor.on("text-change", () => {
       window.updateExhibitionField(
-        "aboutExhibitionDescription",
+        "aboutExhibitionDescripton",
         exhibitionQuillEditor.root.innerHTML
       );
     });
+  }
+
+  // Update Quill editor content if it exists in configData
+  if (configData.exhibition.aboutExhibitionDescripton) {
+    exhibitionQuillEditor.root.innerHTML = configData.exhibition.aboutExhibitionDescripton;
+  } else {
+    exhibitionQuillEditor.root.innerHTML = "";
   }
 }
 
