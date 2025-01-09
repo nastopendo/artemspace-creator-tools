@@ -81,8 +81,8 @@ function createImageElement(file, index) {
   const img = document.createElement("img");
   img.src = URL.createObjectURL(file);
   img.className = isGridView
-    ? "w-full h-full object-cover"
-    : "w-20 h-20 object-cover rounded";
+    ? "w-full h-full object-contain"
+    : "w-20 h-20 object-contain rounded";
 
   if (isGridView) {
     imgWrapper.appendChild(img);
