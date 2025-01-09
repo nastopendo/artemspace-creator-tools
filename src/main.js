@@ -4,6 +4,7 @@ import imageResizerHtml from "./pages/image-resizer/index.html?raw";
 import imageOrganizerHtml from "./pages/image-organizer/index.html?raw";
 import gltfConfigEditorHtml from "./pages/gltf-config-editor/index.html?raw";
 import appConfigEditorHtml from "./pages/app-config-editor/index.html?raw";
+import imageDimensionsHtml from "./pages/image-dimensions/index.html?raw";
 import { languageService } from "./services/languageService";
 
 const routes = {
@@ -25,6 +26,10 @@ const routes = {
   "/app-config-editor": {
     template: appConfigEditorHtml,
     script: () => import("./pages/app-config-editor/app-config-editor.js"),
+  },
+  "/image-dimensions": {
+    template: imageDimensionsHtml,
+    script: () => import("./pages/image-dimensions/image-dimensions.js"),
   },
 };
 

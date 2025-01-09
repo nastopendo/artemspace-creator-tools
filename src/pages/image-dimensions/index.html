@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="imageDimensionsTitle">Image Dimensions</title>
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="bg-gray-100 text-gray-800 min-h-screen py-8 px-4">
+    <header>
+      <nav>
+        <a
+          href="/"
+          data-link
+          class="text-blue-600 hover:text-blue-800"
+          data-i18n="backToTools"
+          >← Back to Tools</a
+        >
+      </nav>
+    </header>
+
+    <div
+      class="max-w-6xl mx-auto bg-white rounded-lg shadow-md p-8 animate-fade-in"
+    >
+      <div class="flex items-start justify-between mb-8">
+        <div class="flex-1"></div>
+        <h1
+          class="flex-1 text-3xl font-bold text-center text-gray-800"
+          data-i18n="imageDimensionsTitle"
+        >
+          Image Dimensions
+        </h1>
+        <div class="flex-1 flex justify-end">
+          <button
+            id="exportBtn"
+            disabled
+            class="px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600 disabled:bg-gray-400 disabled:cursor-not-allowed w-auto"
+            data-i18n="exportJson"
+          >
+            Export JSON
+          </button>
+        </div>
+      </div>
+
+      <!-- File Input Area -->
+      <div
+        id="fileDropArea"
+        class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-colors hover:border-blue-500 hover:bg-blue-50"
+      >
+        <p class="text-gray-600 font-semibold">
+          <span data-i18n="dragDropImages">Drag & Drop Images Here or</span>
+          <span class="text-blue-500" data-i18n="clickToSelect"
+            >Click to Select</span
+          >
+        </p>
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*"
+          multiple
+          class="hidden"
+        />
+      </div>
+
+      <!-- Images List -->
+      <div id="imagesList" class="mt-8 space-y-4"></div>
+    </div>
+
+    <script type="module" src="./image-dimensions.js"></script>
+  </body>
+</html>

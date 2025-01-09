@@ -236,6 +236,11 @@ export const translations = {
     dragDropGltf: "Drag & Drop GLTF Model Here or",
     loadingGltf: "Loading GLTF...",
     objectsProgress: "objects",
+
+    imageDimensionsTitle: "Image Dimensions",
+    imageDimensionsDesc:
+      "Import multiple images, set their dimensions, and export as JSON.",
+    height: "Height (cm)",
   },
   pl: {
     // Common
@@ -480,5 +485,10 @@ export const translations = {
     dragDropGltf: "Przeciągnij i upuść model GLTF tutaj lub",
     loadingGltf: "Ładowanie GLTF...",
     objectsProgress: "obiektów",
+
+    imageDimensionsTitle: "Wymiary obrazów",
+    imageDimensionsDesc:
+      "Importuj wiele obrazów, ustaw ich wymiary i eksportuj jako JSON.",
+    height: "Wysokość (cm)",
   },
 };
