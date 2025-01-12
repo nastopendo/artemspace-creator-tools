@@ -184,6 +184,35 @@ function initializeForm() {
   document.getElementById("swProjectId").value =
     configData.analytics.swetrix.projectId;
 
+  // Add event listeners for analytics fields
+  document.getElementById("gaEnabled").addEventListener("change", (e) => {
+    configData.analytics.googleAnalytics.enabled = e.target.checked;
+  });
+  document.getElementById("gaTagId").addEventListener("change", (e) => {
+    configData.analytics.googleAnalytics.tagId = e.target.value;
+  });
+  document.getElementById("fbEnabled").addEventListener("change", (e) => {
+    configData.analytics.facebookPixel.enabled = e.target.checked;
+  });
+  document.getElementById("fbPixelId").addEventListener("change", (e) => {
+    configData.analytics.facebookPixel.pixelId = e.target.value;
+  });
+  document.getElementById("hjEnabled").addEventListener("change", (e) => {
+    configData.analytics.hotjar.enabled = e.target.checked;
+  });
+  document.getElementById("hjid").addEventListener("change", (e) => {
+    configData.analytics.hotjar.hjid = parseInt(e.target.value, 10);
+  });
+  document.getElementById("hjsv").addEventListener("change", (e) => {
+    configData.analytics.hotjar.hjsv = parseInt(e.target.value, 10);
+  });
+  document.getElementById("swEnabled").addEventListener("change", (e) => {
+    configData.analytics.swetrix.enabled = e.target.checked;
+  });
+  document.getElementById("swProjectId").addEventListener("change", (e) => {
+    configData.analytics.swetrix.projectId = e.target.value;
+  });
+
   // Model Properties
   document.getElementById("galleryModelName").value =
     configData.modelProperties.galleryModelName;
@@ -193,6 +222,26 @@ function initializeForm() {
     configData.modelProperties.galleryNavMesh;
   document.getElementById("galleryCollisionMesh").value =
     configData.modelProperties.galleryCollisionMesh;
+
+  // Add event listeners to update configData on change for model properties
+  document
+    .getElementById("galleryModelName")
+    .addEventListener("change", (e) => {
+      configData.modelProperties.galleryModelName = e.target.value;
+    });
+  document
+    .getElementById("galleryMobileModelName")
+    .addEventListener("change", (e) => {
+      configData.modelProperties.galleryMobileModelName = e.target.value;
+    });
+  document.getElementById("galleryNavMesh").addEventListener("change", (e) => {
+    configData.modelProperties.galleryNavMesh = e.target.value;
+  });
+  document
+    .getElementById("galleryCollisionMesh")
+    .addEventListener("change", (e) => {
+      configData.modelProperties.galleryCollisionMesh = e.target.value;
+    });
 
   // Initialize lights
   initializeLights();
@@ -205,6 +254,21 @@ function initializeForm() {
   document.getElementById("backgroundColor").value =
     configData.modelProperties.backgroundColor;
 
+  // Add event listeners for texture inputs
+  document
+    .getElementById("backgroundTexture")
+    .addEventListener("change", (e) => {
+      configData.modelProperties.backgroundTexture = e.target.value;
+    });
+  document
+    .getElementById("environmentTexture")
+    .addEventListener("change", (e) => {
+      configData.modelProperties.environmentTexture = e.target.value;
+    });
+  document.getElementById("backgroundColor").addEventListener("change", (e) => {
+    configData.modelProperties.backgroundColor = e.target.value;
+  });
+
   // Initialize reflection and background textures
   initializeTextureArrays();
 
@@ -215,11 +279,133 @@ function initializeForm() {
     configData.modelProperties.fog.near;
   document.getElementById("fogFar").value = configData.modelProperties.fog.far;
 
+  // Add event listeners for fog inputs
+  document.getElementById("fogColor").addEventListener("change", (e) => {
+    configData.modelProperties.fog.color = e.target.value;
+  });
+  document.getElementById("fogNear").addEventListener("change", (e) => {
+    configData.modelProperties.fog.near = parseFloat(e.target.value);
+  });
+  document.getElementById("fogFar").addEventListener("change", (e) => {
+    configData.modelProperties.fog.far = parseFloat(e.target.value);
+  });
+
   // Control Properties
   initializeControlProperties();
 
+  // Add event listeners for control properties
+  document.getElementById("dampingFactor").value =
+    configData.controlProperties.dampingFactor;
+  document.getElementById("rotateSpeed").value =
+    configData.controlProperties.rotateSpeed;
+  document.getElementById("dollySpeed").value =
+    configData.controlProperties.dollySpeed;
+  document.getElementById("playerHeight").value =
+    configData.controlProperties.playerHeight;
+  document.getElementById("startX").value =
+    configData.controlProperties.startPoint[0];
+  document.getElementById("startY").value =
+    configData.controlProperties.startPoint[1];
+  document.getElementById("startZ").value =
+    configData.controlProperties.startPoint[2];
+  document.getElementById("startAzimuthAngle").value =
+    configData.controlProperties.startAzimuthAngle;
+  document.getElementById("arrowsMapping").value =
+    configData.controlProperties.arrowsMapping;
+
+  // Add event listeners for control properties
+  document.getElementById("dampingFactor").addEventListener("change", (e) => {
+    configData.controlProperties.dampingFactor = parseFloat(e.target.value);
+  });
+  document.getElementById("rotateSpeed").addEventListener("change", (e) => {
+    configData.controlProperties.rotateSpeed = parseFloat(e.target.value);
+  });
+  document.getElementById("dollySpeed").addEventListener("change", (e) => {
+    configData.controlProperties.dollySpeed = parseFloat(e.target.value);
+  });
+  document.getElementById("playerHeight").addEventListener("change", (e) => {
+    configData.controlProperties.playerHeight = parseFloat(e.target.value);
+  });
+  document.getElementById("startX").addEventListener("change", (e) => {
+    configData.controlProperties.startPoint[0] = parseFloat(e.target.value);
+  });
+  document.getElementById("startY").addEventListener("change", (e) => {
+    configData.controlProperties.startPoint[1] = parseFloat(e.target.value);
+  });
+  document.getElementById("startZ").addEventListener("change", (e) => {
+    configData.controlProperties.startPoint[2] = parseFloat(e.target.value);
+  });
+  document
+    .getElementById("startAzimuthAngle")
+    .addEventListener("change", (e) => {
+      configData.controlProperties.startAzimuthAngle = parseFloat(
+        e.target.value
+      );
+    });
+  document.getElementById("arrowsMapping").addEventListener("change", (e) => {
+    configData.controlProperties.arrowsMapping = e.target.value;
+  });
+
   // Audio Properties
   initializeAudioProperties();
+
+  // Add event listeners for audio properties
+  document
+    .getElementById("autostartAudioEnabled")
+    .addEventListener("change", (e) => {
+      configData.audioProperties.autostartAudioEnabled = e.target.checked;
+    });
+  document
+    .getElementById("objectAudioAutoplayDesktop")
+    .addEventListener("change", (e) => {
+      configData.audioProperties.objectAudioAutoplayDesktop = e.target.checked;
+    });
+  document
+    .getElementById("objectAudioAutoplayMobile")
+    .addEventListener("change", (e) => {
+      configData.audioProperties.objectAudioAutoplayMobile = e.target.checked;
+    });
+  document
+    .getElementById("playObjectAudioOnly")
+    .addEventListener("change", (e) => {
+      configData.audioProperties.playObjectAudioOnly = e.target.checked;
+    });
+
+  // Initialize audio sources
+  ["background", "transition", "vrTeleport", "click"].forEach((type) => {
+    const audio = configData.audioProperties[`${type}Audio`];
+    document.getElementById(`${type}AudioPath`).value = audio.path;
+    document.getElementById(`${type}AudioVolume`).value = audio.volume;
+    document.getElementById(`${type}AudioPlaybackRate`).value =
+      audio.playbackRate;
+    document.getElementById(`${type}AudioLoop`).checked = audio.loop;
+
+    // Add event listeners for audio sources
+    document
+      .getElementById(`${type}AudioPath`)
+      .addEventListener("change", (e) => {
+        configData.audioProperties[`${type}Audio`].path = e.target.value;
+      });
+    document
+      .getElementById(`${type}AudioVolume`)
+      .addEventListener("change", (e) => {
+        configData.audioProperties[`${type}Audio`].volume = parseFloat(
+          e.target.value
+        );
+      });
+    document
+      .getElementById(`${type}AudioPlaybackRate`)
+      .addEventListener("change", (e) => {
+        configData.audioProperties[`${type}Audio`].playbackRate = parseFloat(
+          e.target.value
+        );
+      });
+    document
+      .getElementById(`${type}AudioLoop`)
+      .addEventListener("change", (e) => {
+        configData.audioProperties[`${type}Audio`].loop = e.target.checked;
+      });
+  });
 }
 
 function initializeLanguageButtons() {
