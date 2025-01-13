@@ -27,8 +27,8 @@ let configData = {
     exhibitor: "",
     exhibitorMail: "",
     logo: "",
-    backgroundLoadingPhoto: "",
-    featuredPhoto: "",
+    backgroundLoadingPhoto: "images/loading/background-photo.jpg",
+    featuredPhoto: "images/loading/featured-photo.jpg",
     sourceARPage: "",
     privacyPolicyLink: "",
     aboutExhibitionTitle: "",
@@ -686,14 +686,41 @@ function initializeExhibitionFields() {
   document.getElementById("exhibitionDescription").value =
     configData.exhibition.description || "";
   document.getElementById("featuredPhoto").value =
-    configData.exhibition.featuredPhoto || "images/loading/featured-photo.jpg";
+    configData.exhibition.featuredPhoto || "";
   document.getElementById("backgroundLoadingPhoto").value =
-    configData.exhibition.backgroundLoadingPhoto ||
-    "images/loading/background-photo.jpg";
+    configData.exhibition.backgroundLoadingPhoto || "";
   document.getElementById("aboutExhibitionTitle").value =
     configData.exhibition.aboutExhibitionTitle || "";
   document.getElementById("aboutExhibitionAudio").value =
     configData.exhibition.aboutExhibitionAudio || "";
+
+  // Add event listeners to update configData on change
+  document.getElementById("exhibitionTitle").addEventListener("change", (e) => {
+    configData.exhibition.title = e.target.value;
+  });
+  document
+    .getElementById("exhibitionDescription")
+    .addEventListener("change", (e) => {
+      configData.exhibition.description = e.target.value;
+    });
+  document.getElementById("featuredPhoto").addEventListener("change", (e) => {
+    configData.exhibition.featuredPhoto = e.target.value;
+  });
+  document
+    .getElementById("backgroundLoadingPhoto")
+    .addEventListener("change", (e) => {
+      configData.exhibition.backgroundLoadingPhoto = e.target.value;
+    });
+  document
+    .getElementById("aboutExhibitionTitle")
+    .addEventListener("change", (e) => {
+      configData.exhibition.aboutExhibitionTitle = e.target.value;
+    });
+  document
+    .getElementById("aboutExhibitionAudio")
+    .addEventListener("change", (e) => {
+      configData.exhibition.aboutExhibitionAudio = e.target.value;
+    });
 
   // Initialize or update Quill editor
   if (!exhibitionQuillEditor) {
