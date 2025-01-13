@@ -813,8 +813,6 @@ function addNonBreakingSpaces(text) {
 document.getElementById("languageSelect").addEventListener("change", (e) => {
   const newLanguage = e.target.value;
   selectedLanguage = newLanguage;
-  languageService.setLanguage(newLanguage);
-  updateArtworksList(); // This will rerender all artworks with new translations
 });
 
 // Initialize language on page load
