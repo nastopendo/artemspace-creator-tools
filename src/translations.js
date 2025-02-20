@@ -241,6 +241,8 @@ export const translations = {
     imageDimensionsDesc:
       "Import multiple images, set their dimensions, and export as JSON.",
     height: "Height (cm)",
+    setAll: "Set All",
+    setLongestDimensionAll: "Set Longest Dimension All",
   },
   pl: {
     // Common
@@ -490,5 +492,7 @@ export const translations = {
     imageDimensionsDesc:
       "Importuj wiele obrazów, ustaw ich wymiary i eksportuj jako JSON.",
     height: "Wysokość (cm)",
+    setAll: "Ustaw dla wszystkich",
+    setLongestDimensionAll: "Najdłuższy wymiar",
   },
 };

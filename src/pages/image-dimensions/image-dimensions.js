@@ -170,17 +170,17 @@ const globalDimensionLabel = document.createElement("label");
 globalDimensionLabel.textContent = languageService.translate(
   "setLongestDimensionAll"
 );
-globalDimensionLabel.className = "text-sm text-gray-600";
+globalDimensionLabel.className = "text-md text-gray-600";
 
 const globalDimensionInput = document.createElement("input");
 globalDimensionInput.type = "number";
 globalDimensionInput.min = "0";
 globalDimensionInput.step = "0.1";
-globalDimensionInput.className = "w-24 px-2 py-1 border rounded";
+globalDimensionInput.className = "w-24 px-2 py-2 border rounded";
 globalDimensionInput.placeholder = "0.0";
 
 const calculateButton = document.createElement("button");
-calculateButton.textContent = languageService.translate("calculate");
+calculateButton.textContent = languageService.translate("setAll");
 calculateButton.className =
   "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600";
 calculateButton.addEventListener("click", () => {
