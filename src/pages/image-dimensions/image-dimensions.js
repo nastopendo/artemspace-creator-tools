@@ -50,6 +50,20 @@ function createImageElement(file, index) {
   fileName.className = "font-medium text-gray-800";
   fileName.textContent = file.name;
 
+  // Orientation info
+  const orientationInfo = document.createElement("p");
+  orientationInfo.className = "text-sm text-gray-600";
+
+  // Combined onload to set aspect ratio and orientation info
+  img.onload = () => {
+    const aspectRatio = img.naturalWidth / img.naturalHeight;
+    images[index].aspectRatio = aspectRatio;
+    images[index].isPortrait = img.naturalHeight > img.naturalWidth;
+    orientationInfo.textContent = `${img.naturalWidth}×${
+      img.naturalHeight
+    }px (${images[index].isPortrait ? "Portrait" : "Landscape"})`;
+  };
+
   // Height input
   const heightContainer = document.createElement("div");
   heightContainer.className = "flex items-center gap-2";
@@ -68,7 +82,7 @@ function createImageElement(file, index) {
   });
   heightContainer.append(heightLabel, heightInput);
 
-  details.append(fileName, heightContainer);
+  details.append(fileName, orientationInfo, heightContainer);
   container.append(imgWrapper, details);
 
   return container;
@@ -82,9 +96,22 @@ function handleFiles(files) {
   images = Array.from(files)
     .filter((file) => file.type.startsWith("image/"))
     .sort((a, b) => a.name.localeCompare(b.name))
-    .map((file) => ({ file, height: 0 }));
+    .map((file) => ({
+      file,
+      height: 0,
+      aspectRatio: 1,
+      isPortrait: false,
+    }));
 
   imagesList.innerHTML = "";
+
+  // Show global dimension input when there are images
+  if (images.length > 0) {
+    fileDropArea.after(globalDimensionContainer);
+  } else {
+    globalDimensionContainer.remove();
+  }
+
   images.forEach((image, index) => {
     imagesList.appendChild(createImageElement(image.file, index));
   });
@@ -133,3 +160,54 @@ exportBtn.addEventListener("click", () => {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 });
+
+// Modify the global dimension controls
+const globalDimensionContainer = document.createElement("div");
+globalDimensionContainer.className =
+  "mt-4 p-4 bg-gray-50 rounded-lg flex items-center gap-4";
+
+const globalDimensionLabel = document.createElement("label");
+globalDimensionLabel.textContent = languageService.translate(
+  "setLongestDimensionAll"
+);
+globalDimensionLabel.className = "text-sm text-gray-600";
+
+const globalDimensionInput = document.createElement("input");
+globalDimensionInput.type = "number";
+globalDimensionInput.min = "0";
+globalDimensionInput.step = "0.1";
+globalDimensionInput.className = "w-24 px-2 py-1 border rounded";
+globalDimensionInput.placeholder = "0.0";
+
+const calculateButton = document.createElement("button");
+calculateButton.textContent = languageService.translate("calculate");
+calculateButton.className =
+  "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600";
+calculateButton.addEventListener("click", () => {
+  const value = parseFloat(globalDimensionInput.value) || 0;
+
+  // Update all images based on orientation and aspect ratio
+  images.forEach((image, index) => {
+    if (image.isPortrait) {
+      // For portrait images, use the dimension directly as height
+      image.height = value;
+    } else {
+      // For landscape images, calculate height as (height/width) * longest dimension
+      image.height = (1 / image.aspectRatio) * value;
+    }
+
+    // Update individual input fields
+    const heightInput = document.querySelector(`input[data-index="${index}"]`);
+    if (heightInput) {
+      heightInput.value = image.height.toFixed(2);
+    }
+  });
+
+  updateExportButton();
+});
+
+globalDimensionContainer.append(
+  globalDimensionLabel,
+  globalDimensionInput,
+  calculateButton
+);
