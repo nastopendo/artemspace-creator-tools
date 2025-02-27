@@ -221,24 +221,16 @@ function calculateDistribution() {
     0
   );
 
-  // Sort images alphabetically (they should already be sorted)
-  const sortedImages = [...images];
-
-  // Calculate how many spaces between artworks will be needed for all walls
-  // We need to estimate the approximate number of artworks per wall
+  // Oblicz przybliżoną liczbę zdjęć na każdej ścianie na podstawie proporcji długości
+  const totalArtworks = images.length;
   let totalSpacingNeeded = 0;
-
-  // First, calculate a rough distribution of artworks based on wall length proportion
-  const totalArtworks = sortedImages.length;
 
   const initialDistribution = wallLengths.map((length, index) => {
     const wallProportion = availableWallSpaces[index] / totalWallSpace;
-    // Calculate approximate number of artworks for this wall
     const artworkCount = Math.max(
       1,
       Math.round(totalArtworks * wallProportion)
     );
-    // For each wall with artworks, we need (artworkCount - 1) spaces
     if (artworkCount > 1) {
       totalSpacingNeeded += (artworkCount - 1) * spaceBetween;
     }
@@ -250,23 +242,25 @@ function calculateDistribution() {
     };
   });
 
-  // Available space for artworks (after considering spaces between them)
+  // Dostępna przestrzeń na zdjęcia po uwzględnieniu odstępów
   const availableArtworkSpace = totalWallSpace - totalSpacingNeeded;
 
-  // Calculate proportion of each artwork
-  let totalAspectRatioSpace = 0;
-  sortedImages.forEach((image) => {
-    // We'll standardize to landscape orientation for calculations
-    const aspectRatio = image.isPortrait
-      ? 1 / image.aspectRatio
-      : image.aspectRatio;
-    totalAspectRatioSpace += aspectRatio;
+  // Oblicz sumaryczną "bazową" szerokość zdjęć przy założeniu, że najdłuższy bok = 100cm
+  let totalBaseWidth = 0;
+  images.forEach((image) => {
+    // Dla zdjęć horyzontalnych: baseWidth = 100, dla wertykalnych: baseWidth = 100 * aspectRatio
+    const baseWidth = image.isPortrait ? 100 * image.aspectRatio : 100;
+    totalBaseWidth += baseWidth;
   });
 
-  // Calculate longest dimension for all images
-  let longestDimension = availableArtworkSpace / totalAspectRatioSpace;
+  // Wyznacz skalę, która dopasuje zdjęcia do dostępnej przestrzeni
+  const scaleFactor = availableArtworkSpace / totalBaseWidth;
+  let longestDimension = 100 * scaleFactor;
 
-  // Distribute images to walls based on the calculated approximation
+  // Sortujemy zdjęcia – już alfabetycznie posortowane
+  const sortedImages = [...images];
+
+  // Rozdziel zdjęcia na ściany
   const distribution = distributeImagesOnWalls(
     sortedImages,
     wallLengths,
@@ -277,10 +271,10 @@ function calculateDistribution() {
     initialDistribution
   );
 
-  // Display results
+  // Wyświetl wyniki
   displayDistributionResults(distribution, wallLengths, longestDimension);
 
-  // Update calculation results section
+  // Aktualizuj wyniki obliczeń w UI
   longestDimensionOutput.textContent = longestDimension.toFixed(2);
   totalArtworksOutput.textContent = totalArtworks;
   calculationResults.classList.remove("hidden");
@@ -289,7 +283,7 @@ function calculateDistribution() {
   recalculateBtn.disabled = true;
 }
 
-// Distribute images on walls proportionally and in sequential alphabetical order
+// Rozdziel zdjęcia na ściany proporcjonalnie i alfabetycznie
 function distributeImagesOnWalls(
   images,
   wallLengths,
@@ -299,56 +293,46 @@ function distributeImagesOnWalls(
   wallMargins,
   initialDistribution
 ) {
-  // First, calculate how many artworks should go on each wall
-  // based on wall length proportions
   const totalArtworks = images.length;
   const totalAvailableSpace = availableWallSpaces.reduce(
     (sum, space) => sum + space,
     0
   );
 
-  // Calculate target artwork count for each wall proportionally
+  // Wyznacz docelową liczbę zdjęć dla każdej ściany
   const distribution = wallLengths.map((length, index) => {
     const proportion = availableWallSpaces[index] / totalAvailableSpace;
-    // Calculate target number of artworks (minimum 1 if we have enough artworks)
     let targetCount = Math.max(1, Math.round(totalArtworks * proportion));
-
     return {
       wallNumber: index + 1,
       length,
       availableSpace: availableWallSpaces[index],
-      targetCount, // How many artworks should go on this wall
+      targetCount,
       artworks: [],
       usedSpace: 0,
     };
   });
 
-  // Adjust target counts to ensure we have exactly totalArtworks
+  // Dostosuj liczbę zdjęć tak, aby łączna liczba odpowiadała totalArtworks
   let currentTotal = distribution.reduce(
     (sum, wall) => sum + wall.targetCount,
     0
   );
 
-  // If we have more slots than artworks, reduce from largest walls first
   while (currentTotal > totalArtworks) {
-    // Find the wall with the most artworks
     const wallWithMost = distribution.reduce(
       (max, wall) => (wall.targetCount > max.targetCount ? wall : max),
       distribution[0]
     );
-
     if (wallWithMost.targetCount > 1) {
       wallWithMost.targetCount--;
       currentTotal--;
     } else {
-      // Can't reduce any further
       break;
     }
   }
 
-  // If we have fewer slots than artworks, add to largest walls first
   while (currentTotal < totalArtworks) {
-    // Find the wall with the most space per artwork
     const wallWithMostSpace = distribution.reduce(
       (max, wall) =>
         wall.availableSpace / (wall.targetCount + 1) >
@@ -357,46 +341,42 @@ function distributeImagesOnWalls(
           : max,
       distribution[0]
     );
-
     wallWithMostSpace.targetCount++;
     currentTotal++;
   }
 
-  // Now we know how many artworks should go on each wall
-  // Let's distribute them in alphabetical order
+  // Rozdziel zdjęcia (alfabetycznie) na ściany
   let artworkIndex = 0;
-
-  // Distribute artworks in order across walls
   for (let wallIndex = 0; wallIndex < distribution.length; wallIndex++) {
     const wall = distribution[wallIndex];
-
     for (let i = 0; i < wall.targetCount && artworkIndex < images.length; i++) {
       const image = images[artworkIndex++];
 
-      // Calculate image width based on longest dimension
+      // Oblicz wymiary zdjęcia przy danym longestDimension:
+      // Dla zdjęć horyzontalnych: width = longestDimension, height = longestDimension / aspectRatio
+      // Dla zdjęć wertykalnych: width = longestDimension * aspectRatio, height = longestDimension
       const imageWidth = image.isPortrait
+        ? longestDimension * image.aspectRatio
+        : longestDimension;
+      const imageHeight = image.isPortrait
         ? longestDimension
-        : longestDimension * image.aspectRatio;
+        : longestDimension / image.aspectRatio;
 
-      // Add spacing if not the first artwork
       if (wall.artworks.length > 0) {
         wall.usedSpace += spaceBetween;
       }
 
-      // Add the artwork to the wall
       wall.artworks.push({
         ...image,
         width: imageWidth,
-        height: image.isPortrait
-          ? longestDimension * image.aspectRatio
-          : longestDimension,
+        height: imageHeight,
       });
 
       wall.usedSpace += imageWidth;
     }
   }
 
-  // Adjust longest dimension if any wall is overflowing
+  // Jeśli któraś ściana przekracza dostępne miejsce, dostosuj skalę
   let needsAdjustment = false;
   let maxOverflowRatio = 1;
 
@@ -410,22 +390,18 @@ function distributeImagesOnWalls(
     }
   });
 
-  // If we need to adjust sizes to fit walls
   if (needsAdjustment) {
-    const scaledLongestDimension = longestDimension * maxOverflowRatio * 0.98; // 2% safety margin
+    const scaledLongestDimension = longestDimension * maxOverflowRatio * 0.98; // 2% margines bezpieczeństwa
 
-    // Clear and redistribute with new dimension
     distribution.forEach((wall) => {
       wall.artworks = [];
       wall.usedSpace = 0;
     });
 
-    // Re-distribute with adjusted dimension
     artworkIndex = 0;
 
     for (let wallIndex = 0; wallIndex < distribution.length; wallIndex++) {
       const wall = distribution[wallIndex];
-
       for (
         let i = 0;
         i < wall.targetCount && artworkIndex < images.length;
@@ -433,28 +409,28 @@ function distributeImagesOnWalls(
       ) {
         const image = images[artworkIndex++];
 
-        // Calculate image width with adjusted dimension
         const imageWidth = image.isPortrait
+          ? scaledLongestDimension * image.aspectRatio
+          : scaledLongestDimension;
+        const imageHeight = image.isPortrait
           ? scaledLongestDimension
-          : scaledLongestDimension * image.aspectRatio;
+          : scaledLongestDimension / image.aspectRatio;
 
-        // Add spacing if not the first artwork
         if (wall.artworks.length > 0) {
           wall.usedSpace += spaceBetween;
         }
 
-        // Add the artwork to the wall
         wall.artworks.push({
           ...image,
           width: imageWidth,
-          height: image.isPortrait
-            ? scaledLongestDimension * image.aspectRatio
-            : scaledLongestDimension,
+          height: imageHeight,
         });
 
         wall.usedSpace += imageWidth;
       }
     }
+
+    longestDimension = scaledLongestDimension;
   }
 
   return distribution;
@@ -466,30 +442,23 @@ function displayDistributionResults(
   wallLengths,
   longestDimension
 ) {
-  // Clear previous results
   wallDistributionTable.innerHTML = "";
-
-  // Create a row for each wall
   distribution.forEach((wall) => {
     const row = document.createElement("tr");
     row.className = wall.artworks.length > 0 ? "" : "text-gray-400";
 
-    // Wall number
     const wallNumberCell = document.createElement("td");
     wallNumberCell.className = "py-3 px-4 border-b";
     wallNumberCell.textContent = wall.wallNumber;
 
-    // Wall length
     const wallLengthCell = document.createElement("td");
     wallLengthCell.className = "py-3 px-4 border-b";
     wallLengthCell.textContent = `${wall.length.toFixed(0)} cm`;
 
-    // Artworks count
     const artworksCountCell = document.createElement("td");
     artworksCountCell.className = "py-3 px-4 border-b";
     artworksCountCell.textContent = wall.artworks.length;
 
-    // First artwork
     const firstArtworkCell = document.createElement("td");
     firstArtworkCell.className = "py-3 px-4 border-b";
     firstArtworkCell.textContent =
@@ -497,7 +466,6 @@ function displayDistributionResults(
         ? wall.artworks[0].name
         : languageService.translate("noArtworks");
 
-    // Last artwork
     const lastArtworkCell = document.createElement("td");
     lastArtworkCell.className = "py-3 px-4 border-b";
     lastArtworkCell.textContent =
@@ -512,11 +480,9 @@ function displayDistributionResults(
       firstArtworkCell,
       lastArtworkCell
     );
-
     wallDistributionTable.appendChild(row);
   });
 
-  // Show distribution results
   distributionResults.classList.remove("hidden");
 }
 
