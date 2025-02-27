@@ -9,6 +9,7 @@ export const translations = {
     loading: "Loading...",
     cancel: "Cancel",
     addTexture: "+ Add Texture",
+    uploadArtworks: "Upload Images:",
 
     // Homepage
     toolsTitle: "Artemspace Creator Tools",
@@ -243,6 +244,29 @@ export const translations = {
     height: "Height (cm)",
     setAll: "Set All",
     setLongestDimensionAll: "Set Longest Dimension All",
+
+    // Gallery Wall Planner
+    galleryWallPlannerTitle: "Gallery Wall Planner",
+    galleryWallPlannerDesc:
+      "Plan the optimal distribution of artworks across gallery walls with even spacing.",
+    wallLengths: "Wall Lengths (cm, comma-separated):",
+    wallMargins: "Wall Margins (cm):",
+    spaceBetweenArtworks: "Space Between Artworks (cm):",
+    calculateDistribution: "Calculate Distribution",
+    wallsConfiguration: "Walls Configuration",
+    artworksDistribution: "Artworks Distribution",
+    wallNumber: "Wall",
+    wallLength: "Length",
+    artworksCount: "Artworks",
+    firstArtwork: "First Artwork",
+    lastArtwork: "Last Artwork",
+    optimalLongestDimension: "Optimal Longest Dimension",
+    noArtworks: "No artworks",
+    calculatedLongestDimension: "Calculated Longest Dimension (cm):",
+    recalculate: "Recalculate",
+    invalidWallLengths: "Invalid wall lengths format",
+    totalArtworks: "Total Artworks",
+    missingValues: "Please fill in all required fields",
   },
   pl: {
     // Common
@@ -254,6 +278,7 @@ export const translations = {
     loading: "Ładowanie...",
     cancel: "Anuluj",
     addTexture: "+ Dodaj teksturę",
+    uploadArtworks: "Prześlij zdjęcia:",
     // Homepage
     toolsTitle: "Narzędzia Artemspace",
     imageOrganizerTitle: "Organizator obrazów",
@@ -494,5 +519,28 @@ export const translations = {
     height: "Wysokość (cm)",
     setAll: "Ustaw dla wszystkich",
     setLongestDimensionAll: "Najdłuższy wymiar",
+
+    // Gallery Wall Planner
+    galleryWallPlannerTitle: "Planer Ścian Galerii",
+    galleryWallPlannerDesc:
+      "Zaplanuj optymalne rozmieszczenie prac na ścianach galerii z równymi odstępami.",
+    wallLengths: "Długości ścian (cm, oddzielone przecinkami):",
+    wallMargins: "Marginesy przy krawędziach ścian (cm):",
+    spaceBetweenArtworks: "Minimalny odstęp między pracami (cm):",
+    calculateDistribution: "Oblicz rozmieszczenie",
+    wallsConfiguration: "Konfiguracja ścian",
+    artworksDistribution: "Rozmieszczenie prac",
+    wallNumber: "Ściana",
+    wallLength: "Długość",
+    artworksCount: "Liczba prac",
+    firstArtwork: "Pierwsza praca",
+    lastArtwork: "Ostatnia praca",
+    optimalLongestDimension: "Optymalny najdłuższy wymiar",
+    noArtworks: "Brak prac",
+    calculatedLongestDimension: "Obliczony najdłuższy wymiar (cm):",
+    recalculate: "Przelicz ponownie",
+    invalidWallLengths: "Nieprawidłowy format długości ścian",
+    totalArtworks: "Łączna liczba prac",
+    missingValues: "Proszę wypełnić wszystkie wymagane pola",
   },
 };

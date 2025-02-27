@@ -5,6 +5,7 @@ import imageOrganizerHtml from "./pages/image-organizer/index.html?raw";
 import gltfConfigEditorHtml from "./pages/gltf-config-editor/index.html?raw";
 import appConfigEditorHtml from "./pages/app-config-editor/index.html?raw";
 import imageDimensionsHtml from "./pages/image-dimensions/index.html?raw";
+import galleryWallPlannerHtml from "./pages/gallery-wall-planner/index.html?raw";
 import { languageService } from "./services/languageService";
 
 const routes = {
@@ -30,6 +31,11 @@ const routes = {
   "/image-dimensions": {
     template: imageDimensionsHtml,
     script: () => import("./pages/image-dimensions/image-dimensions.js"),
+  },
+  "/gallery-wall-planner": {
+    template: galleryWallPlannerHtml,
+    script: () =>
+      import("./pages/gallery-wall-planner/gallery-wall-planner.js"),
   },
 };
 
