@@ -9,6 +9,12 @@ const artworksList = document.getElementById("artworksList");
 const exportBtn = document.getElementById("exportBtn");
 const importBtn = document.getElementById("importBtn");
 const jsonInput = document.getElementById("jsonInput");
+const copyFormattedTextBtn = document.getElementById(
+  "copyAboutExhibitionDescriptionBtn"
+);
+const copyFormattedTextBtnOriginalText =
+  copyFormattedTextBtn?.textContent?.trim() || "Copy Formatted Text";
+let copyFormattedTextFeedbackTimeout = null;
 
 const progressContainer = document.getElementById("progressContainer");
 const progressBar = document.getElementById("progressBar");
@@ -118,6 +124,70 @@ function getDataUrlFromImage(image) {
     console.warn("Error converting image to data URL:", error);
     return null;
   }
+}
+
+function formatQuillOutput(html) {
+  if (!html) {
+    return html;
+  }
+
+  const tempContainer = document.createElement("div");
+  tempContainer.innerHTML = html;
+
+  const alignClassMap = {
+    "ql-align-left": "left",
+    "ql-align-center": "center",
+    "ql-align-right": "right",
+    "ql-align-justify": "justify",
+  };
+
+  Object.entries(alignClassMap).forEach(([className, alignValue]) => {
+    tempContainer.querySelectorAll(`.${className}`).forEach((element) => {
+      const currentStyles = (element.getAttribute("style") || "")
+        .split(";")
+        .map((style) => style.trim())
+        .filter(Boolean)
+        .filter((style) => !style.replace(/\s/g, "").startsWith("text-align:"));
+
+      currentStyles.push(`text-align:${alignValue}`);
+
+      element.setAttribute("style", currentStyles.join(";"));
+      element.classList.remove(className);
+      if (!element.classList.length) {
+        element.removeAttribute("class");
+      }
+    });
+  });
+
+  return tempContainer.innerHTML;
+}
+
+function showCopyFormattedFeedback(message, isError = false) {
+  if (!copyFormattedTextBtn) {
+    return;
+  }
+
+  if (copyFormattedTextFeedbackTimeout) {
+    clearTimeout(copyFormattedTextFeedbackTimeout);
+  }
+
+  copyFormattedTextBtn.textContent = message;
+  copyFormattedTextBtn.disabled = true;
+  copyFormattedTextBtn.classList.remove("text-gray-500", "hover:text-gray-700");
+  copyFormattedTextBtn.classList.remove(
+    isError ? "text-green-600" : "text-red-600"
+  );
+  copyFormattedTextBtn.classList.add(
+    isError ? "text-red-600" : "text-green-600"
+  );
+
+  copyFormattedTextFeedbackTimeout = window.setTimeout(() => {
+    copyFormattedTextBtn.textContent = copyFormattedTextBtnOriginalText;
+    copyFormattedTextBtn.disabled = false;
+    copyFormattedTextBtn.classList.remove("text-green-600", "text-red-600");
+    copyFormattedTextBtn.classList.add("text-gray-500", "hover:text-gray-700");
+    copyFormattedTextFeedbackTimeout = null;
+  }, 2000);
 }
 
 // Initialize sortable
@@ -352,7 +422,9 @@ function updateArtworksList() {
 
       // Update configData when content changes
       quill.on("text-change", () => {
-        configData.artworks[index].description = quill.root.innerHTML;
+        configData.artworks[index].description = formatQuillOutput(
+          quill.root.innerHTML
+        );
       });
 
       quillEditors[index] = quill;
@@ -627,6 +699,9 @@ window.editArtwork = (index) => {
 
 // Add these new global functions
 window.updateArtworkField = (index, field, value) => {
+  if (field === "description" && typeof value === "string") {
+    value = formatQuillOutput(value);
+  }
   configData.artworks[index][field] = value;
 };
 
@@ -760,6 +835,9 @@ function initializeExhibitionFields() {
 
 // Add to window object
 window.updateExhibitionField = (field, value) => {
+  if (field === "aboutExhibitionDescripton" && typeof value === "string") {
+    value = formatQuillOutput(value);
+  }
   configData.exhibition[field] = value;
 };
 
@@ -814,6 +892,59 @@ document.getElementById("languageSelect").addEventListener("change", (e) => {
   const newLanguage = e.target.value;
   selectedLanguage = newLanguage;
 });
+
+if (copyFormattedTextBtn) {
+  copyFormattedTextBtn.addEventListener("click", async () => {
+    const editorContent = exhibitionQuillEditor
+      ? exhibitionQuillEditor.root.innerHTML
+      : document.getElementById("aboutExhibitionDescripton")?.innerHTML || "";
+
+    const formattedContent = formatQuillOutput(editorContent);
+
+    if (!formattedContent) {
+      console.warn("No formatted content available to copy.");
+      showCopyFormattedFeedback("Nothing to copy", true);
+      return;
+    }
+
+    const clipboardContent = formattedContent.replace(/"/g, '\\"');
+
+    try {
+      await navigator.clipboard.writeText(clipboardContent);
+      console.log("Formatted exhibition description copied to clipboard.");
+      showCopyFormattedFeedback("Copied!", false);
+    } catch (error) {
+      console.warn(
+        "Clipboard API failed, attempting fallback copy method.",
+        error
+      );
+      try {
+        const textarea = document.createElement("textarea");
+        textarea.value = clipboardContent;
+        textarea.setAttribute("readonly", "");
+        textarea.style.position = "absolute";
+        textarea.style.left = "-9999px";
+        document.body.appendChild(textarea);
+        try {
+          textarea.select();
+          textarea.setSelectionRange(0, textarea.value.length);
+          const successful = document.execCommand("copy");
+          if (!successful) {
+            throw new Error("Fallback copy command unsuccessful");
+          }
+          console.log("Formatted exhibition description copied via fallback.");
+          showCopyFormattedFeedback("Copied!", false);
+        } finally {
+          document.body.removeChild(textarea);
+        }
+      } catch (fallbackError) {
+        console.error("Failed to copy formatted text:", fallbackError);
+        showCopyFormattedFeedback("Copy failed", true);
+        alert("Failed to copy formatted text to clipboard.");
+      }
+    }
+  });
+}
 
 // Initialize language on page load
 window.addEventListener("DOMContentLoaded", () => {
