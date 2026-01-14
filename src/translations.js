@@ -241,6 +241,16 @@ export const translations = {
     imageDimensionsTitle: "Image Dimensions",
     imageDimensionsDesc:
       "Import multiple images, set their dimensions, and export as JSON.",
+    photo360ViewerTitle: "360 Photo Viewer",
+    photo360ViewerDesc:
+      "Upload or drag and drop a 360° panoramic image to view it in an interactive 360° player.",
+    dragDrop360: "Drag & Drop 360° Image Here",
+    or: "or",
+    selectFile: "Select File",
+    supportedFormats: "Supported formats: JPG, PNG, WebP",
+    resetView: "Reset View",
+    zoomIn: "Zoom In",
+    zoomOut: "Zoom Out",
     height: "Height (cm)",
     setAll: "Set All",
     setLongestDimensionAll: "Set Longest Dimension All",
@@ -516,6 +526,16 @@ export const translations = {
     imageDimensionsTitle: "Wymiary obrazów",
     imageDimensionsDesc:
       "Importuj wiele obrazów, ustaw ich wymiary i eksportuj jako JSON.",
+    photo360ViewerTitle: "Przeglądarka zdjęć 360",
+    photo360ViewerDesc:
+      "Prześlij lub przeciągnij i upuść zdjęcie panoramiczne 360°, aby zobaczyć je w interaktywnym odtwarzaczu 360°.",
+    dragDrop360: "Przeciągnij i upuść zdjęcie 360° tutaj",
+    or: "lub",
+    selectFile: "Wybierz plik",
+    supportedFormats: "Obsługiwane formaty: JPG, PNG, WebP",
+    resetView: "Resetuj widok",
+    zoomIn: "Przybliż",
+    zoomOut: "Oddal",
     height: "Wysokość (cm)",
     setAll: "Ustaw dla wszystkich",
     setLongestDimensionAll: "Najdłuższy wymiar",

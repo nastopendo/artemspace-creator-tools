@@ -6,6 +6,7 @@ import gltfConfigEditorHtml from "./pages/gltf-config-editor/index.html?raw";
 import appConfigEditorHtml from "./pages/app-config-editor/index.html?raw";
 import imageDimensionsHtml from "./pages/image-dimensions/index.html?raw";
 import galleryWallPlannerHtml from "./pages/gallery-wall-planner/index.html?raw";
+import photo360ViewerHtml from "./pages/photo-360-viewer/index.html?raw";
 import { languageService } from "./services/languageService";
 
 const routes = {
@@ -36,6 +37,10 @@ const routes = {
     template: galleryWallPlannerHtml,
     script: () =>
       import("./pages/gallery-wall-planner/gallery-wall-planner.js"),
+  },
+  "/photo-360-viewer": {
+    template: photo360ViewerHtml,
+    script: () => import("./pages/photo-360-viewer/photo-360-viewer.js"),
   },
 };
 
