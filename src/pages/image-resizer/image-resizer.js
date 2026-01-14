@@ -106,6 +106,8 @@ processBtn.addEventListener("click", async () => {
         newFileName = changeFileExtension(file.name, "jpg");
       } else if (outputFormat === "png") {
         newFileName = changeFileExtension(file.name, "png");
+      } else if (outputFormat === "webp") {
+        newFileName = changeFileExtension(file.name, "webp");
       }
       zip.file(newFileName, blob);
     } catch (error) {
@@ -184,6 +186,8 @@ function resizeImage(file, maxSize, quality, outputFormat) {
           mimeType = "image/jpeg";
         } else if (outputFormat === "png") {
           mimeType = "image/png";
+        } else if (outputFormat === "webp") {
+          mimeType = "image/webp";
         }
 
         canvas.toBlob(
