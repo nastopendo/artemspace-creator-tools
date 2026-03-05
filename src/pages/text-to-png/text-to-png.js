@@ -55,6 +55,11 @@ function createLineConfig(text = "Sample Text") {
     italic: false,
     color: "#1C1C1C",
     lineHeight: 1,
+    shadow: false,
+    shadowColor: "#000000",
+    shadowBlur: 4,
+    shadowOffsetX: 2,
+    shadowOffsetY: 2,
     offsetXPct: 0,
     offsetYPct: 0,
   };
@@ -199,7 +204,13 @@ function renderCanvas() {
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
 
-    // Process each paragraph (explicit newlines in textarea)
+    if (line.shadow) {
+      ctx.shadowColor = line.shadowColor;
+      ctx.shadowBlur = line.shadowBlur;
+      ctx.shadowOffsetX = line.shadowOffsetX;
+      ctx.shadowOffsetY = line.shadowOffsetY;
+    }
+
     const paragraphs = line.text.split("\n");
 
     for (const paragraph of paragraphs) {
@@ -217,6 +228,12 @@ function renderCanvas() {
         currentY += lh;
       }
     }
+
+    // Reset shadow
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
   }
 }
 
@@ -279,6 +296,32 @@ function createLineElement(line) {
           class="line-offset-y w-full p-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 outline-none" />
       </div>
     </div>
+    <div class="grid grid-cols-5 gap-2 items-end">
+      <div class="flex items-center gap-2">
+        <input type="checkbox" ${line.shadow ? "checked" : ""} class="line-shadow" id="shadow-${line.id}" />
+        <label for="shadow-${line.id}" class="text-sm text-gray-600" data-i18n="textToPngShadow">Shadow</label>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngShadowColor">Color</label>
+        <input type="color" value="${line.shadowColor}"
+          class="line-shadow-color w-full h-[30px] border border-gray-300 rounded cursor-pointer" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngShadowBlur">Blur</label>
+        <input type="number" value="${line.shadowBlur}" min="0" max="100" step="1"
+          class="line-shadow-blur w-full p-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 outline-none" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngShadowX">X</label>
+        <input type="number" value="${line.shadowOffsetX}" step="1"
+          class="line-shadow-x w-full p-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 outline-none" />
+      </div>
+      <div>
+        <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngShadowY">Y</label>
+        <input type="number" value="${line.shadowOffsetY}" step="1"
+          class="line-shadow-y w-full p-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 outline-none" />
+      </div>
+    </div>
   `;
 
   const bindInput = (selector, prop, transform = (v) => v) => {
@@ -303,6 +346,11 @@ function createLineElement(line) {
   bindInput(".line-color", "color");
   bindInput(".line-italic", "italic");
   bindInput(".line-line-height", "lineHeight", Number);
+  bindInput(".line-shadow", "shadow");
+  bindInput(".line-shadow-color", "shadowColor");
+  bindInput(".line-shadow-blur", "shadowBlur", Number);
+  bindInput(".line-shadow-x", "shadowOffsetX", Number);
+  bindInput(".line-shadow-y", "shadowOffsetY", Number);
   bindInput(".line-offset-x", "offsetXPct", Number);
   bindInput(".line-offset-y", "offsetYPct", Number);
 
