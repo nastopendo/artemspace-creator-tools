@@ -210,6 +210,7 @@ exportBtn.addEventListener("click", async () => {
   const prefix = document.getElementById("prefixInput").value || "";
   const suffix = document.getElementById("suffixInput").value || "";
   const digits = parseInt(document.getElementById("digitsInput").value) || 3;
+  const includeOriginalName = document.getElementById("includeOriginalNameInput").checked;
 
   progressContainer.classList.remove("hidden");
   progressContainer.classList.add("flex");
@@ -221,7 +222,14 @@ exportBtn.addEventListener("click", async () => {
     const file = images[i];
     const number = String(i + 1).padStart(digits, "0");
     const extension = file.name.split(".").pop();
-    const newFilename = `${prefix}${number}${suffix}.${extension}`;
+    const originalBaseName = file.name.slice(0, file.name.lastIndexOf("."));
+    const sanitizedBaseName = originalBaseName
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-{2,}/g, "-");
+    const originalPart = includeOriginalName ? `_${sanitizedBaseName}` : "";
+    const newFilename = `${prefix}${number}${suffix}${originalPart}.${extension}`;
 
     zip.file(newFilename, file);
 

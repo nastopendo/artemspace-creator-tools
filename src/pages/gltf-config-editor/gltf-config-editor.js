@@ -233,26 +233,29 @@ function createArtworkElement(artwork, index) {
           ${
             artwork.texturePreview
               ? `
-            <div class="w-10 h-10 rounded overflow-hidden border border-gray-200">
-              <img src="${artwork.texturePreview}" 
-                   class="w-full h-full object-cover" 
+            <div class="w-10 h-10 flex-shrink-0 rounded overflow-hidden border border-gray-200">
+              <img src="${artwork.texturePreview}"
+                   class="w-full h-full object-cover"
                    alt="${artwork.name} preview">
               <div class="hidden group-hover:block absolute left-0 top-0 z-50 transform -translate-y-full">
                 <div class="bg-white p-2 rounded-lg shadow-lg">
-                  <img src="${artwork.texturePreview}" 
-                       class="max-w-[250px] max-h-[250px] object-contain" 
+                  <img src="${artwork.texturePreview}"
+                       class="max-w-[250px] max-h-[250px] object-contain"
                        alt="${artwork.name}">
                 </div>
               </div>
             </div>
           `
               : `
-              <div class="w-10 h-10 overflow-hidden rounded"></div>
+              <div class="w-10 h-10 flex-shrink-0 overflow-hidden rounded"></div>
               `
           }
-          <div>
+          <div class="relative">
             <label class="block text-sm font-medium text-gray-500" data-i18n="name">Name</label>
-            <span class="block w-full py-2">${artwork.name}</span>
+            <span class="artwork-name block py-2 w-[132px] truncate">${artwork.name}</span>
+            <div class="artwork-name-tooltip hidden absolute left-0 top-full z-50 bg-gray-900 text-white text-sm px-2 py-1 rounded whitespace-nowrap">
+              ${artwork.name}
+            </div>
           </div>
         </div>
         
@@ -450,6 +453,19 @@ function updateArtworksList() {
   });
 
   exportBtn.disabled = configData.artworks.length === 0;
+
+  // Show tooltip on hover only when name is actually truncated
+  artworksList.querySelectorAll(".artwork-name").forEach((span) => {
+    if (span.scrollWidth > span.clientWidth) {
+      const tooltip = span.nextElementSibling;
+      span.parentElement.addEventListener("mouseenter", () =>
+        tooltip.classList.remove("hidden")
+      );
+      span.parentElement.addEventListener("mouseleave", () =>
+        tooltip.classList.add("hidden")
+      );
+    }
+  });
 }
 
 // Add this function to update progress
