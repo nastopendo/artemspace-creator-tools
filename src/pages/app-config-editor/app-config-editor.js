@@ -87,6 +87,14 @@ let configData = {
     dampingFactor: 0.1,
     rotateSpeed: -0.4,
     dollySpeed: 0.2,
+    minPolarAngle: 0,
+    maxPolarAngle: 180,
+    moveSpeed: 1,
+    transitionSpeed: 1,
+    autoTour: {
+      enabled: false,
+      durationPerObject: 5,
+    },
     enableZoom: false,
     enablePan: false,
     enableDamping: false,
@@ -300,6 +308,18 @@ function initializeForm() {
     configData.controlProperties.rotateSpeed;
   document.getElementById("dollySpeed").value =
     configData.controlProperties.dollySpeed;
+  document.getElementById("minPolarAngle").value =
+    configData.controlProperties.minPolarAngle;
+  document.getElementById("maxPolarAngle").value =
+    configData.controlProperties.maxPolarAngle;
+  document.getElementById("moveSpeed").value =
+    configData.controlProperties.moveSpeed;
+  document.getElementById("transitionSpeed").value =
+    configData.controlProperties.transitionSpeed;
+  document.getElementById("autoTourEnabled").checked =
+    configData.controlProperties.autoTour.enabled;
+  document.getElementById("autoTourDurationPerObject").value =
+    configData.controlProperties.autoTour.durationPerObject;
   document.getElementById("playerHeight").value =
     configData.controlProperties.playerHeight;
   document.getElementById("startX").value =
@@ -323,6 +343,28 @@ function initializeForm() {
   document.getElementById("dollySpeed").addEventListener("change", (e) => {
     configData.controlProperties.dollySpeed = parseFloat(e.target.value);
   });
+  document.getElementById("minPolarAngle").addEventListener("change", (e) => {
+    configData.controlProperties.minPolarAngle = parseFloat(e.target.value);
+  });
+  document.getElementById("maxPolarAngle").addEventListener("change", (e) => {
+    configData.controlProperties.maxPolarAngle = parseFloat(e.target.value);
+  });
+  document.getElementById("moveSpeed").addEventListener("change", (e) => {
+    configData.controlProperties.moveSpeed = parseFloat(e.target.value);
+  });
+  document.getElementById("transitionSpeed").addEventListener("change", (e) => {
+    configData.controlProperties.transitionSpeed = parseFloat(e.target.value);
+  });
+  document.getElementById("autoTourEnabled").addEventListener("change", (e) => {
+    configData.controlProperties.autoTour.enabled = e.target.checked;
+  });
+  document
+    .getElementById("autoTourDurationPerObject")
+    .addEventListener("change", (e) => {
+      configData.controlProperties.autoTour.durationPerObject = parseFloat(
+        e.target.value
+      );
+    });
   document.getElementById("playerHeight").addEventListener("change", (e) => {
     configData.controlProperties.playerHeight = parseFloat(e.target.value);
   });
@@ -903,12 +945,32 @@ document
   });
 
 function initializeControlProperties() {
+  const controls = configData.controlProperties;
+
+  controls.minPolarAngle ??= 0;
+  controls.maxPolarAngle ??= 180;
+  controls.moveSpeed ??= 1;
+  controls.transitionSpeed ??= 1;
+  controls.autoTour ??= {
+    enabled: false,
+    durationPerObject: 5,
+  };
+  controls.autoTour.enabled ??= false;
+  controls.autoTour.durationPerObject ??= 5;
+
   // Initialize numeric inputs
-  ["dampingFactor", "rotateSpeed", "dollySpeed", "playerHeight"].forEach(
-    (prop) => {
-      document.getElementById(prop).value = configData.controlProperties[prop];
-    }
-  );
+  [
+    "dampingFactor",
+    "rotateSpeed",
+    "dollySpeed",
+    "minPolarAngle",
+    "maxPolarAngle",
+    "moveSpeed",
+    "transitionSpeed",
+    "playerHeight",
+  ].forEach((prop) => {
+    document.getElementById(prop).value = controls[prop];
+  });
 
   // Initialize checkboxes
   [
@@ -933,6 +995,9 @@ function initializeControlProperties() {
     configData.controlProperties.startPoint[2];
   document.getElementById("startAzimuthAngle").value =
     configData.controlProperties.startAzimuthAngle;
+  document.getElementById("autoTourEnabled").checked = controls.autoTour.enabled;
+  document.getElementById("autoTourDurationPerObject").value =
+    controls.autoTour.durationPerObject;
 
   // Initialize arrows mapping
   const arrowsMappingSelect = document.getElementById("arrowsMapping");

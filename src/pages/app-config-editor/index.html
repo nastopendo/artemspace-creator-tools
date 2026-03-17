@@ -512,8 +512,59 @@
                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
                 />
               </div>
-              <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
-                <div class="col-span-1">
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="minPolarAngle"
+                  >Min Polar Angle</label
+                >
+                <input
+                  type="number"
+                  id="minPolarAngle"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="maxPolarAngle"
+                  >Max Polar Angle</label
+                >
+                <input
+                  type="number"
+                  id="maxPolarAngle"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="moveSpeed"
+                  >Move Speed</label
+                >
+                <input
+                  type="number"
+                  id="moveSpeed"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="transitionSpeed"
+                  >Transition Speed</label
+                >
+                <input
+                  type="number"
+                  id="transitionSpeed"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
+              </div>
+                <div>
                   <label
                     class="block text-sm font-medium text-gray-700"
                     data-i18n="playerHeight"
@@ -546,6 +597,31 @@
                     <option value="none" data-i18n="none">None</option>
                   </select>
                 </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <label class="inline-flex items-center">
+                <input
+                  type="checkbox"
+                  id="autoTourEnabled"
+                  class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+                <span class="ml-2 text-gray-700" data-i18n="autoTourEnabled"
+                  >Auto Tour Enabled</span
+                >
+              </label>
+              <div>
+                <label
+                  class="block text-sm font-medium text-gray-700"
+                  data-i18n="autoTourDurationPerObject"
+                  >Auto Tour Duration Per Object</label
+                >
+                <input
+                  type="number"
+                  id="autoTourDurationPerObject"
+                  step="0.1"
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+                />
               </div>
             </div>
 

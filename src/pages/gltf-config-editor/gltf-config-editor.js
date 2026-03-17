@@ -66,6 +66,9 @@ let sortableInstance = null;
 let exhibitionQuillEditor = null;
 
 let selectedLanguage = "en";
+let customModalEditorState = {};
+const DEFAULT_MOVIE_SOURCE_TYPE =
+  'video/mp4; codecs="avc1.42E01E, mp4a.40.2"';
 
 // Add this function near the top of the file, before loadGLTFFile
 function extractTextureFromObject(object) {
@@ -162,6 +165,104 @@ function formatQuillOutput(html) {
   return tempContainer.innerHTML;
 }
 
+function stripStyleAndClassAttributes(html) {
+  if (!html) {
+    return html;
+  }
+
+  const tempContainer = document.createElement("div");
+  tempContainer.innerHTML = html;
+
+  tempContainer.querySelectorAll("*").forEach((element) => {
+    element.removeAttribute("style");
+    element.removeAttribute("class");
+  });
+
+  return tempContainer.innerHTML;
+}
+
+function normalizeCustomModal(customModal) {
+  const safeModal =
+    customModal && typeof customModal === "object" ? customModal : {};
+
+  return {
+    buttonText: safeModal.buttonText || "",
+    buttonIcon: safeModal.buttonIcon || "",
+    modalTitle: safeModal.modalTitle || "",
+    modalBody: safeModal.modalBody || "",
+  };
+}
+
+function normalizeMovieData(movieData) {
+  const safeMovie = movieData && typeof movieData === "object" ? movieData : {};
+  const safeSource = Array.isArray(safeMovie.source) ? safeMovie.source : [];
+  const primarySource =
+    safeSource[0] && typeof safeSource[0] === "object" ? safeSource[0] : {};
+
+  return {
+    source: [
+      {
+        src: primarySource.src || "",
+        type: primarySource.type || DEFAULT_MOVIE_SOURCE_TYPE,
+      },
+    ],
+    poster: safeMovie.poster || "",
+    autoplay: Boolean(safeMovie.autoplay),
+    loop: Boolean(safeMovie.loop),
+    muted:
+      typeof safeMovie.muted === "boolean" ? safeMovie.muted : true,
+  };
+}
+
+function normalizeArtworkData(artwork, movieFromConfig = null) {
+  if (!artwork || typeof artwork !== "object") {
+    return artwork;
+  }
+
+  artwork.linkDisplayName = artwork.linkDisplayName || "";
+  artwork.linkURL = artwork.linkURL || "";
+  artwork.customModal = normalizeCustomModal(artwork.customModal);
+  artwork.movie = normalizeMovieData(movieFromConfig || artwork.movie);
+
+  return artwork;
+}
+
+function normalizeConfigData(parsedConfig) {
+  if (!parsedConfig || typeof parsedConfig !== "object") {
+    return parsedConfig;
+  }
+
+  if (!Array.isArray(parsedConfig.artworks)) {
+    parsedConfig.artworks = [];
+  }
+
+  if (!Array.isArray(parsedConfig.movies)) {
+    parsedConfig.movies = [];
+  }
+
+  const moviesByName = new Map();
+  parsedConfig.movies.forEach((movieItem) => {
+    if (movieItem && typeof movieItem.name === "string" && movieItem.name) {
+      moviesByName.set(movieItem.name, normalizeMovieData(movieItem));
+    }
+  });
+
+  parsedConfig.artworks = parsedConfig.artworks.map((artwork) =>
+    normalizeArtworkData(artwork, moviesByName.get(artwork?.name))
+  );
+
+  return parsedConfig;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function showCopyFormattedFeedback(message, isError = false) {
   if (!copyFormattedTextBtn) {
     return;
@@ -210,10 +311,22 @@ function initializeSortable() {
 
 // Create artwork element
 function createArtworkElement(artwork, index) {
+  normalizeArtworkData(artwork);
+
   const div = document.createElement("div");
   div.className = "bg-gray-50 p-4 rounded-lg shadow";
 
   const defaultImage = artwork.name + ".jpg";
+  const escapedLinkDisplayName = escapeHtml(artwork.linkDisplayName);
+  const escapedLinkURL = escapeHtml(artwork.linkURL);
+  const escapedCustomButtonText = escapeHtml(artwork.customModal.buttonText);
+  const escapedCustomButtonIcon = escapeHtml(artwork.customModal.buttonIcon);
+  const escapedCustomModalTitle = escapeHtml(artwork.customModal.modalTitle);
+  const escapedCustomModalBody = escapeHtml(artwork.customModal.modalBody);
+  const movieData = normalizeMovieData(artwork.movie);
+  const escapedMovieSrc = escapeHtml(movieData.source[0].src);
+  const escapedMovieType = escapeHtml(movieData.source[0].type);
+  const customModalEditorOpen = Boolean(customModalEditorState[index]);
 
   div.innerHTML = `
     <div class="flex items-center gap-4">
@@ -374,12 +487,143 @@ function createArtworkElement(artwork, index) {
             </label>
         </div>
       </div>
+      
+      ${
+        artwork.type === "movie"
+          ? `
+      <div class="border rounded-md border-gray-200 bg-white p-4 space-y-4">
+        <h3 class="text-base font-semibold text-gray-700" data-i18n="movieOptions">Movie Options</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-500" data-i18n="movieSourceSrc">Movie Source Path (MP4)</label>
+            <input
+              type="text"
+              value="${escapedMovieSrc}"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+              onchange="window.updateArtworkMovieField(${index}, 'sourceSrc', this.value)"
+              placeholder="video/file-name.mp4">
+            <p class="mt-1 text-xs text-gray-500" data-i18n="movieSourceSrcHint">Path to MP4 file in the main project directory.</p>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-500" data-i18n="movieSourceType">Movie Source MIME Type</label>
+            <input
+              type="text"
+              value="${escapedMovieType}"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+              onchange="window.updateArtworkMovieField(${index}, 'sourceType', this.value)"
+              placeholder="${DEFAULT_MOVIE_SOURCE_TYPE}">
+          </div>
+          <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="w-5 h-5 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                ${movieData.autoplay ? "checked" : ""}
+                onchange="window.updateArtworkMovieField(${index}, 'autoplay', this.checked)">
+              <span class="ml-3 text-gray-700" data-i18n="movieAutoplay">Autoplay</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="w-5 h-5 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                ${movieData.loop ? "checked" : ""}
+                onchange="window.updateArtworkMovieField(${index}, 'loop', this.checked)">
+              <span class="ml-3 text-gray-700" data-i18n="movieLoop">Loop</span>
+            </label>
+            <label class="inline-flex items-center">
+              <input
+                type="checkbox"
+                class="w-5 h-5 rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                ${movieData.muted ? "checked" : ""}
+                onchange="window.updateArtworkMovieField(${index}, 'muted', this.checked)">
+              <span class="ml-3 text-gray-700" data-i18n="movieMuted">Muted</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      `
+          : ""
+      }
 
       <div>
         <label class="block text-sm font-medium text-gray-500 mb-2" data-i18n="description">Description</label>
         <div class="border rounded-md bg-white border-gray-300 overflow-hidden">
           <div id="editor-${index}">
             ${artwork.description || ""}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-500" data-i18n="linkDisplayName">Additional Button Label (optional)</label>
+          <input type="text" value="${escapedLinkDisplayName}" 
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+            onchange="window.updateArtworkField(${index}, 'linkDisplayName', this.value)"
+            placeholder="${languageService.translate("linkDisplayName")}">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-500" data-i18n="linkURL">Additional Button URL (optional)</label>
+          <input type="text" value="${escapedLinkURL}" 
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+            onchange="window.updateArtworkField(${index}, 'linkURL', this.value)"
+            placeholder="${languageService.translate("linkURL")}">
+        </div>
+      </div>
+
+      <div class="border rounded-md border-gray-200 bg-white p-4 space-y-4">
+        <h3 class="text-base font-semibold text-gray-700" data-i18n="customModal">Additional Pop-up Window (optional)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-500" data-i18n="customModalButtonText">Pop-up Button Text (optional)</label>
+            <input type="text" value="${escapedCustomButtonText}"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+              onchange="window.updateArtworkCustomModalField(${index}, 'buttonText', this.value)"
+              placeholder="${languageService.translate("customModalButtonText")}">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-500">
+              ${languageService.translate("customModalButtonIcon")}
+              <a
+                href="https://fonts.google.com/icons"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ml-2 text-xs text-blue-600 hover:text-blue-800"
+              >${languageService.translate("customModalIconListLink")}</a>
+            </label>
+            <input type="text" value="${escapedCustomButtonIcon}"
+              class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+              onchange="window.updateArtworkCustomModalField(${index}, 'buttonIcon', this.value)"
+              placeholder="${languageService.translate("customModalCustomIconPlaceholder")}">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-500" data-i18n="customModalTitle">Pop-up Window Title (optional)</label>
+            <input type="text" value="${escapedCustomModalTitle}"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+              onchange="window.updateArtworkCustomModalField(${index}, 'modalTitle', this.value)"
+              placeholder="${languageService.translate("customModalTitle")}">
+          </div>
+          <div class="md:col-span-2">
+            <div class="flex items-center justify-between mb-2">
+              <label class="block text-sm font-medium text-gray-500" data-i18n="customModalBody">Pop-up Window Content (HTML)</label>
+              <button
+                type="button"
+                class="text-sm px-3 py-1 rounded border border-gray-300 hover:bg-gray-100"
+                onclick="window.toggleCustomModalEditor(${index})"
+                data-i18n="customModalBodyEditorToggle"
+              >Open Live Preview Editor</button>
+            </div>
+            <p class="text-xs text-gray-500 mb-3" data-i18n="customModalBodyEditorHint">Enable this only when you need live preview to keep performance smooth.</p>
+            <div id="custom-modal-editor-${index}" class="space-y-3 ${customModalEditorOpen ? "" : "hidden"}">
+              <textarea
+                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white min-h-[120px]"
+                oninput="window.updateArtworkCustomModalBody(${index}, this.value)"
+                placeholder="${languageService.translate("customModalBody")}">${escapedCustomModalBody}</textarea>
+              <div>
+                <p class="text-sm font-medium text-gray-600 mb-1" data-i18n="customModalBodyPreviewTitle">Live Preview</p>
+                <div id="custom-modal-preview-${index}" class="border border-gray-200 rounded-md p-3 bg-gray-50 min-h-[80px]">${artwork.customModal.modalBody || ""}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -404,6 +648,7 @@ function updateArtworksList() {
 
   artworksList.innerHTML = "";
   configData.artworks.forEach((artwork, index) => {
+    normalizeArtworkData(artwork);
     artworksList.appendChild(createArtworkElement(artwork, index));
 
     // Initialize Quill editor for this artwork
@@ -437,7 +682,7 @@ function updateArtworksList() {
   // Apply translations to all elements with data-i18n attributes
   artworksList.querySelectorAll("[data-i18n]").forEach((element) => {
     const key = element.getAttribute("data-i18n");
-    if (element.tagName === "INPUT") {
+    if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
       element.placeholder = languageService.translate(key);
     } else {
       element.textContent = languageService.translate(key);
@@ -476,6 +721,13 @@ function updateProgress(current, total) {
   progressStats.textContent = `${current}/${total} objects`;
 }
 
+function getDefaultArtworkTypeByName(name) {
+  if (name.startsWith("C_") || name.startsWith("P_")) return "painting";
+  if (name.startsWith("S_")) return "sculpture";
+  if (name.startsWith("M_")) return "movie";
+  return null;
+}
+
 // Update the loadGLTFFile function
 async function loadGLTFFile(file) {
   const loader = new GLTFLoader();
@@ -500,10 +752,10 @@ async function loadGLTFFile(file) {
       );
     });
 
-    // Count total objects that start with C_
+    // Count total supported artwork objects by prefix
     let totalObjects = 0;
     gltf.scene.traverse((object) => {
-      if (object.name.startsWith("C_")) totalObjects++;
+      if (getDefaultArtworkTypeByName(object.name)) totalObjects++;
     });
 
     const artworks = [];
@@ -515,7 +767,8 @@ async function loadGLTFFile(file) {
         throw new Error("Operation cancelled by user");
       }
 
-      if (object.name.startsWith("C_")) {
+      const artworkType = getDefaultArtworkTypeByName(object.name);
+      if (artworkType) {
         const textureImage = extractTextureFromObject(object);
         const textureDataUrl = textureImage
           ? getDataUrlFromImage(textureImage)
@@ -530,7 +783,7 @@ async function loadGLTFFile(file) {
           year: "",
           image: object.name + ".jpg",
           texturePreview: textureDataUrl,
-          type: "painting",
+          type: artworkType,
           showInfoBox: true,
           showInObjectList: true,
           dimensions: "",
@@ -643,16 +896,41 @@ exportBtn.addEventListener("click", () => {
     exportData.exhibition.description
   );
 
+  exportData.movies = exportData.artworks
+    .filter((artwork) => artwork.type === "movie")
+    .map((artwork, index) => {
+      const movieData = normalizeMovieData(artwork.movie);
+      return {
+        id: index,
+        name: artwork.name,
+        source: [
+          {
+            src: movieData.source[0].src,
+            type: movieData.source[0].type || DEFAULT_MOVIE_SOURCE_TYPE,
+          },
+        ],
+        poster: "",
+        autoplay: movieData.autoplay,
+        loop: movieData.loop,
+        muted: movieData.muted,
+      };
+    });
+
   // Process artworks texts
   exportData.artworks = exportData.artworks.map((artwork) => {
-    const { texturePreview, ...artworkWithoutTexture } = artwork;
+    const { texturePreview, movie, ...artworkWithoutTexture } = artwork;
+    artworkWithoutTexture.linkDisplayName = artworkWithoutTexture.linkDisplayName || "";
+    artworkWithoutTexture.linkURL = artworkWithoutTexture.linkURL || "";
+    artworkWithoutTexture.customModal = normalizeCustomModal(
+      artworkWithoutTexture.customModal
+    );
 
     // Add non-breaking spaces to artwork texts
     artworkWithoutTexture.title = addNonBreakingSpaces(
       artworkWithoutTexture.title
     );
     artworkWithoutTexture.description = addNonBreakingSpaces(
-      artworkWithoutTexture.description
+      stripStyleAndClassAttributes(artworkWithoutTexture.description)
     );
 
     return artworkWithoutTexture;
@@ -679,7 +957,7 @@ jsonInput.addEventListener("change", async () => {
   if (file) {
     try {
       const text = await file.text();
-      configData = JSON.parse(text);
+      configData = normalizeConfigData(JSON.parse(text));
 
       // Check if filename contains language code
       const languageMatch = file.name.match(/^([a-z]{2})\.json$/);
@@ -718,7 +996,65 @@ window.updateArtworkField = (index, field, value) => {
   if (field === "description" && typeof value === "string") {
     value = formatQuillOutput(value);
   }
+  normalizeArtworkData(configData.artworks[index]);
   configData.artworks[index][field] = value;
+
+  if (field === "type") {
+    normalizeArtworkData(configData.artworks[index]);
+    updateArtworksList();
+  }
+};
+
+window.updateArtworkMovieField = (index, field, value) => {
+  normalizeArtworkData(configData.artworks[index]);
+  const movieData = configData.artworks[index].movie;
+
+  if (field === "sourceSrc") {
+    movieData.source[0].src = value;
+    return;
+  }
+
+  if (field === "sourceType") {
+    movieData.source[0].type = value || DEFAULT_MOVIE_SOURCE_TYPE;
+    return;
+  }
+
+  if (field === "autoplay" || field === "loop" || field === "muted") {
+    movieData[field] = Boolean(value);
+  }
+};
+
+window.updateArtworkCustomModalField = (index, field, value) => {
+  normalizeArtworkData(configData.artworks[index]);
+  configData.artworks[index].customModal[field] = value;
+};
+
+window.updateArtworkCustomModalBody = (index, value) => {
+  window.updateArtworkCustomModalField(index, "modalBody", value);
+  const preview = document.getElementById(`custom-modal-preview-${index}`);
+  if (preview) {
+    preview.innerHTML = value;
+  }
+};
+
+window.toggleCustomModalEditor = (index) => {
+  const editorContainer = document.getElementById(`custom-modal-editor-${index}`);
+  if (!editorContainer) {
+    return;
+  }
+
+  const shouldShow = editorContainer.classList.contains("hidden");
+  editorContainer.classList.toggle("hidden");
+  customModalEditorState[index] = shouldShow;
+
+  if (shouldShow) {
+    const artwork = configData.artworks[index];
+    normalizeArtworkData(artwork);
+    const preview = document.getElementById(`custom-modal-preview-${index}`);
+    if (preview) {
+      preview.innerHTML = artwork.customModal.modalBody || "";
+    }
+  }
 };
 
 window.toggleArtworkDetails = (index) => {
