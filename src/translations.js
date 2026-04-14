@@ -73,10 +73,20 @@ export const translations = {
     hjsv: "Hotjar Snippet Version",
     projectId: "Project ID",
 
+    // App Config Editor - Template Customization
+    templateCustomization: "Template Customization",
+    templateCustomizationDesc: "Paste or drop a template JSON exported from templates.artemspace.pl to include it in the config.",
+    dropOrPasteTemplate: "Drop a template JSON file here, or paste JSON below",
+    templateLoaded: "Template loaded",
+    clearTemplate: "Clear",
+    noTemplateLoaded: "No template loaded — customization will not be included in the export.",
+    invalidTemplateJson: "Invalid template JSON. Make sure it contains templateId and customization fields.",
+
     // App Config Editor - Model Properties
     modelProperties: "Model Properties",
     galleryModel: "Gallery Model",
-    galleryMobileModelName: "Gallery Mobile Model",
+    galleryObjectsModel: "Gallery Objects Model",
+    galleryObjectsMobileModel: "Gallery Objects Mobile Model",
     galleryNavMesh: "Gallery Navigation Mesh",
     galleryCollisionMesh: "Gallery Collision Mesh",
     lights: "Lights",
@@ -412,10 +422,20 @@ export const translations = {
     hjsv: "Wersja skryptu Hotjar",
     projectId: "ID projektu",
 
+    // App Config Editor - Template Customization
+    templateCustomization: "Dostosowanie szablonu",
+    templateCustomizationDesc: "Wklej lub upuść plik JSON szablonu wyeksportowany z templates.artemspace.pl, aby dołączyć go do konfiguracji.",
+    dropOrPasteTemplate: "Upuść plik JSON szablonu tutaj lub wklej JSON poniżej",
+    templateLoaded: "Szablon wczytany",
+    clearTemplate: "Wyczyść",
+    noTemplateLoaded: "Brak szablonu — dostosowanie nie zostanie dołączone do eksportu.",
+    invalidTemplateJson: "Nieprawidłowy JSON szablonu. Upewnij się, że zawiera pola templateId i customization.",
+
     // App Config Editor - Model Properties
     modelProperties: "Właściwości modelu",
     galleryModel: "Model galerii",
-    galleryMobileModelName: "Model galerii (mobile)",
+    galleryObjectsModel: "Model obiektów galerii",
+    galleryObjectsMobileModel: "Model obiektów galerii (mobile)",
     galleryNavMesh: "Siatka nawigacyjna galerii",
     galleryCollisionMesh: "Siatka kolizji galerii",
     lights: "Światła",

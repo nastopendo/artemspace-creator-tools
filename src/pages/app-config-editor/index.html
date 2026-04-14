@@ -272,6 +272,48 @@
           </div>
         </div>
 
+        <!-- Template Customization Section -->
+        <div class="border rounded-lg p-6 bg-gray-50">
+          <h2 class="text-xl font-semibold mb-2" data-i18n="templateCustomization">
+            Template Customization
+          </h2>
+          <p class="text-sm text-gray-500 mb-4" data-i18n="templateCustomizationDesc">
+            Paste or drop a template JSON exported from templates.artemspace.pl to include it in the config.
+          </p>
+
+          <!-- Drop zone -->
+          <div
+            id="templateDropZone"
+            class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-400 cursor-pointer hover:border-blue-400 hover:text-blue-400 transition-colors mb-3"
+            data-i18n="dropOrPasteTemplate"
+          >
+            Drop a template JSON file here, or paste JSON below
+          </div>
+          <input type="file" id="templateFileInput" accept=".json,application/json" class="hidden" />
+
+          <!-- Paste textarea -->
+          <textarea
+            id="templateJsonTextarea"
+            rows="6"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 font-mono text-sm mb-3"
+            placeholder='{ "templateId": "...", "customization": { ... } }'
+          ></textarea>
+
+          <!-- Status bar -->
+          <div id="templateStatus" class="flex items-center justify-between">
+            <span id="templateStatusText" class="text-sm text-gray-400" data-i18n="noTemplateLoaded">
+              No template loaded — customization will not be included in the export.
+            </span>
+            <button
+              id="clearTemplateBtn"
+              class="hidden px-3 py-1 text-sm bg-red-100 text-red-600 rounded hover:bg-red-200"
+              data-i18n="clearTemplate"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+
         <!-- Model Properties Section -->
         <div class="border rounded-lg p-6 bg-gray-50 mb-8">
           <h2 class="text-xl font-semibold mb-4" data-i18n="modelProperties">
@@ -295,12 +337,24 @@
             <div>
               <label
                 class="block text-sm font-medium text-gray-700"
-                data-i18n="galleryMobileModelName"
-                >Gallery Mobile Model Name</label
+                data-i18n="galleryObjectsModel"
+                >Gallery Objects Model</label
               >
               <input
                 type="text"
-                id="galleryMobileModelName"
+                id="galleryObjectsModel"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
+              />
+            </div>
+            <div>
+              <label
+                class="block text-sm font-medium text-gray-700"
+                data-i18n="galleryObjectsMobileModel"
+                >Gallery Objects Mobile Model</label
+              >
+              <input
+                type="text"
+                id="galleryObjectsMobileModel"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2"
               />
             </div>

@@ -30,7 +30,8 @@ let configData = {
   },
   modelProperties: {
     galleryModelName: "Gallery.glb",
-    galleryMobileModelName: "Gallery.glb",
+    galleryObjectsModel: "Objects.glb",
+    galleryObjectsMobileModel: "ObjectsMobile.glb",
     galleryNavMesh: "NavMesh.glb",
     galleryCollisionMesh: "CollisionMesh.glb",
     lights: {
@@ -163,6 +164,104 @@ const exportBtn = document.getElementById("exportBtn");
 const importBtn = document.getElementById("importBtn");
 const jsonInput = document.getElementById("jsonInput");
 
+// Template customization state
+let templateData = null;
+
+function applyTemplateJson(text) {
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    alert(languageService.translate("invalidTemplateJson"));
+    return;
+  }
+  if (!parsed.templateId || !parsed.customization) {
+    alert(languageService.translate("invalidTemplateJson"));
+    return;
+  }
+  templateData = {
+    templateId: parsed.templateId,
+    templateVersion: parsed.templateVersion,
+    customization: parsed.customization,
+  };
+  document.getElementById("templateJsonTextarea").value = JSON.stringify(parsed, null, 2);
+  updateTemplateStatus();
+}
+
+function updateTemplateStatus() {
+  const statusText = document.getElementById("templateStatusText");
+  const clearBtn = document.getElementById("clearTemplateBtn");
+  if (templateData) {
+    statusText.textContent = `${languageService.translate("templateLoaded")}: ${templateData.templateId} v${templateData.templateVersion || ""}`;
+    statusText.classList.remove("text-gray-400");
+    statusText.classList.add("text-green-600");
+    clearBtn.classList.remove("hidden");
+  } else {
+    statusText.textContent = languageService.translate("noTemplateLoaded");
+    statusText.classList.remove("text-green-600");
+    statusText.classList.add("text-gray-400");
+    clearBtn.classList.add("hidden");
+  }
+}
+
+// Template drop zone
+const templateDropZone = document.getElementById("templateDropZone");
+const templateFileInput = document.getElementById("templateFileInput");
+const templateJsonTextarea = document.getElementById("templateJsonTextarea");
+
+templateDropZone.addEventListener("click", () => templateFileInput.click());
+
+templateDropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  templateDropZone.classList.add("border-blue-400", "bg-blue-50");
+});
+
+templateDropZone.addEventListener("dragleave", () => {
+  templateDropZone.classList.remove("border-blue-400", "bg-blue-50");
+});
+
+templateDropZone.addEventListener("drop", async (e) => {
+  e.preventDefault();
+  templateDropZone.classList.remove("border-blue-400", "bg-blue-50");
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    const text = await file.text();
+    applyTemplateJson(text);
+  }
+});
+
+templateFileInput.addEventListener("change", async () => {
+  const file = templateFileInput.files[0];
+  if (file) {
+    const text = await file.text();
+    applyTemplateJson(text);
+    templateFileInput.value = "";
+  }
+});
+
+templateJsonTextarea.addEventListener("change", () => {
+  const text = templateJsonTextarea.value.trim();
+  if (text) {
+    applyTemplateJson(text);
+  }
+});
+
+templateJsonTextarea.addEventListener("paste", () => {
+  // Use setTimeout to let the paste complete before reading
+  setTimeout(() => {
+    const text = templateJsonTextarea.value.trim();
+    if (text) {
+      applyTemplateJson(text);
+    }
+  }, 0);
+});
+
+document.getElementById("clearTemplateBtn").addEventListener("click", () => {
+  templateData = null;
+  templateJsonTextarea.value = "";
+  updateTemplateStatus();
+});
+
 // Initialize form values
 function initializeForm() {
   initializeLanguageButtons();
@@ -224,8 +323,10 @@ function initializeForm() {
   // Model Properties
   document.getElementById("galleryModelName").value =
     configData.modelProperties.galleryModelName;
-  document.getElementById("galleryMobileModelName").value =
-    configData.modelProperties.galleryMobileModelName;
+  document.getElementById("galleryObjectsModel").value =
+    configData.modelProperties.galleryObjectsModel;
+  document.getElementById("galleryObjectsMobileModel").value =
+    configData.modelProperties.galleryObjectsMobileModel;
   document.getElementById("galleryNavMesh").value =
     configData.modelProperties.galleryNavMesh;
   document.getElementById("galleryCollisionMesh").value =
@@ -238,9 +339,14 @@ function initializeForm() {
       configData.modelProperties.galleryModelName = e.target.value;
     });
   document
-    .getElementById("galleryMobileModelName")
+    .getElementById("galleryObjectsModel")
     .addEventListener("change", (e) => {
-      configData.modelProperties.galleryMobileModelName = e.target.value;
+      configData.modelProperties.galleryObjectsModel = e.target.value;
+    });
+  document
+    .getElementById("galleryObjectsMobileModel")
+    .addEventListener("change", (e) => {
+      configData.modelProperties.galleryObjectsMobileModel = e.target.value;
     });
   document.getElementById("galleryNavMesh").addEventListener("change", (e) => {
     configData.modelProperties.galleryNavMesh = e.target.value;
@@ -596,9 +702,18 @@ function createLightArrayContainer(lightType, lights) {
   return container;
 }
 
+function buildExportData() {
+  if (!templateData) {
+    return configData;
+  }
+  // Insert customization after analytics
+  const { languages, analytics, ...rest } = configData;
+  return { languages, analytics, customization: templateData, ...rest };
+}
+
 // Export functionality
 exportBtn.addEventListener("click", () => {
-  const jsonString = JSON.stringify(configData, null, 2);
+  const jsonString = JSON.stringify(buildExportData(), null, 2);
   const blob = new Blob([jsonString], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -651,9 +766,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add event listeners
   addFormEventListeners();
 
-  // Export functionality
+  // Export functionality (duplicate listener — kept for DOMContentLoaded context)
   document.getElementById("exportBtn").addEventListener("click", () => {
-    const jsonString = JSON.stringify(configData, null, 2);
+    const jsonString = JSON.stringify(buildExportData(), null, 2);
     const blob = new Blob([jsonString], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
