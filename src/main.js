@@ -9,6 +9,7 @@ import galleryWallPlannerHtml from "./pages/gallery-wall-planner/index.html?raw"
 import photo360ViewerHtml from "./pages/photo-360-viewer/index.html?raw";
 import textToPngHtml from "./pages/text-to-png/index.html?raw";
 import photoToVideoHtml from "./pages/photo-to-video/index.html?raw";
+import imageRedactorHtml from "./pages/image-redactor/index.html?raw";
 import { languageService } from "./services/languageService";
 
 const routes = {
@@ -51,6 +52,10 @@ const routes = {
   "/photo-to-video": {
     template: photoToVideoHtml,
     script: () => import("./pages/photo-to-video/photo-to-video.js"),
+  },
+  "/image-redactor": {
+    template: imageRedactorHtml,
+    script: () => import("./pages/image-redactor/image-redactor.js"),
   },
 };
 

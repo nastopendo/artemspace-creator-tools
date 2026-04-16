@@ -413,6 +413,29 @@ export const translations = {
     photoToVideoCoverDownload: "⬇ Download Cover PNG",
     photoToVideoPaddingLabel: "Padding",
     photoToVideoPaddingEnable: "Add padding",
+
+    // Image Redactor
+    imageRedactorTitle: "Image Redactor",
+    imageRedactorDesc:
+      "Redact, pixelate, or blur sensitive areas in photos. Draw rectangles over content to hide it.",
+    imageRedactorMode: "Redaction Mode",
+    imageRedactorPixelate: "Pixelate",
+    imageRedactorBlur: "Blur",
+    imageRedactorBlackBar: "Black Bar",
+    imageRedactorWhiteBar: "White Bar",
+    imageRedactorPixelSize: "Pixel Size",
+    imageRedactorBlurRadius: "Blur Radius",
+    imageRedactorUndo: "Undo",
+    imageRedactorClearAll: "Clear All",
+    imageRedactorDownload: "Download PNG",
+    imageRedactorCopy: "Copy to Clipboard",
+    imageRedactorCopied: "Copied!",
+    imageRedactorDragDrop: "Drag & Drop Image Here",
+    imageRedactorOr: "or",
+    imageRedactorSelectImage: "Select Image",
+    imageRedactorNewImage: "New Image",
+    imageRedactorDragTip: "💡 Drag on the image to redact an area",
+    imageRedactorSupportedFormats: "Supported formats: JPG, PNG, WebP",
   },
   pl: {
     // Common
@@ -835,5 +858,28 @@ export const translations = {
     photoToVideoCoverDownload: "Pobierz grafikę startową",
     photoToVideoPaddingLabel: "Marginesy",
     photoToVideoPaddingEnable: "Dodaj marginesy",
+
+    // Image Redactor
+    imageRedactorTitle: "Redaktor obrazów",
+    imageRedactorDesc:
+      "Zamazuj, pikseluj lub rozmywaj wrażliwe obszary na zdjęciach. Narysuj prostokąt, aby ukryć treść.",
+    imageRedactorMode: "Tryb redakcji",
+    imageRedactorPixelate: "Pikselizacja",
+    imageRedactorBlur: "Rozmycie",
+    imageRedactorBlackBar: "Czarny pasek",
+    imageRedactorWhiteBar: "Biały pasek",
+    imageRedactorPixelSize: "Rozmiar piksela",
+    imageRedactorBlurRadius: "Promień rozmycia",
+    imageRedactorUndo: "Cofnij",
+    imageRedactorClearAll: "Wyczyść wszystko",
+    imageRedactorDownload: "Pobierz PNG",
+    imageRedactorCopy: "Kopiuj do schowka",
+    imageRedactorCopied: "Skopiowano!",
+    imageRedactorDragDrop: "Przeciągnij i upuść obraz tutaj",
+    imageRedactorOr: "lub",
+    imageRedactorSelectImage: "Wybierz obraz",
+    imageRedactorNewImage: "Nowy obraz",
+    imageRedactorDragTip: "💡 Przeciągnij na obrazie, aby zaznaczyć obszar",
+    imageRedactorSupportedFormats: "Obsługiwane formaty: JPG, PNG, WebP",
   },
 };
