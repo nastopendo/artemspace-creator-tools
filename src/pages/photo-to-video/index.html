@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="photoToVideoTitle">Photos to Video</title>
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="bg-gray-100 text-gray-800 min-h-screen py-8 px-4">
+    <header>
+      <nav>
+        <a
+          href="/"
+          data-link
+          class="text-blue-600 hover:text-blue-800"
+          data-i18n="backToTools"
+          >← Back to Tools</a
+        >
+      </nav>
+    </header>
+
+    <div class="max-w-6xl mx-auto animate-fade-in">
+      <h1
+        class="text-3xl font-bold text-center text-gray-800 mb-8"
+        data-i18n="photoToVideoTitle"
+      >
+        Photos to Video
+      </h1>
+      <!-- Browser support warning -->
+      <div
+        id="browserWarning"
+        class="hidden mb-5 p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm flex items-start gap-2"
+      >
+        <span class="text-lg leading-none mt-0.5">⚠️</span>
+        <div>
+          <strong data-i18n="photoToVideoBrowserWarningTitle"
+            >Browser not supported:</strong
+          >
+          <span data-i18n="photoToVideoBrowserWarning">
+            This tool requires the WebCodecs API (Chrome 94+ or Edge 94+). Some
+            features may not work in your current browser.</span
+          >
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <!-- ── Left column: Upload + photo list ─────────────────────────── -->
+        <div class="lg:col-span-2 space-y-4">
+          <!-- Upload area -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <div
+              id="dropZone"
+              class="border-2 border-dashed border-gray-200 rounded-xl p-10 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all"
+            >
+              <p
+                class="text-gray-600 font-medium mb-1 pointer-events-none"
+                data-i18n="dragDropImages"
+              >
+                Drag & Drop Images Here or
+              </p>
+              <label
+                class="cursor-pointer inline-block mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium shadow-sm transition-colors"
+              >
+                <span data-i18n="clickToSelect">Click to Select</span>
+                <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  class="hidden"
+                />
+              </label>
+              <p
+                class="text-xs text-gray-400 mt-3 pointer-events-none"
+                data-i18n="photoToVideoSupportedFormats"
+              >
+                JPG, PNG, WebP, GIF — any resolution
+              </p>
+            </div>
+          </div>
+
+          <!-- Photo list -->
+          <div
+            id="photoListSection"
+            class="hidden bg-white rounded-xl shadow-sm border border-gray-100 p-5"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="font-semibold text-gray-800 flex items-center gap-2">
+                <span data-i18n="photoToVideoPhotos">Photos</span>
+                <span
+                  id="photoCount"
+                  class="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full"
+                ></span>
+              </h2>
+              <span class="text-xs text-gray-400 flex items-center gap-1">
+                <span>⠿</span>
+                <span data-i18n="photoToVideoDragTip">Drag to reorder</span>
+              </span>
+            </div>
+            <ul id="photoList" class="space-y-2">
+              <!-- Photo items injected here -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- ── Right column: Settings + preview + generate ──────────────── -->
+        <div class="space-y-4">
+          <!-- Settings -->
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <div
+              class="px-5 py-3.5 border-b border-gray-100 flex items-center gap-2"
+            >
+              <span class="text-base">⚙️</span>
+              <h2
+                class="font-semibold text-gray-800"
+                data-i18n="photoToVideoSettings"
+              >
+                Settings
+              </h2>
+            </div>
+
+            <div class="divide-y divide-gray-100">
+              <!-- Output dimensions -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoDimensions"
+                  >Output Dimensions</label
+                >
+                <select
+                  id="dimensionPreset"
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-2"
+                >
+                  <option
+                    value="auto"
+                    selected
+                    data-i18n="photoToVideoAutoRatio"
+                  >
+                    Original ratio (2048px)
+                  </option>
+                  <option value="1920x1080">1920 × 1080 (Full HD)</option>
+                  <option value="1280x720">1280 × 720 (HD)</option>
+                  <option value="1080x1080">1080 × 1080 (Square)</option>
+                  <option value="1080x1920">1080 × 1920 (Portrait)</option>
+                  <option value="3840x2160">3840 × 2160 (4K)</option>
+                  <option value="custom" data-i18n="photoToVideoCustom">
+                    Custom
+                  </option>
+                </select>
+                <div id="customDimensions" class="hidden gap-2">
+                  <div class="flex-1">
+                    <label
+                      class="text-xs text-gray-500 mb-1 block"
+                      data-i18n="photoToVideoWidth"
+                      >Width</label
+                    >
+                    <input
+                      id="customWidth"
+                      type="number"
+                      value="1920"
+                      min="64"
+                      max="7680"
+                      step="2"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                  </div>
+                  <div class="flex-1">
+                    <label
+                      class="text-xs text-gray-500 mb-1 block"
+                      data-i18n="photoToVideoHeight"
+                      >Height</label
+                    >
+                    <input
+                      id="customHeight"
+                      type="number"
+                      value="1080"
+                      min="64"
+                      max="4320"
+                      step="2"
+                      class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fit mode -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoFitMode"
+                  >Fit Mode</label
+                >
+                <select
+                  id="fitMode"
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                >
+                  <option value="contain" data-i18n="photoToVideoContain">
+                    Contain (letterbox)
+                  </option>
+                  <option value="cover" data-i18n="photoToVideoCover">
+                    Cover (crop)
+                  </option>
+                  <option value="stretch" data-i18n="photoToVideoStretch">
+                    Stretch (fill)
+                  </option>
+                </select>
+              </div>
+
+              <!-- Background color -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoBgColor"
+                  >Background Color</label
+                >
+                <div class="flex items-center gap-2">
+                  <input
+                    id="bgColor"
+                    type="color"
+                    value="#000000"
+                    class="w-10 h-9 rounded-lg border border-gray-200 cursor-pointer p-0.5 flex-shrink-0"
+                  />
+                  <input
+                    id="bgColorHex"
+                    type="text"
+                    value="#000000"
+                    class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    maxlength="7"
+                  />
+                </div>
+              </div>
+
+              <!-- Padding -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoPaddingLabel"
+                  >Padding</label
+                >
+                <label
+                  class="flex items-center gap-2.5 text-sm cursor-pointer select-none mb-2"
+                >
+                  <input
+                    type="checkbox"
+                    id="paddingEnabled"
+                    class="w-4 h-4 accent-blue-600 cursor-pointer rounded"
+                  />
+                  <span
+                    class="text-gray-600"
+                    data-i18n="photoToVideoPaddingEnable"
+                    >Add padding</span
+                  >
+                </label>
+                <div id="paddingOptions" class="hidden items-center gap-3">
+                  <input
+                    type="range"
+                    id="paddingSize"
+                    min="1"
+                    max="25"
+                    value="5"
+                    class="flex-1 accent-blue-600 h-1.5"
+                  />
+                  <span
+                    id="paddingSizeVal"
+                    class="text-xs text-gray-500 w-8 text-right tabular-nums"
+                    >5%</span
+                  >
+                </div>
+              </div>
+
+              <!-- Duration per photo -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoGlobalDuration"
+                  >Duration per Photo (s)</label
+                >
+                <div class="flex gap-2">
+                  <input
+                    id="globalDuration"
+                    type="number"
+                    value="3"
+                    min="0.1"
+                    max="60"
+                    step="0.1"
+                    class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  />
+                  <button
+                    id="applyGlobalDuration"
+                    class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                    data-i18n="photoToVideoApplyAll"
+                  >
+                    Apply all
+                  </button>
+                </div>
+              </div>
+
+              <!-- Transition -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoTransition"
+                  >Transition</label
+                >
+                <select
+                  id="transitionType"
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-2"
+                >
+                  <option value="none" data-i18n="photoToVideoTransitionNone">
+                    None (hard cut)
+                  </option>
+                  <option value="fade" data-i18n="photoToVideoTransitionFade">
+                    Fade
+                  </option>
+                  <option
+                    value="slide-left"
+                    data-i18n="photoToVideoTransitionSlideLeft"
+                  >
+                    Slide left
+                  </option>
+                  <option
+                    value="slide-right"
+                    data-i18n="photoToVideoTransitionSlideRight"
+                  >
+                    Slide right
+                  </option>
+                  <option
+                    value="slide-up"
+                    data-i18n="photoToVideoTransitionSlideUp"
+                  >
+                    Slide up
+                  </option>
+                  <option
+                    value="slide-down"
+                    data-i18n="photoToVideoTransitionSlideDown"
+                  >
+                    Slide down
+                  </option>
+                </select>
+                <div
+                  id="transitionDurationRow"
+                  class="hidden items-center gap-2"
+                >
+                  <label
+                    class="text-xs text-gray-500 flex-shrink-0"
+                    data-i18n="photoToVideoTransitionDuration"
+                    >Duration</label
+                  >
+                  <input
+                    id="transitionDuration"
+                    type="number"
+                    value="0.5"
+                    min="0.1"
+                    max="5"
+                    step="0.1"
+                    class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  />
+                  <span class="text-xs text-gray-400">s</span>
+                </div>
+              </div>
+
+              <!-- FPS -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoFps"
+                  >Frame Rate</label
+                >
+                <select
+                  id="fps"
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                >
+                  <option value="1">1 fps — smallest file</option>
+                  <option value="15">15 fps</option>
+                  <option value="30" selected>30 fps</option>
+                  <option value="60">60 fps</option>
+                </select>
+              </div>
+
+              <!-- Output filename -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoFilename"
+                  >Filename</label
+                >
+                <div class="flex items-center gap-1.5">
+                  <input
+                    id="outputFilename"
+                    type="text"
+                    value="slideshow"
+                    class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  />
+                  <span class="text-sm text-gray-400 font-mono">.mp4</span>
+                </div>
+              </div>
+            </div>
+            <!-- /divide-y -->
+          </div>
+
+          <!-- Preview player -->
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <div
+              class="px-5 py-3.5 border-b border-gray-100 flex items-center gap-2"
+            >
+              <span class="text-base">▶️</span>
+              <h2
+                class="font-semibold text-gray-800"
+                data-i18n="photoToVideoPreview"
+              >
+                Preview
+              </h2>
+            </div>
+            <div class="p-4">
+              <!-- Canvas wrapper — aspect ratio matches output -->
+              <div
+                id="previewWrapper"
+                class="relative bg-gray-900 rounded-lg overflow-hidden"
+                style="padding-bottom: 56.25%"
+              >
+                <canvas
+                  id="previewCanvas"
+                  class="absolute inset-0 w-full h-full"
+                  style="object-fit: contain"
+                ></canvas>
+                <div
+                  id="previewEmpty"
+                  class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 gap-2"
+                >
+                  <span class="text-sm" data-i18n="photoToVideoPreviewEmpty"
+                    >No photos added</span
+                  >
+                </div>
+              </div>
+
+              <!-- Playback controls -->
+              <div id="previewControls" class="hidden mt-3 space-y-2">
+                <!-- Scrubber -->
+                <div
+                  id="previewScrubber"
+                  class="w-full h-4 flex items-center cursor-pointer group"
+                  title=""
+                >
+                  <div
+                    class="w-full bg-gray-200 rounded-full h-1.5 relative group-hover:h-2 transition-all"
+                  >
+                    <div
+                      id="previewScrubFill"
+                      class="bg-blue-500 h-full rounded-full pointer-events-none"
+                      style="width: 0%"
+                    ></div>
+                    <div
+                      id="previewScrubThumb"
+                      class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-blue-600 rounded-full pointer-events-none shadow opacity-0 group-hover:opacity-100 transition-opacity"
+                      style="left: 0%"
+                    ></div>
+                  </div>
+                </div>
+
+                <!-- Info row -->
+                <div
+                  class="flex items-center justify-between text-xs text-gray-400 px-0.5"
+                >
+                  <span id="previewPhotoIndicator" class="font-medium"
+                    >1 / 1</span
+                  >
+                  <span id="previewTimeIndicator" class="tabular-nums"
+                    >0:00 / 0:00</span
+                  >
+                </div>
+
+                <!-- Buttons row -->
+                <div class="flex items-center justify-center gap-3 pt-0.5">
+                  <button
+                    id="previewRestartBtn"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors text-sm"
+                    title=""
+                    data-title-key="photoToVideoRestart"
+                  >
+                    ⏮
+                  </button>
+                  <button
+                    id="previewPlayBtn"
+                    class="w-11 h-11 flex items-center justify-center rounded-full bg-blue-600 hover:bg-blue-700 text-white text-xl shadow-sm transition-colors"
+                    title=""
+                    data-title-key="photoToVideoPlay"
+                  >
+                    ▶
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Generate + progress + download -->
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 space-y-3"
+          >
+            <button
+              id="generateBtn"
+              class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-sm"
+              disabled
+              data-i18n="photoToVideoGenerate"
+            >
+              Generate MP4
+            </button>
+
+            <div id="progressSection" class="hidden space-y-1.5">
+              <div class="flex justify-between text-xs text-gray-500">
+                <span id="progressLabel" data-i18n="photoToVideoEncoding"
+                  >Encoding…</span
+                >
+                <span id="progressPct" class="tabular-nums font-medium"
+                  >0%</span
+                >
+              </div>
+              <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                <div
+                  id="progressBar"
+                  class="bg-blue-500 h-2 rounded-full transition-all duration-100"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+
+            <a
+              id="downloadLink"
+              class="hidden w-full py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-center text-sm flex items-center justify-center gap-2"
+              download="slideshow.mp4"
+              data-i18n="photoToVideoDownload"
+            >
+              ⬇ Download MP4
+            </a>
+
+            <p
+              id="errorMsg"
+              class="hidden text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 border border-red-100"
+            ></p>
+          </div>
+
+          <!-- Cover image -->
+          <div
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <div
+              class="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between"
+            >
+              <h2 class="font-semibold text-gray-800 flex items-center gap-2">
+                <span class="text-base">🖼</span>
+                <span data-i18n="photoToVideoCoverTitle">Cover Image</span>
+              </h2>
+              <span
+                class="text-xs text-gray-400"
+                data-i18n="photoToVideoCoverSubtitle"
+                >PNG · same size as video</span
+              >
+            </div>
+
+            <div class="p-4 space-y-3">
+              <!-- Mini preview -->
+              <div
+                id="thumbWrapper"
+                class="relative bg-gray-900 rounded-lg overflow-hidden"
+                style="padding-bottom: 56.25%"
+              >
+                <canvas
+                  id="thumbCanvas"
+                  class="absolute inset-0 w-full h-full"
+                  style="object-fit: contain"
+                ></canvas>
+                <div
+                  id="thumbEmpty"
+                  class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 gap-2"
+                >
+                  <span class="text-sm" data-i18n="photoToVideoPreviewEmpty"
+                    >No photos added</span
+                  >
+                </div>
+              </div>
+
+              <!-- Overlay toggle -->
+              <label
+                class="flex items-center gap-2.5 text-sm cursor-pointer select-none py-0.5"
+              >
+                <input
+                  type="checkbox"
+                  id="thumbOverlayEnabled"
+                  checked
+                  class="w-4 h-4 accent-blue-600 cursor-pointer rounded"
+                />
+                <span
+                  class="font-medium text-gray-700"
+                  data-i18n="photoToVideoCoverOverlay"
+                  >Play button overlay</span
+                >
+              </label>
+
+              <!-- Overlay options -->
+              <div id="thumbOverlayOptions" class="space-y-3">
+                <!-- Dark overlay opacity -->
+                <div class="flex items-center gap-3">
+                  <label
+                    class="text-xs text-gray-500 w-24 flex-shrink-0"
+                    data-i18n="photoToVideoCoverDarkness"
+                    >Overlay darkness</label
+                  >
+                  <input
+                    type="range"
+                    id="thumbDarkOpacity"
+                    min="0"
+                    max="75"
+                    value="30"
+                    class="flex-1 accent-blue-600 h-1.5"
+                  />
+                  <span
+                    id="thumbDarkOpacityVal"
+                    class="text-xs text-gray-500 w-8 text-right tabular-nums"
+                    >30%</span
+                  >
+                </div>
+
+                <!-- Vignette -->
+                <div class="flex items-center gap-3">
+                  <label
+                    class="text-xs text-gray-500 w-24 flex-shrink-0"
+                    data-i18n="photoToVideoCoverVignette"
+                    >Vignette</label
+                  >
+                  <input
+                    type="range"
+                    id="thumbVignette"
+                    min="0"
+                    max="80"
+                    value="0"
+                    class="flex-1 accent-blue-600 h-1.5"
+                  />
+                  <span
+                    id="thumbVignetteVal"
+                    class="text-xs text-gray-500 w-8 text-right tabular-nums"
+                    >0%</span
+                  >
+                </div>
+
+                <!-- Button size -->
+                <div class="flex items-center gap-3">
+                  <label
+                    class="text-xs text-gray-500 w-24 flex-shrink-0"
+                    data-i18n="photoToVideoCoverBtnSize"
+                    >Button size</label
+                  >
+                  <select
+                    id="thumbBtnSize"
+                    class="flex-1 border border-gray-200 rounded-lg px-2 py-1.5 text-xs bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  >
+                    <option value="sm" data-i18n="photoToVideoCoverSmall">
+                      Small
+                    </option>
+                    <option
+                      value="md"
+                      selected
+                      data-i18n="photoToVideoCoverMedium"
+                    >
+                      Medium
+                    </option>
+                    <option value="lg" data-i18n="photoToVideoCoverLarge">
+                      Large
+                    </option>
+                  </select>
+                </div>
+
+                <!-- Button color -->
+                <div class="flex items-center gap-3">
+                  <label
+                    class="text-xs text-gray-500 w-24 flex-shrink-0"
+                    data-i18n="photoToVideoCoverBtnColor"
+                    >Button color</label
+                  >
+                  <input
+                    type="color"
+                    id="thumbBtnColor"
+                    value="#ffffff"
+                    class="w-9 h-7 rounded-lg border border-gray-200 cursor-pointer p-0.5 flex-shrink-0"
+                  />
+                  <input
+                    type="text"
+                    id="thumbBtnColorHex"
+                    value="#ffffff"
+                    class="flex-1 border border-gray-200 rounded-lg px-2 py-1.5 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    maxlength="7"
+                  />
+                </div>
+              </div>
+
+              <!-- Download button -->
+              <button
+                id="downloadThumbBtn"
+                class="w-full py-2.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center gap-2"
+                disabled
+                data-i18n="photoToVideoCoverDownload"
+              >
+                ⬇ Download Cover PNG
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

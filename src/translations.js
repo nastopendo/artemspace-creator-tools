@@ -75,12 +75,15 @@ export const translations = {
 
     // App Config Editor - Template Customization
     templateCustomization: "Template Customization",
-    templateCustomizationDesc: "Paste or drop a template JSON exported from templates.artemspace.pl to include it in the config.",
+    templateCustomizationDesc:
+      "Paste or drop a template JSON exported from templates.artemspace.pl to include it in the config.",
     dropOrPasteTemplate: "Drop a template JSON file here, or paste JSON below",
     templateLoaded: "Template loaded",
     clearTemplate: "Clear",
-    noTemplateLoaded: "No template loaded — customization will not be included in the export.",
-    invalidTemplateJson: "Invalid template JSON. Make sure it contains templateId and customization fields.",
+    noTemplateLoaded:
+      "No template loaded — customization will not be included in the export.",
+    invalidTemplateJson:
+      "Invalid template JSON. Make sure it contains templateId and customization fields.",
 
     // App Config Editor - Model Properties
     modelProperties: "Model Properties",
@@ -347,6 +350,69 @@ export const translations = {
     textToPngMarginBottom: "Bottom",
     textToPngMarginLeft: "Left",
     textToPngMarginRight: "Right",
+
+    // Photos to Video
+    photoToVideoTitle: "Photos to Video",
+    photoToVideoDesc:
+      "Create MP4 slideshow videos from photos. Set per-photo duration, background color, output resolution and fit mode.",
+    photoToVideoSettings: "Settings",
+    photoToVideoPhotos: "Photos",
+    photoToVideoDragTip: "Drag to reorder",
+    photoToVideoDimensions: "Output Dimensions",
+    photoToVideoAutoRatio: "Original ratio (2048px)",
+    photoToVideoCustom: "Custom…",
+    photoToVideoWidth: "Width (px)",
+    photoToVideoHeight: "Height (px)",
+    photoToVideoFitMode: "Fit Mode",
+    photoToVideoContain: "Contain (letterbox)",
+    photoToVideoCover: "Cover (crop)",
+    photoToVideoStretch: "Stretch (fill)",
+    photoToVideoBgColor: "Background Color",
+    photoToVideoGlobalDuration: "Duration per Photo (seconds)",
+    photoToVideoApplyAll: "Apply all",
+    photoToVideoDurationLabel: "Duration",
+    photoToVideoFps: "Frame Rate (FPS)",
+    photoToVideoTransition: "Transition",
+    photoToVideoTransitionNone: "None (hard cut)",
+    photoToVideoTransitionFade: "Fade",
+    photoToVideoTransitionSlideLeft: "Slide left",
+    photoToVideoTransitionSlideRight: "Slide right",
+    photoToVideoTransitionSlideUp: "Slide up",
+    photoToVideoTransitionSlideDown: "Slide down",
+    photoToVideoTransitionDuration: "Duration",
+    photoToVideoFilename: "Filename",
+    photoToVideoPreview: "Preview",
+    photoToVideoPreviewEmpty: "No photos added",
+    photoToVideoGenerate: "Generate MP4",
+    photoToVideoDownload: "⬇ Download MP4",
+    photoToVideoEncoding: "Encoding…",
+    photoToVideoFinalizing: "Finalizing…",
+    photoToVideoDone: "Done!",
+    photoToVideoError: "Encoding failed. Please try again.",
+    photoToVideoNoWebCodecs:
+      "WebCodecs API is not supported in this browser. Please use Chrome 94+ or Edge 94+.",
+    photoToVideoSupportedFormats: "JPG, PNG, WebP, GIF — any resolution",
+    photoToVideoBrowserWarningTitle: "Browser not supported:",
+    photoToVideoBrowserWarning:
+      " This tool requires the WebCodecs API (Chrome 94+ or Edge 94+). Some features may not work in your current browser.",
+    photoToVideoPlay: "Play",
+    photoToVideoPause: "Pause",
+    photoToVideoRestart: "Restart",
+
+    // Cover image
+    photoToVideoCoverTitle: "Cover Image",
+    photoToVideoCoverSubtitle: "PNG · same size as video",
+    photoToVideoCoverOverlay: "Play button overlay",
+    photoToVideoCoverDarkness: "Overlay darkness",
+    photoToVideoCoverVignette: "Vignette",
+    photoToVideoCoverBtnSize: "Button size",
+    photoToVideoCoverSmall: "Small",
+    photoToVideoCoverMedium: "Medium",
+    photoToVideoCoverLarge: "Large",
+    photoToVideoCoverBtnColor: "Button color",
+    photoToVideoCoverDownload: "⬇ Download Cover PNG",
+    photoToVideoPaddingLabel: "Padding",
+    photoToVideoPaddingEnable: "Add padding",
   },
   pl: {
     // Common
@@ -424,12 +490,16 @@ export const translations = {
 
     // App Config Editor - Template Customization
     templateCustomization: "Dostosowanie szablonu",
-    templateCustomizationDesc: "Wklej lub upuść plik JSON szablonu wyeksportowany z templates.artemspace.pl, aby dołączyć go do konfiguracji.",
-    dropOrPasteTemplate: "Upuść plik JSON szablonu tutaj lub wklej JSON poniżej",
+    templateCustomizationDesc:
+      "Wklej lub upuść plik JSON szablonu wyeksportowany z templates.artemspace.pl, aby dołączyć go do konfiguracji.",
+    dropOrPasteTemplate:
+      "Upuść plik JSON szablonu tutaj lub wklej JSON poniżej",
     templateLoaded: "Szablon wczytany",
     clearTemplate: "Wyczyść",
-    noTemplateLoaded: "Brak szablonu — dostosowanie nie zostanie dołączone do eksportu.",
-    invalidTemplateJson: "Nieprawidłowy JSON szablonu. Upewnij się, że zawiera pola templateId i customization.",
+    noTemplateLoaded:
+      "Brak szablonu — dostosowanie nie zostanie dołączone do eksportu.",
+    invalidTemplateJson:
+      "Nieprawidłowy JSON szablonu. Upewnij się, że zawiera pola templateId i customization.",
 
     // App Config Editor - Model Properties
     modelProperties: "Właściwości modelu",
@@ -702,5 +772,68 @@ export const translations = {
     textToPngMarginBottom: "Dół",
     textToPngMarginLeft: "Lewo",
     textToPngMarginRight: "Prawo",
+
+    // Photos to Video
+    photoToVideoTitle: "Zdjęcia do wideo",
+    photoToVideoDesc:
+      "Twórz filmy MP4 (pokaz slajdów) ze zdjęć. Ustaw czas trwania dla każdego zdjęcia, kolor tła, rozdzielczość wyjściową i tryb dopasowania.",
+    photoToVideoSettings: "Ustawienia",
+    photoToVideoPhotos: "Zdjęcia",
+    photoToVideoDragTip: "Przeciągnij, aby zmienić kolejność",
+    photoToVideoDimensions: "Wymiary wyjściowe",
+    photoToVideoAutoRatio: "Oryginalne proporcje (2048px)",
+    photoToVideoCustom: "Własne…",
+    photoToVideoWidth: "Szerokość (px)",
+    photoToVideoHeight: "Wysokość (px)",
+    photoToVideoFitMode: "Tryb dopasowania",
+    photoToVideoContain: "Zawieranie (letterbox)",
+    photoToVideoCover: "Wypełnienie (przycinanie)",
+    photoToVideoStretch: "Rozciągnięcie (wypełnij)",
+    photoToVideoBgColor: "Kolor tła",
+    photoToVideoGlobalDuration: "Czas trwania na zdjęcie (sekundy)",
+    photoToVideoApplyAll: "Zastosuj do wszystkich",
+    photoToVideoDurationLabel: "Czas",
+    photoToVideoFps: "Liczba klatek na sekundę (FPS)",
+    photoToVideoTransition: "Przejście",
+    photoToVideoTransitionNone: "Brak (twarde cięcie)",
+    photoToVideoTransitionFade: "Przenikanie",
+    photoToVideoTransitionSlideLeft: "Przesunięcie w lewo",
+    photoToVideoTransitionSlideRight: "Przesunięcie w prawo",
+    photoToVideoTransitionSlideUp: "Przesunięcie w górę",
+    photoToVideoTransitionSlideDown: "Przesunięcie w dół",
+    photoToVideoTransitionDuration: "Czas trwania",
+    photoToVideoFilename: "Nazwa pliku",
+    photoToVideoPreview: "Podgląd",
+    photoToVideoPreviewEmpty: "Brak dodanych zdjęć",
+    photoToVideoGenerate: "Generuj MP4",
+    photoToVideoDownload: "⬇ Pobierz MP4",
+    photoToVideoEncoding: "Kodowanie…",
+    photoToVideoFinalizing: "Finalizowanie…",
+    photoToVideoDone: "Gotowe!",
+    photoToVideoError: "Kodowanie nie powiodło się. Spróbuj ponownie.",
+    photoToVideoNoWebCodecs:
+      "API WebCodecs nie jest obsługiwane w tej przeglądarce. Użyj Chrome 94+ lub Edge 94+.",
+    photoToVideoSupportedFormats: "JPG, PNG, WebP, GIF — dowolna rozdzielczość",
+    photoToVideoBrowserWarningTitle: "Przeglądarka nieobsługiwana:",
+    photoToVideoBrowserWarning:
+      " To narzędzie wymaga API WebCodecs (Chrome 94+ lub Edge 94+). Niektóre funkcje mogą nie działać w Twojej przeglądarce.",
+    photoToVideoPlay: "Odtwórz",
+    photoToVideoPause: "Wstrzymaj",
+    photoToVideoRestart: "Od początku",
+
+    // Cover image
+    photoToVideoCoverTitle: "Grafika startowa",
+    photoToVideoCoverSubtitle: "Ten sam rozmiar co wideo",
+    photoToVideoCoverOverlay: "Overlay z przyciskiem play",
+    photoToVideoCoverDarkness: "Zaciemnienie",
+    photoToVideoCoverVignette: "Winieta",
+    photoToVideoCoverBtnSize: "Rozmiar przycisku",
+    photoToVideoCoverSmall: "Mały",
+    photoToVideoCoverMedium: "Średni",
+    photoToVideoCoverLarge: "Duży",
+    photoToVideoCoverBtnColor: "Kolor przycisku",
+    photoToVideoCoverDownload: "Pobierz grafikę startową",
+    photoToVideoPaddingLabel: "Marginesy",
+    photoToVideoPaddingEnable: "Dodaj marginesy",
   },
 };
