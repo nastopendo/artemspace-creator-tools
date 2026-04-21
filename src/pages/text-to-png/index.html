@@ -9,6 +9,129 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 300;
+        font-style: normal;
+        src: local("Aptos Light");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 400;
+        font-style: normal;
+        src: local("Aptos");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 600;
+        font-style: normal;
+        src: local("Aptos SemiBold");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 700;
+        font-style: normal;
+        src: local("Aptos Bold");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 800;
+        font-style: normal;
+        src: local("Aptos ExtraBold");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 300;
+        font-style: italic;
+        src: local("Aptos Light Italic");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 400;
+        font-style: italic;
+        src: local("Aptos Italic");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 600;
+        font-style: italic;
+        src: local("Aptos SemiBold Italic");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 700;
+        font-style: italic;
+        src: local("Aptos Bold Italic");
+      }
+      @font-face {
+        font-family: "Aptos";
+        font-weight: 800;
+        font-style: italic;
+        src: local("Aptos ExtraBold Italic");
+      }
+
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 300;
+        font-style: normal;
+        src: local("Aptos Narrow Light");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 400;
+        font-style: normal;
+        src: local("Aptos Narrow");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 600;
+        font-style: normal;
+        src: local("Aptos Narrow SemiBold");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 700;
+        font-style: normal;
+        src: local("Aptos Narrow Bold");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 800;
+        font-style: normal;
+        src: local("Aptos Narrow ExtraBold");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 300;
+        font-style: italic;
+        src: local("Aptos Narrow Light Italic");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 400;
+        font-style: italic;
+        src: local("Aptos Narrow Italic");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 600;
+        font-style: italic;
+        src: local("Aptos Narrow SemiBold Italic");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 700;
+        font-style: italic;
+        src: local("Aptos Narrow Bold Italic");
+      }
+      @font-face {
+        font-family: "Aptos Narrow";
+        font-weight: 800;
+        font-style: italic;
+        src: local("Aptos Narrow ExtraBold Italic");
+      }
+    </style>
   </head>
   <body class="bg-gray-100 text-gray-800 min-h-screen py-8 px-4">
     <header>
@@ -46,6 +169,8 @@
                 id="canvasWidth"
                 class="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-sm"
               >
+                <option value="64">64</option>
+                <option value="128">128</option>
                 <option value="256">256</option>
                 <option value="512">512</option>
                 <option value="1024">1024</option>
@@ -63,6 +188,8 @@
                 id="canvasHeight"
                 class="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none text-sm"
               >
+                <option value="64">64</option>
+                <option value="128">128</option>
                 <option value="256">256</option>
                 <option value="512">512</option>
                 <option value="1024" selected>1024</option>

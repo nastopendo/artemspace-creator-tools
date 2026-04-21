@@ -1,6 +1,8 @@
 import { languageService } from "../../services/languageService";
 
 const FONTS = [
+  "Aptos",
+  "Aptos Narrow",
   "Open Sans",
   "Roboto",
   "Lato",
@@ -45,6 +47,10 @@ function getCanvasH() {
   return parseInt(canvasHeightEl.value);
 }
 
+function applyNonBreakingSpaces(text) {
+  return text.replace(/(^|[  ])([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]) /g, "$1$2 ");
+}
+
 function createLineConfig(text = "Sample Text") {
   return {
     id: nextLineId++,
@@ -62,6 +68,7 @@ function createLineConfig(text = "Sample Text") {
     shadowOffsetY: 2,
     offsetXPct: 0,
     offsetYPct: 0,
+    textAlign: "left",
   };
 }
 
@@ -162,6 +169,13 @@ function wrapTokens(tokens, maxWidth, line) {
   return rows;
 }
 
+function measureRow(rowTokens, line) {
+  return rowTokens.reduce((sum, token) => {
+    ctx.font = buildFont(line, token.italic);
+    return sum + ctx.measureText(token.text).width;
+  }, 0);
+}
+
 // Draw a single row of tokens at position (x, y)
 function drawRow(rowTokens, x, y, line) {
   let curX = x;
@@ -201,7 +215,6 @@ function renderCanvas() {
     const offsetY = (line.offsetYPct / 100) * h;
 
     ctx.fillStyle = line.color;
-    ctx.textAlign = "left";
     ctx.textBaseline = "top";
 
     if (line.shadow) {
@@ -224,7 +237,16 @@ function renderCanvas() {
       const rows = wrapTokens(tokens, textAreaWidth, line);
 
       for (const rowTokens of rows) {
-        drawRow(rowTokens, mLeft + offsetX, currentY + offsetY, line);
+        const rowWidth = measureRow(rowTokens, line);
+        let startX;
+        if (line.textAlign === "center") {
+          startX = mLeft + textAreaWidth / 2 - rowWidth / 2 + offsetX;
+        } else if (line.textAlign === "right") {
+          startX = mLeft + textAreaWidth - rowWidth + offsetX;
+        } else {
+          startX = mLeft + offsetX;
+        }
+        drawRow(rowTokens, startX, currentY + offsetY, line);
         currentY += lh;
       }
     }
@@ -239,8 +261,7 @@ function renderCanvas() {
 
 function createLineElement(line) {
   const div = document.createElement("div");
-  div.className =
-    "border border-gray-200 rounded-lg p-3 space-y-2 bg-gray-50";
+  div.className = "border border-gray-200 rounded-lg p-3 space-y-2 bg-gray-50";
   div.dataset.lineId = line.id;
 
   div.innerHTML = `
@@ -260,7 +281,7 @@ function createLineElement(line) {
       </div>
       <div>
         <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngSize">Size</label>
-        <input type="number" value="${line.fontSizePct}" min="0.5" max="50" step="0.5"
+        <input type="number" value="${line.fontSizePct}" min="0.5" max="100" step="0.5"
           class="line-size w-full p-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 outline-none" />
       </div>
       <div>
@@ -275,10 +296,18 @@ function createLineElement(line) {
           class="line-color w-full h-[34px] border border-gray-300 rounded cursor-pointer" />
       </div>
     </div>
-    <div class="grid grid-cols-4 gap-2">
+    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
       <div class="flex items-center gap-2">
         <input type="checkbox" ${line.italic ? "checked" : ""} class="line-italic" id="italic-${line.id}" />
         <label for="italic-${line.id}" class="text-sm text-gray-600" data-i18n="textToPngItalic">Italic</label>
+      </div>
+      <div>
+        <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngAlign">Align</label>
+        <select class="line-align w-full p-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 outline-none">
+          <option value="left" ${line.textAlign === "left" ? "selected" : ""} data-i18n="textToPngAlignLeft">Left</option>
+          <option value="center" ${line.textAlign === "center" ? "selected" : ""} data-i18n="textToPngAlignCenter">Center</option>
+          <option value="right" ${line.textAlign === "right" ? "selected" : ""} data-i18n="textToPngAlignRight">Right</option>
+        </select>
       </div>
       <div>
         <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngLineHeight">Line Height</label>
@@ -340,11 +369,27 @@ function createLineElement(line) {
   };
 
   bindInput(".line-text", "text");
+
+  const textareaEl = div.querySelector(".line-text");
+  textareaEl.addEventListener("paste", () => {
+    setTimeout(() => {
+      const transformed = applyNonBreakingSpaces(textareaEl.value);
+      if (transformed !== textareaEl.value) {
+        const pos = textareaEl.selectionStart;
+        textareaEl.value = transformed;
+        textareaEl.setSelectionRange(pos, pos);
+      }
+      line.text = textareaEl.value;
+      renderCanvas();
+    }, 0);
+  });
+
   bindInput(".line-font", "fontFamily");
   bindInput(".line-size", "fontSizePct", Number);
   bindInput(".line-weight", "fontWeight");
   bindInput(".line-color", "color");
   bindInput(".line-italic", "italic");
+  bindInput(".line-align", "textAlign");
   bindInput(".line-line-height", "lineHeight", Number);
   bindInput(".line-shadow", "shadow");
   bindInput(".line-shadow-color", "shadowColor");

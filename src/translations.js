@@ -182,6 +182,17 @@ export const translations = {
     movieLoop: "Loop",
     movieMuted: "Muted",
 
+    sculptureOptions: "Sculpture Options",
+    reflectionCubeTextures: "Reflection Cube Textures (optional)",
+    reflectionCubeTexturesHint: "Six image filenames for cube reflection, one per line (e.g. 0001.jpg). Leave empty to skip.",
+    orbitMinDistance: "Min Distance",
+    orbitMaxDistance: "Max Distance",
+    orbitMinPolarAngle: "Min Polar Angle",
+    orbitMaxPolarAngle: "Max Polar Angle",
+    orbitMinAzimuthAngle: "Min Azimuth Angle",
+    orbitMaxAzimuthAngle: "Max Azimuth Angle",
+    orbitRotateSpeed: "Orbit Rotate Speed",
+
     // GLTF Config Editor - Tooltips
     titleTooltip: "This is a title in start panel",
     descriptionTooltip:
@@ -344,6 +355,10 @@ export const translations = {
     textToPngShadowY: "Y",
     textToPngOffsetX: "Offset X",
     textToPngOffsetY: "Offset Y",
+    textToPngAlign: "Align",
+    textToPngAlignLeft: "Left",
+    textToPngAlignCenter: "Center",
+    textToPngAlignRight: "Right",
     textToPngPlaceholder: "Enter text...",
     textToPngMargins: "Margins",
     textToPngMarginTop: "Top",
@@ -359,6 +374,7 @@ export const translations = {
     photoToVideoPhotos: "Photos",
     photoToVideoDragTip: "Drag to reorder",
     photoToVideoDimensions: "Output Dimensions",
+    photoToVideoOriginalSize: "Original size (unscaled)",
     photoToVideoAutoRatio: "Original ratio (2048px)",
     photoToVideoCustom: "Custom…",
     photoToVideoWidth: "Width (px)",
@@ -367,6 +383,9 @@ export const translations = {
     photoToVideoContain: "Contain (letterbox)",
     photoToVideoCover: "Cover (crop)",
     photoToVideoStretch: "Stretch (fill)",
+    photoToVideoFit_contain: "Contain",
+    photoToVideoFit_cover: "Cover",
+    photoToVideoFit_stretch: "Stretch",
     photoToVideoBgColor: "Background Color",
     photoToVideoGlobalDuration: "Duration per Photo (seconds)",
     photoToVideoApplyAll: "Apply all",
@@ -379,6 +398,7 @@ export const translations = {
     photoToVideoTransitionSlideRight: "Slide right",
     photoToVideoTransitionSlideUp: "Slide up",
     photoToVideoTransitionSlideDown: "Slide down",
+    photoToVideoTransitionZoomFade: "Zoom + Fade",
     photoToVideoTransitionDuration: "Duration",
     photoToVideoFilename: "Filename",
     photoToVideoPreview: "Preview",
@@ -391,13 +411,31 @@ export const translations = {
     photoToVideoError: "Encoding failed. Please try again.",
     photoToVideoNoWebCodecs:
       "WebCodecs API is not supported in this browser. Please use Chrome 94+ or Edge 94+.",
-    photoToVideoSupportedFormats: "JPG, PNG, WebP, GIF — any resolution",
+    photoToVideoSupportedFormats: "JPG, PNG, WebP, GIF · MP4, WebM, MOV",
+    photoToVideoDropMedia: "Drag & Drop Images or Videos Here or",
+    photoToVideoMedia: "Media",
+    photoToVideoFpsLocked: "FPS locked: {fps} (from video)",
     photoToVideoBrowserWarningTitle: "Browser not supported:",
     photoToVideoBrowserWarning:
       " This tool requires the WebCodecs API (Chrome 94+ or Edge 94+). Some features may not work in your current browser.",
     photoToVideoPlay: "Play",
     photoToVideoPause: "Pause",
     photoToVideoRestart: "Restart",
+
+    // GIF export
+    photoToGifTitle: "GIF for mailing",
+    photoToGifHint:
+      "Generate a lightweight GIF (auto-scaled, 256-color palette with Floyd–Steinberg dithering). Keep under 2MB for email.",
+    photoToGifFps: "FPS",
+    photoToGifMaxWidth: "Max width (px)",
+    photoToGifGenerate: "Generate GIF",
+    photoToGifEncoding: "Encoding GIF…",
+    photoToGifQuantizing: "Building palette…",
+    photoToGifDithering: "Dithering frames…",
+    photoToGifDownload: "⬇ Download GIF",
+    photoToGifSizeWarning:
+      "⚠️ File is larger than 2MB. Try lowering FPS, max width, or duration.",
+    photoToGifError: "GIF encoding failed. Please try again.",
 
     // Cover image
     photoToVideoCoverTitle: "Cover Image",
@@ -411,8 +449,26 @@ export const translations = {
     photoToVideoCoverLarge: "Large",
     photoToVideoCoverBtnColor: "Button color",
     photoToVideoCoverDownload: "⬇ Download Cover PNG",
+
+    // Video Thumbnail
+    videoThumbTitle: "Video Thumbnail",
+    videoThumbSubtitle: "PNG · native video size",
+    videoThumbDrop: "Drop video here or",
+    videoThumbFormats: "MP4, WebM, MOV",
+    videoThumbSelectFrame: "Select frame",
+    videoThumbScale: "Export scale",
+    videoThumbScale1x: "1× (original)",
+    videoThumbDownload: "⬇ Download Thumbnail",
+
     photoToVideoPaddingLabel: "Padding",
     photoToVideoPaddingEnable: "Add padding",
+    photoToVideoItemMargin: "Margin",
+
+    photoToVideoEndIndicator: "End Indicator",
+    photoToVideoEndIndicatorEnable: "Mark the ending",
+    photoToVideoEndIndicatorTypeEnd: "End of video (stop symbol)",
+    photoToVideoEndIndicatorTypeLoop: "Will replay (loop symbol)",
+    photoToVideoEndIndicatorDuration: "Duration",
 
     // Image Redactor
     imageRedactorTitle: "Image Redactor",
@@ -623,6 +679,17 @@ export const translations = {
     movieLoop: "Zapętlenie",
     movieMuted: "Wyciszenie",
 
+    sculptureOptions: "Opcje rzeźby",
+    reflectionCubeTextures: "Tekstury odbić sześciennych (opcjonalne)",
+    reflectionCubeTexturesHint: "Sześć nazw plików obrazów do odbicia sześciennego, po jednej w wierszu (np. 0001.jpg). Pozostaw puste, aby pominąć.",
+    orbitMinDistance: "Min. odległość",
+    orbitMaxDistance: "Max. odległość",
+    orbitMinPolarAngle: "Min. kąt polarny",
+    orbitMaxPolarAngle: "Max. kąt polarny",
+    orbitMinAzimuthAngle: "Min. kąt azymutu",
+    orbitMaxAzimuthAngle: "Max. kąt azymutu",
+    orbitRotateSpeed: "Prędkość obrotu orbity",
+
     // GLTF Config Editor - Tooltips
     titleTooltip: "To jest tytuł w panelu startowym",
     descriptionTooltip:
@@ -789,6 +856,10 @@ export const translations = {
     textToPngShadowY: "Y",
     textToPngOffsetX: "Przesunięcie X (%)",
     textToPngOffsetY: "Przesunięcie Y (%)",
+    textToPngAlign: "Wyrównanie",
+    textToPngAlignLeft: "Do lewej",
+    textToPngAlignCenter: "Środek",
+    textToPngAlignRight: "Do prawej",
     textToPngPlaceholder: "Wpisz tekst...",
     textToPngMargins: "Marginesy (%)",
     textToPngMarginTop: "Góra",
@@ -804,6 +875,7 @@ export const translations = {
     photoToVideoPhotos: "Zdjęcia",
     photoToVideoDragTip: "Przeciągnij, aby zmienić kolejność",
     photoToVideoDimensions: "Wymiary wyjściowe",
+    photoToVideoOriginalSize: "Oryginalny rozmiar (bez skalowania)",
     photoToVideoAutoRatio: "Oryginalne proporcje (2048px)",
     photoToVideoCustom: "Własne…",
     photoToVideoWidth: "Szerokość (px)",
@@ -812,6 +884,9 @@ export const translations = {
     photoToVideoContain: "Zawieranie (letterbox)",
     photoToVideoCover: "Wypełnienie (przycinanie)",
     photoToVideoStretch: "Rozciągnięcie (wypełnij)",
+    photoToVideoFit_contain: "Zawieranie",
+    photoToVideoFit_cover: "Wypełnienie",
+    photoToVideoFit_stretch: "Rozciągnięcie",
     photoToVideoBgColor: "Kolor tła",
     photoToVideoGlobalDuration: "Czas trwania na zdjęcie (sekundy)",
     photoToVideoApplyAll: "Zastosuj do wszystkich",
@@ -824,6 +899,7 @@ export const translations = {
     photoToVideoTransitionSlideRight: "Przesunięcie w prawo",
     photoToVideoTransitionSlideUp: "Przesunięcie w górę",
     photoToVideoTransitionSlideDown: "Przesunięcie w dół",
+    photoToVideoTransitionZoomFade: "Zoom + Przenikanie",
     photoToVideoTransitionDuration: "Czas trwania",
     photoToVideoFilename: "Nazwa pliku",
     photoToVideoPreview: "Podgląd",
@@ -836,13 +912,31 @@ export const translations = {
     photoToVideoError: "Kodowanie nie powiodło się. Spróbuj ponownie.",
     photoToVideoNoWebCodecs:
       "API WebCodecs nie jest obsługiwane w tej przeglądarce. Użyj Chrome 94+ lub Edge 94+.",
-    photoToVideoSupportedFormats: "JPG, PNG, WebP, GIF — dowolna rozdzielczość",
+    photoToVideoSupportedFormats: "JPG, PNG, WebP, GIF · MP4, WebM, MOV",
+    photoToVideoDropMedia: "Przeciągnij i upuść zdjęcia lub filmy tutaj lub",
+    photoToVideoMedia: "Media",
+    photoToVideoFpsLocked: "FPS zablokowane: {fps} (z wideo)",
     photoToVideoBrowserWarningTitle: "Przeglądarka nieobsługiwana:",
     photoToVideoBrowserWarning:
       " To narzędzie wymaga API WebCodecs (Chrome 94+ lub Edge 94+). Niektóre funkcje mogą nie działać w Twojej przeglądarce.",
     photoToVideoPlay: "Odtwórz",
     photoToVideoPause: "Wstrzymaj",
     photoToVideoRestart: "Od początku",
+
+    // GIF export
+    photoToGifTitle: "GIF do mailingu",
+    photoToGifHint:
+      "Generuj lekki GIF (auto-skalowanie, paleta 256 kolorów z ditheringiem Floyd–Steinberg). Utrzymaj poniżej 2MB dla maila.",
+    photoToGifFps: "FPS",
+    photoToGifMaxWidth: "Maks. szerokość (px)",
+    photoToGifGenerate: "Generuj GIF",
+    photoToGifEncoding: "Kodowanie GIF…",
+    photoToGifQuantizing: "Budowa palety…",
+    photoToGifDithering: "Dithering klatek…",
+    photoToGifDownload: "⬇ Pobierz GIF",
+    photoToGifSizeWarning:
+      "⚠️ Plik jest większy niż 2MB. Zmniejsz FPS, szerokość lub czas trwania.",
+    photoToGifError: "Kodowanie GIF nie powiodło się. Spróbuj ponownie.",
 
     // Cover image
     photoToVideoCoverTitle: "Grafika startowa",
@@ -856,8 +950,26 @@ export const translations = {
     photoToVideoCoverLarge: "Duży",
     photoToVideoCoverBtnColor: "Kolor przycisku",
     photoToVideoCoverDownload: "Pobierz grafikę startową",
+
+    // Video Thumbnail
+    videoThumbTitle: "Miniatura wideo",
+    videoThumbSubtitle: "PNG · oryginalny rozmiar wideo",
+    videoThumbDrop: "Upuść wideo tutaj lub",
+    videoThumbFormats: "MP4, WebM, MOV",
+    videoThumbSelectFrame: "Wybierz klatkę",
+    videoThumbScale: "Skala eksportu",
+    videoThumbScale1x: "1× (oryginał)",
+    videoThumbDownload: "⬇ Pobierz miniaturę",
+
     photoToVideoPaddingLabel: "Marginesy",
     photoToVideoPaddingEnable: "Dodaj marginesy",
+    photoToVideoItemMargin: "Margines",
+
+    photoToVideoEndIndicator: "Znacznik końca",
+    photoToVideoEndIndicatorEnable: "Oznacz zakończenie",
+    photoToVideoEndIndicatorTypeEnd: "Koniec filmu (symbol stop)",
+    photoToVideoEndIndicatorTypeLoop: "Powtórzy się (symbol pętli)",
+    photoToVideoEndIndicatorDuration: "Czas",
 
     // Image Redactor
     imageRedactorTitle: "Redaktor obrazów",

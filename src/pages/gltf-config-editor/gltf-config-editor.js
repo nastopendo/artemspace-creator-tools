@@ -181,6 +181,19 @@ function stripStyleAndClassAttributes(html) {
   return tempContainer.innerHTML;
 }
 
+function normalizeSculptureData(artwork) {
+  if (artwork.type !== "sculpture") return;
+
+  if (!Array.isArray(artwork.reflectionCubeTextures)) artwork.reflectionCubeTextures = [];
+  if (typeof artwork.orbitMinDistance !== "number") artwork.orbitMinDistance = 0.2;
+  if (typeof artwork.orbitMaxDistance !== "number") artwork.orbitMaxDistance = 5.0;
+  if (typeof artwork.orbitMinPolarAngle !== "number") artwork.orbitMinPolarAngle = 0.0;
+  if (typeof artwork.orbitMaxPolarAngle !== "number") artwork.orbitMaxPolarAngle = 130.0;
+  if (typeof artwork.orbitMinAzimuthAngle !== "number") artwork.orbitMinAzimuthAngle = -9999999.9;
+  if (typeof artwork.orbitMaxAzimuthAngle !== "number") artwork.orbitMaxAzimuthAngle = 9999999.9;
+  if (typeof artwork.orbitRotateSpeed !== "number") artwork.orbitRotateSpeed = 0.6;
+}
+
 function normalizeCustomModal(customModal) {
   const safeModal =
     customModal && typeof customModal === "object" ? customModal : {};
@@ -223,6 +236,7 @@ function normalizeArtworkData(artwork, movieFromConfig = null) {
   artwork.linkURL = artwork.linkURL || "";
   artwork.customModal = normalizeCustomModal(artwork.customModal);
   artwork.movie = normalizeMovieData(movieFromConfig || artwork.movie);
+  normalizeSculptureData(artwork);
 
   return artwork;
 }
@@ -545,6 +559,72 @@ function createArtworkElement(artwork, index) {
           : ""
       }
 
+      ${
+        artwork.type === "sculpture"
+          ? `
+      <div class="border rounded-md border-gray-200 bg-white p-4 space-y-4">
+        <h3 class="text-base font-semibold text-gray-700" data-i18n="sculptureOptions">Sculpture Options</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="orbitMinDistance">Min Distance</label>
+              <input type="number" value="${artwork.orbitMinDistance ?? 0.2}" step="0.1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateArtworkField(${index}, 'orbitMinDistance', parseFloat(this.value))">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="orbitMaxDistance">Max Distance</label>
+              <input type="number" value="${artwork.orbitMaxDistance ?? 5.0}" step="0.1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateArtworkField(${index}, 'orbitMaxDistance', parseFloat(this.value))">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="orbitRotateSpeed">Rotate Speed</label>
+              <input type="number" value="${artwork.orbitRotateSpeed ?? 0.6}" step="0.1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateArtworkField(${index}, 'orbitRotateSpeed', parseFloat(this.value))">
+            </div>
+          </div>
+          <div class="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="orbitMinPolarAngle">Min Polar Angle</label>
+              <input type="number" value="${artwork.orbitMinPolarAngle ?? 0.0}" step="1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateArtworkField(${index}, 'orbitMinPolarAngle', parseFloat(this.value))">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="orbitMaxPolarAngle">Max Polar Angle</label>
+              <input type="number" value="${artwork.orbitMaxPolarAngle ?? 130.0}" step="1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateArtworkField(${index}, 'orbitMaxPolarAngle', parseFloat(this.value))">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="orbitMinAzimuthAngle">Min Azimuth Angle</label>
+              <input type="number" value="${artwork.orbitMinAzimuthAngle ?? -9999999.9}" step="1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateArtworkField(${index}, 'orbitMinAzimuthAngle', parseFloat(this.value))">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="orbitMaxAzimuthAngle">Max Azimuth Angle</label>
+              <input type="number" value="${artwork.orbitMaxAzimuthAngle ?? 9999999.9}" step="1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateArtworkField(${index}, 'orbitMaxAzimuthAngle', parseFloat(this.value))">
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-500" data-i18n="reflectionCubeTextures">Reflection Cube Textures (optional)</label>
+            <p class="mt-1 text-xs text-gray-500" data-i18n="reflectionCubeTexturesHint">Six image filenames for cube reflection, one per line. Leave empty to skip.</p>
+            <textarea
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white min-h-[100px]"
+              oninput="window.updateSculptureReflectionTextures(${index}, this.value)"
+              placeholder="0001.jpg&#10;0002.jpg&#10;0003.jpg&#10;0004.jpg&#10;0005.jpg&#10;0006.jpg">${escapeHtml((artwork.reflectionCubeTextures || []).join("\n"))}</textarea>
+          </div>
+        </div>
+      </div>
+      `
+          : ""
+      }
+
       <div>
         <label class="block text-sm font-medium text-gray-500 mb-2" data-i18n="description">Description</label>
         <div class="border rounded-md bg-white border-gray-300 overflow-hidden">
@@ -825,6 +905,13 @@ async function loadGLTFFile(file) {
       }
     }
 
+    const stripPrefix = (name) => name.replace(/^[^_]*_/, "");
+    artworks.sort((a, b) =>
+      stripPrefix(a.name).localeCompare(stripPrefix(b.name), undefined, {
+        numeric: true,
+        sensitivity: "base",
+      })
+    );
     configData.artworks = configData.artworks.concat(artworks);
     updateArtworksList();
     initializeSortable();
@@ -917,8 +1004,9 @@ exportBtn.addEventListener("click", () => {
     });
 
   // Process artworks texts
-  exportData.artworks = exportData.artworks.map((artwork) => {
+  exportData.artworks = exportData.artworks.map((artwork, index) => {
     const { texturePreview, movie, ...artworkWithoutTexture } = artwork;
+    artworkWithoutTexture.id = index + 1;
     artworkWithoutTexture.linkDisplayName = artworkWithoutTexture.linkDisplayName || "";
     artworkWithoutTexture.linkURL = artworkWithoutTexture.linkURL || "";
     artworkWithoutTexture.customModal = normalizeCustomModal(
@@ -932,6 +1020,16 @@ exportBtn.addEventListener("click", () => {
     artworkWithoutTexture.description = addNonBreakingSpaces(
       stripStyleAndClassAttributes(artworkWithoutTexture.description)
     );
+
+    // For sculptures, remove reflectionCubeTextures if empty
+    if (artworkWithoutTexture.type === "sculpture") {
+      if (
+        !Array.isArray(artworkWithoutTexture.reflectionCubeTextures) ||
+        artworkWithoutTexture.reflectionCubeTextures.length === 0
+      ) {
+        delete artworkWithoutTexture.reflectionCubeTextures;
+      }
+    }
 
     return artworkWithoutTexture;
   });
@@ -1022,6 +1120,11 @@ window.updateArtworkMovieField = (index, field, value) => {
   if (field === "autoplay" || field === "loop" || field === "muted") {
     movieData[field] = Boolean(value);
   }
+};
+
+window.updateSculptureReflectionTextures = (index, value) => {
+  const lines = value.split("\n").map((l) => l.trim()).filter(Boolean);
+  configData.artworks[index].reflectionCubeTextures = lines;
 };
 
 window.updateArtworkCustomModalField = (index, field, value) => {

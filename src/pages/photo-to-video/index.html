@@ -54,9 +54,9 @@
             >
               <p
                 class="text-gray-600 font-medium mb-1 pointer-events-none"
-                data-i18n="dragDropImages"
+                data-i18n="photoToVideoDropMedia"
               >
-                Drag & Drop Images Here or
+                Drag & Drop Images or Videos Here or
               </p>
               <label
                 class="cursor-pointer inline-block mt-2 px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium shadow-sm transition-colors"
@@ -65,7 +65,7 @@
                 <input
                   id="fileInput"
                   type="file"
-                  accept="image/*"
+                  accept="image/*,video/*"
                   multiple
                   class="hidden"
                 />
@@ -74,7 +74,7 @@
                 class="text-xs text-gray-400 mt-3 pointer-events-none"
                 data-i18n="photoToVideoSupportedFormats"
               >
-                JPG, PNG, WebP, GIF — any resolution
+                JPG, PNG, WebP, GIF · MP4, WebM, MOV
               </p>
             </div>
           </div>
@@ -86,7 +86,7 @@
           >
             <div class="flex items-center justify-between mb-4">
               <h2 class="font-semibold text-gray-800 flex items-center gap-2">
-                <span data-i18n="photoToVideoPhotos">Photos</span>
+                <span data-i18n="photoToVideoMedia">Media</span>
                 <span
                   id="photoCount"
                   class="text-xs font-normal text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full"
@@ -133,9 +133,11 @@
                   id="dimensionPreset"
                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-2"
                 >
+                  <option value="original" selected data-i18n="photoToVideoOriginalSize">
+                    Original size (unscaled)
+                  </option>
                   <option
                     value="auto"
-                    selected
                     data-i18n="photoToVideoAutoRatio"
                   >
                     Original ratio (2048px)
@@ -192,20 +194,27 @@
                   data-i18n="photoToVideoFitMode"
                   >Fit Mode</label
                 >
-                <select
-                  id="fitMode"
-                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                >
-                  <option value="contain" data-i18n="photoToVideoContain">
-                    Contain (letterbox)
-                  </option>
-                  <option value="cover" data-i18n="photoToVideoCover">
-                    Cover (crop)
-                  </option>
-                  <option value="stretch" data-i18n="photoToVideoStretch">
-                    Stretch (fill)
-                  </option>
-                </select>
+                <div class="flex flex-col gap-2">
+                  <select
+                    id="fitMode"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  >
+                    <option value="contain" data-i18n="photoToVideoContain">
+                      Contain (letterbox)
+                    </option>
+                    <option value="cover" selected data-i18n="photoToVideoCover">
+                      Cover (crop)
+                    </option>
+                    <option value="stretch" data-i18n="photoToVideoStretch">
+                      Stretch (fill)
+                    </option>
+                  </select>
+                  <button
+                    id="applyGlobalFitMode"
+                    class="w-full px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg text-sm font-medium transition-colors"
+                    data-i18n="photoToVideoApplyAll"
+                  >Apply all</button>
+                </div>
               </div>
 
               <!-- Background color -->
@@ -219,13 +228,13 @@
                   <input
                     id="bgColor"
                     type="color"
-                    value="#000000"
+                    value="#ffffff"
                     class="w-10 h-9 rounded-lg border border-gray-200 cursor-pointer p-0.5 flex-shrink-0"
                   />
                   <input
                     id="bgColorHex"
                     type="text"
-                    value="#000000"
+                    value="#ffffff"
                     class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     maxlength="7"
                   />
@@ -277,19 +286,19 @@
                   data-i18n="photoToVideoGlobalDuration"
                   >Duration per Photo (s)</label
                 >
-                <div class="flex gap-2">
+                <div class="flex flex-col gap-2">
                   <input
                     id="globalDuration"
                     type="number"
-                    value="3"
+                    value="6"
                     min="0.1"
                     max="60"
                     step="0.1"
-                    class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   />
                   <button
                     id="applyGlobalDuration"
-                    class="px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg text-sm font-medium transition-colors whitespace-nowrap"
+                    class="w-full px-3 py-2 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-lg text-sm font-medium transition-colors"
                     data-i18n="photoToVideoApplyAll"
                   >
                     Apply all
@@ -311,6 +320,7 @@
                   <option value="none" data-i18n="photoToVideoTransitionNone">
                     None (hard cut)
                   </option>
+
                   <option value="fade" data-i18n="photoToVideoTransitionFade">
                     Fade
                   </option>
@@ -338,10 +348,17 @@
                   >
                     Slide down
                   </option>
+                  <option
+                    value="zoom-fade"
+                    selected
+                    data-i18n="photoToVideoTransitionZoomFade"
+                  >
+                    Zoom + Fade
+                  </option>
                 </select>
                 <div
                   id="transitionDurationRow"
-                  class="hidden items-center gap-2"
+                  class="flex items-center gap-2"
                 >
                   <label
                     class="text-xs text-gray-500 flex-shrink-0"
@@ -351,13 +368,72 @@
                   <input
                     id="transitionDuration"
                     type="number"
-                    value="0.5"
+                    value="1"
                     min="0.1"
                     max="5"
                     step="0.1"
                     class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   />
                   <span class="text-xs text-gray-400">s</span>
+                </div>
+              </div>
+
+              <!-- End indicator -->
+              <div class="px-5 py-3.5">
+                <label
+                  class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2"
+                  data-i18n="photoToVideoEndIndicator"
+                  >End Indicator</label
+                >
+                <label
+                  class="flex items-center gap-2.5 text-sm cursor-pointer select-none mb-2"
+                >
+                  <input
+                    type="checkbox"
+                    id="endIndicatorEnabled"
+                    class="w-4 h-4 accent-blue-600 cursor-pointer rounded"
+                  />
+                  <span
+                    class="text-gray-600"
+                    data-i18n="photoToVideoEndIndicatorEnable"
+                    >Mark the ending</span
+                  >
+                </label>
+                <div id="endIndicatorOptions" class="hidden space-y-2">
+                  <select
+                    id="endIndicatorType"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  >
+                    <option
+                      value="end"
+                      data-i18n="photoToVideoEndIndicatorTypeEnd"
+                    >
+                      End of video (stop symbol)
+                    </option>
+                    <option
+                      value="loop"
+                      data-i18n="photoToVideoEndIndicatorTypeLoop"
+                    >
+                      Will replay (loop symbol)
+                    </option>
+                  </select>
+                  <div class="flex items-center gap-2">
+                    <label
+                      class="text-xs text-gray-500 flex-shrink-0"
+                      data-i18n="photoToVideoEndIndicatorDuration"
+                      >Duration</label
+                    >
+                    <input
+                      id="endIndicatorDuration"
+                      type="number"
+                      value="1.5"
+                      min="0.3"
+                      max="10"
+                      step="0.1"
+                      class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                    <span class="text-xs text-gray-400">s</span>
+                  </div>
                 </div>
               </div>
 
@@ -370,13 +446,14 @@
                 >
                 <select
                   id="fps"
-                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <option value="1">1 fps — smallest file</option>
                   <option value="15">15 fps</option>
                   <option value="30" selected>30 fps</option>
                   <option value="60">60 fps</option>
                 </select>
+                <p id="fpsLockNote" class="hidden mt-1.5 text-xs text-amber-600 font-medium"></p>
               </div>
 
               <!-- Output filename -->
@@ -442,7 +519,8 @@
                 <!-- Scrubber -->
                 <div
                   id="previewScrubber"
-                  class="w-full h-4 flex items-center cursor-pointer group"
+                  class="w-full h-4 flex items-center cursor-pointer group select-none"
+                  style="touch-action: none"
                   title=""
                 >
                   <div
@@ -541,6 +619,145 @@
               class="hidden text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 border border-red-100"
             ></p>
           </div>
+
+          <!-- GIF export (collapsible, secondary option) -->
+          <details
+            id="gifSection"
+            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden group"
+          >
+            <summary
+              class="px-5 py-3 cursor-pointer select-none flex items-center justify-between text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors list-none [&::-webkit-details-marker]:hidden"
+            >
+              <span class="flex items-center gap-2">
+                <span class="text-base">📧</span>
+                <span data-i18n="photoToGifTitle">GIF for mailing</span>
+              </span>
+              <span
+                class="text-xs text-gray-400 transition-transform group-open:rotate-180"
+                aria-hidden="true"
+                >▾</span
+              >
+            </summary>
+
+            <div class="border-t border-gray-100 p-4 space-y-3">
+              <p
+                class="text-xs text-gray-500 leading-relaxed"
+                data-i18n="photoToGifHint"
+              >
+                Generate a lightweight GIF (auto-scaled, 256-color palette with
+                Floyd–Steinberg dithering). Keep under 2MB for email.
+              </p>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div>
+                  <label
+                    class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1"
+                    data-i18n="photoToGifFps"
+                    >FPS</label
+                  >
+                  <input
+                    id="gifFps"
+                    type="number"
+                    value="3"
+                    min="1"
+                    max="30"
+                    step="1"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1"
+                    data-i18n="photoToGifMaxWidth"
+                    >Max width (px)</label
+                  >
+                  <input
+                    id="gifMaxWidth"
+                    type="number"
+                    value="480"
+                    min="64"
+                    max="1920"
+                    step="10"
+                    class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  />
+                </div>
+              </div>
+
+              <button
+                id="generateGifBtn"
+                class="w-full py-2.5 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 text-sm"
+                disabled
+                data-i18n="photoToGifGenerate"
+              >
+                Generate GIF
+              </button>
+
+              <div id="gifProgressSection" class="hidden space-y-1.5">
+                <div class="flex justify-between text-xs text-gray-500">
+                  <span id="gifProgressLabel" data-i18n="photoToGifEncoding"
+                    >Encoding GIF…</span
+                  >
+                  <span id="gifProgressPct" class="tabular-nums font-medium"
+                    >0%</span
+                  >
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                  <div
+                    id="gifProgressBar"
+                    class="bg-gray-600 h-2 rounded-full transition-all duration-100"
+                    style="width: 0%"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- Preview of generated GIF -->
+              <div
+                id="gifPreviewWrapper"
+                class="hidden bg-gray-50 border border-gray-200 rounded-lg p-2 space-y-2"
+              >
+                <div
+                  class="relative bg-gray-900 rounded-md overflow-hidden flex items-center justify-center"
+                >
+                  <img
+                    id="gifPreviewImg"
+                    alt=""
+                    class="max-w-full h-auto block"
+                  />
+                </div>
+                <div
+                  class="flex items-center justify-between text-xs text-gray-500 px-0.5 tabular-nums"
+                >
+                  <span id="gifPreviewInfo"></span>
+                  <span
+                    id="gifSizeInfo"
+                    class="font-medium"
+                  ></span>
+                </div>
+                <p
+                  id="gifSizeWarning"
+                  class="hidden text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1.5"
+                  data-i18n="photoToGifSizeWarning"
+                >
+                  ⚠️ File is larger than 2MB. Try lowering FPS, max width, or
+                  duration.
+                </p>
+              </div>
+
+              <a
+                id="gifDownloadLink"
+                class="hidden w-full py-2.5 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors text-center text-sm flex items-center justify-center gap-2"
+                download="slideshow.gif"
+                data-i18n="photoToGifDownload"
+              >
+                ⬇ Download GIF
+              </a>
+
+              <p
+                id="gifErrorMsg"
+                class="hidden text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 border border-red-100"
+              ></p>
+            </div>
+          </details>
 
           <!-- Cover image -->
           <div
@@ -708,6 +925,124 @@
           </div>
         </div>
       </div>
+
+      <!-- ── Video Thumbnail Generator ──────────────────────────────────── -->
+      <div class="mt-5 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
+          <h2 class="font-semibold text-gray-800 flex items-center gap-2">
+            <span class="text-base">🎬</span>
+            <span data-i18n="videoThumbTitle">Video Thumbnail</span>
+          </h2>
+          <span class="text-xs text-gray-400" data-i18n="videoThumbSubtitle">PNG · native video size</span>
+        </div>
+        <div class="p-4">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+            <!-- Left: upload + frame picker -->
+            <div class="space-y-3">
+              <div
+                id="vtDropZone"
+                class="border-2 border-dashed border-gray-200 rounded-xl p-6 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 transition-all"
+              >
+                <p class="text-gray-600 font-medium mb-1 pointer-events-none" data-i18n="videoThumbDrop">Drop video here or</p>
+                <label class="cursor-pointer inline-block mt-1 px-4 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium shadow-sm transition-colors">
+                  <span data-i18n="clickToSelect">Click to Select</span>
+                  <input id="vtFileInput" type="file" accept="video/*" class="hidden" />
+                </label>
+                <p class="text-xs text-gray-400 mt-2 pointer-events-none" data-i18n="videoThumbFormats">MP4, WebM, MOV</p>
+              </div>
+
+              <!-- Frame preview (hidden until video loaded) -->
+              <div id="vtPreviewWrapper" class="hidden space-y-2">
+                <div
+                  id="vtCanvasWrapper"
+                  class="relative bg-gray-900 rounded-lg overflow-hidden"
+                  style="padding-bottom: 56.25%"
+                >
+                  <canvas id="vtCanvas" class="absolute inset-0 w-full h-full" style="object-fit: contain"></canvas>
+                </div>
+
+                <!-- File info -->
+                <div class="flex items-center justify-between text-xs text-gray-400 px-0.5">
+                  <span id="vtFilename" class="truncate font-medium text-gray-600 max-w-[60%]"></span>
+                  <span id="vtDimensions"></span>
+                </div>
+
+                <!-- Scrubber -->
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span data-i18n="videoThumbSelectFrame">Select frame</span>
+                    <span id="vtTimeDisplay" class="tabular-nums font-medium">0:00 / 0:00</span>
+                  </div>
+                  <div id="vtScrubberTrack" class="w-full h-4 flex items-center cursor-pointer group">
+                    <div class="w-full bg-gray-200 rounded-full h-1.5 relative group-hover:h-2 transition-all">
+                      <div id="vtScrubFill" class="bg-blue-500 h-full rounded-full pointer-events-none" style="width:0%"></div>
+                      <div id="vtScrubThumb" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-blue-600 rounded-full pointer-events-none shadow opacity-0 group-hover:opacity-100 transition-opacity" style="left:0%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: overlay options + download -->
+            <div class="space-y-3">
+              <label class="flex items-center gap-2.5 text-sm cursor-pointer select-none py-0.5">
+                <input type="checkbox" id="vtOverlayEnabled" checked class="w-4 h-4 accent-blue-600 cursor-pointer rounded" />
+                <span class="font-medium text-gray-700" data-i18n="photoToVideoCoverOverlay">Play button overlay</span>
+              </label>
+
+              <div id="vtOverlayOptions" class="space-y-3">
+                <div class="flex items-center gap-3">
+                  <label class="text-xs text-gray-500 w-24 flex-shrink-0" data-i18n="photoToVideoCoverDarkness">Overlay darkness</label>
+                  <input type="range" id="vtDarkOpacity" min="0" max="75" value="30" class="flex-1 accent-blue-600 h-1.5" />
+                  <span id="vtDarkOpacityVal" class="text-xs text-gray-500 w-8 text-right tabular-nums">30%</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <label class="text-xs text-gray-500 w-24 flex-shrink-0" data-i18n="photoToVideoCoverVignette">Vignette</label>
+                  <input type="range" id="vtVignette" min="0" max="80" value="0" class="flex-1 accent-blue-600 h-1.5" />
+                  <span id="vtVignetteVal" class="text-xs text-gray-500 w-8 text-right tabular-nums">0%</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <label class="text-xs text-gray-500 w-24 flex-shrink-0" data-i18n="photoToVideoCoverBtnSize">Button size</label>
+                  <select id="vtBtnSize" class="flex-1 border border-gray-200 rounded-lg px-2 py-1.5 text-xs bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                    <option value="sm" data-i18n="photoToVideoCoverSmall">Small</option>
+                    <option value="md" selected data-i18n="photoToVideoCoverMedium">Medium</option>
+                    <option value="lg" data-i18n="photoToVideoCoverLarge">Large</option>
+                  </select>
+                </div>
+                <div class="flex items-center gap-3">
+                  <label class="text-xs text-gray-500 w-24 flex-shrink-0" data-i18n="photoToVideoCoverBtnColor">Button color</label>
+                  <input type="color" id="vtBtnColor" value="#ffffff" class="w-9 h-7 rounded-lg border border-gray-200 cursor-pointer p-0.5 flex-shrink-0" />
+                  <input type="text" id="vtBtnColorHex" value="#ffffff" class="flex-1 border border-gray-200 rounded-lg px-2 py-1.5 text-xs font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" maxlength="7" />
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3 pt-1">
+                <label class="text-xs text-gray-500 w-24 flex-shrink-0" data-i18n="videoThumbScale">Export scale</label>
+                <select id="vtScale" class="flex-1 border border-gray-200 rounded-lg px-2 py-1.5 text-xs bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                  <option value="1" data-i18n="videoThumbScale1x">1× (original)</option>
+                  <option value="1.5">1.5×</option>
+                  <option value="2" selected>2×</option>
+                  <option value="3">3×</option>
+                  <option value="4">4×</option>
+                </select>
+                <span id="vtOutputSize" class="text-xs text-gray-400 w-20 text-right tabular-nums"></span>
+              </div>
+
+              <button
+                id="vtDownloadBtn"
+                class="w-full py-2.5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors text-sm flex items-center justify-center gap-2"
+                disabled
+                data-i18n="videoThumbDownload"
+              >
+                ⬇ Download Thumbnail
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>
