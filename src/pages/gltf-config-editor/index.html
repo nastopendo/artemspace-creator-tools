@@ -332,9 +332,37 @@
 
         <!-- Artworks List -->
         <div class="border rounded-lg p-6 bg-gray-100">
-          <h2 class="text-xl font-semibold mb-4" data-i18n="artworks">
-            Artworks
-          </h2>
+          <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h2 class="text-xl font-semibold" data-i18n="artworks">
+              Artworks
+            </h2>
+            <div
+              id="artworksSelectionBar"
+              class="hidden items-center gap-3 text-sm"
+            >
+              <span class="text-gray-600">
+                <span data-selection-count>0</span>
+                <span data-i18n="artworksSelectedSuffix">selected</span>
+              </span>
+              <button
+                type="button"
+                onclick="window.selectAllArtworks()"
+                class="text-blue-600 hover:text-blue-800"
+                data-i18n="selectAllArtworks"
+              >
+                Select all
+              </button>
+              <button
+                type="button"
+                onclick="window.clearArtworkSelection()"
+                data-clear-selection-btn
+                class="text-blue-600 hover:text-blue-800 disabled:text-gray-400 disabled:cursor-not-allowed"
+                data-i18n="clearArtworkSelection"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
           <div id="artworksList" class="space-y-4">
             <!-- Artworks will be inserted here -->
           </div>

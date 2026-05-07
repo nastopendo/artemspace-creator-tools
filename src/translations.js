@@ -45,6 +45,9 @@ export const translations = {
     imageQuality: "Image Quality (%):",
     processImages: "Process Images",
     downloadAll: "Download All",
+    imageResizerDownloadOne: "Download",
+    imageResizerCopyOne: "Copy",
+    imageResizerCopiedOne: "Copied!",
 
     // Common form labels
     enable: "Enable",
@@ -192,6 +195,8 @@ export const translations = {
     orbitMinAzimuthAngle: "Min Azimuth Angle",
     orbitMaxAzimuthAngle: "Max Azimuth Angle",
     orbitRotateSpeed: "Orbit Rotate Speed",
+    initialPolarAngle: "Initial Polar Angle (optional)",
+    initialAzimuthAngle: "Initial Azimuth Angle (optional)",
 
     // GLTF Config Editor - Tooltips
     titleTooltip: "This is a title in start panel",
@@ -270,6 +275,9 @@ export const translations = {
     date: "Date",
     location: "Location",
     artworks: "Artworks",
+    selectAllArtworks: "Select all",
+    clearArtworkSelection: "Clear",
+    artworksSelectedSuffix: "selected",
     addArtwork: "Add Artwork",
     removeArtwork: "Remove Artwork",
     artworkTitle: "Artwork Title",
@@ -539,6 +547,9 @@ export const translations = {
     imageQuality: "Jakość obrazu (%):",
     processImages: "Przetwórz obrazy",
     downloadAll: "Pobierz wszystkie",
+    imageResizerDownloadOne: "Pobierz",
+    imageResizerCopyOne: "Kopiuj",
+    imageResizerCopiedOne: "Skopiowano!",
 
     // Common form labels
     enable: "Włącz",
@@ -689,6 +700,8 @@ export const translations = {
     orbitMinAzimuthAngle: "Min. kąt azymutu",
     orbitMaxAzimuthAngle: "Max. kąt azymutu",
     orbitRotateSpeed: "Prędkość obrotu orbity",
+    initialPolarAngle: "Początkowy kąt polarny (opcjonalnie)",
+    initialAzimuthAngle: "Początkowy kąt azymutu (opcjonalnie)",
 
     // GLTF Config Editor - Tooltips
     titleTooltip: "To jest tytuł w panelu startowym",
@@ -771,6 +784,9 @@ export const translations = {
     date: "Data",
     location: "Lokalizacja",
     artworks: "Prace",
+    selectAllArtworks: "Zaznacz wszystkie",
+    clearArtworkSelection: "Wyczyść",
+    artworksSelectedSuffix: "zaznaczonych",
     addArtwork: "Dodaj pracę",
     removeArtwork: "Usuń pracę",
     artworkTitle: "Tytuł pracy",

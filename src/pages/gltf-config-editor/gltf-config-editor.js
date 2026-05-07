@@ -62,6 +62,7 @@ let configData = {
 let quillEditors = {};
 
 let sortableInstance = null;
+let selectedArtworkSet = new Set();
 
 let exhibitionQuillEditor = null;
 
@@ -314,13 +315,93 @@ function initializeSortable() {
   sortableInstance = new Sortable(artworksList, {
     animation: 150,
     handle: ".drag-handle",
+    onStart: (evt) => {
+      const draggedArtwork = configData.artworks[evt.oldIndex];
+      if (
+        !draggedArtwork ||
+        !selectedArtworkSet.has(draggedArtwork) ||
+        selectedArtworkSet.size <= 1
+      ) {
+        return;
+      }
+      Array.from(artworksList.children).forEach((child, i) => {
+        if (i === evt.oldIndex) return;
+        const artwork = configData.artworks[i];
+        if (artwork && selectedArtworkSet.has(artwork)) {
+          child.classList.add("opacity-40", "pointer-events-none");
+          child.dataset.multidragDimmed = "true";
+        }
+      });
+    },
     onEnd: (evt) => {
+      Array.from(artworksList.children).forEach((child) => {
+        if (child.dataset.multidragDimmed === "true") {
+          child.classList.remove("opacity-40", "pointer-events-none");
+          delete child.dataset.multidragDimmed;
+        }
+      });
+
       const { oldIndex, newIndex } = evt;
-      const artwork = configData.artworks.splice(oldIndex, 1)[0];
-      configData.artworks.splice(newIndex, 0, artwork);
+      const draggedArtwork = configData.artworks[oldIndex];
+      const isMultiDrag =
+        draggedArtwork &&
+        selectedArtworkSet.has(draggedArtwork) &&
+        selectedArtworkSet.size > 1;
+
+      const scrollY = window.scrollY;
+
+      if (isMultiDrag) {
+        let cursor = evt.item.previousElementSibling;
+        while (cursor) {
+          const idx = parseInt(cursor.dataset.index, 10);
+          const artwork = configData.artworks[idx];
+          if (artwork && !selectedArtworkSet.has(artwork)) break;
+          cursor = cursor.previousElementSibling;
+        }
+        const others = configData.artworks.filter(
+          (a) => !selectedArtworkSet.has(a)
+        );
+        const selected = configData.artworks.filter((a) =>
+          selectedArtworkSet.has(a)
+        );
+        let insertPos = 0;
+        if (cursor) {
+          const anchorArtwork =
+            configData.artworks[parseInt(cursor.dataset.index, 10)];
+          insertPos = others.indexOf(anchorArtwork) + 1;
+        }
+        configData.artworks = [
+          ...others.slice(0, insertPos),
+          ...selected,
+          ...others.slice(insertPos),
+        ];
+      } else {
+        const artwork = configData.artworks.splice(oldIndex, 1)[0];
+        configData.artworks.splice(newIndex, 0, artwork);
+      }
+
       updateArtworksList();
+      window.scrollTo({ top: scrollY, left: 0, behavior: "instant" });
     },
   });
+}
+
+function updateSelectionBar() {
+  const bar = document.getElementById("artworksSelectionBar");
+  if (!bar) return;
+  const total = configData.artworks.length;
+  const count = selectedArtworkSet.size;
+  if (total === 0) {
+    bar.classList.add("hidden");
+    bar.classList.remove("flex");
+    return;
+  }
+  bar.classList.remove("hidden");
+  bar.classList.add("flex");
+  const countEl = bar.querySelector("[data-selection-count]");
+  if (countEl) countEl.textContent = String(count);
+  const clearBtn = bar.querySelector("[data-clear-selection-btn]");
+  if (clearBtn) clearBtn.disabled = count === 0;
 }
 
 // Create artwork element
@@ -328,7 +409,11 @@ function createArtworkElement(artwork, index) {
   normalizeArtworkData(artwork);
 
   const div = document.createElement("div");
-  div.className = "bg-gray-50 p-4 rounded-lg shadow";
+  const isSelected = selectedArtworkSet.has(artwork);
+  div.className = `bg-gray-50 p-4 rounded-lg shadow${
+    isSelected ? " ring-2 ring-blue-500" : ""
+  }`;
+  div.dataset.index = String(index);
 
   const defaultImage = artwork.name + ".jpg";
   const escapedLinkDisplayName = escapeHtml(artwork.linkDisplayName);
@@ -344,6 +429,9 @@ function createArtworkElement(artwork, index) {
 
   div.innerHTML = `
     <div class="flex items-center gap-4">
+      <input type="checkbox" class="artwork-select w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+        ${isSelected ? "checked" : ""}
+        onchange="window.toggleArtworkSelection(${index}, this.checked)">
       <div class="drag-handle cursor-move p-2 hover:bg-gray-100 rounded">
         <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
@@ -611,6 +699,22 @@ function createArtworkElement(artwork, index) {
                 onchange="window.updateArtworkField(${index}, 'orbitMaxAzimuthAngle', parseFloat(this.value))">
             </div>
           </div>
+          <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="initialPolarAngle">Initial Polar Angle (optional)</label>
+              <input type="number" value="${artwork.initialPolarAngle ?? ""}" step="1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateSculptureInitialAngle(${index}, 'initialPolarAngle', this.value)"
+                placeholder="—">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-500" data-i18n="initialAzimuthAngle">Initial Azimuth Angle (optional)</label>
+              <input type="number" value="${artwork.initialAzimuthAngle ?? ""}" step="1"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 bg-white"
+                onchange="window.updateSculptureInitialAngle(${index}, 'initialAzimuthAngle', this.value)"
+                placeholder="—">
+            </div>
+          </div>
           <div class="md:col-span-2">
             <label class="block text-sm font-medium text-gray-500" data-i18n="reflectionCubeTextures">Reflection Cube Textures (optional)</label>
             <p class="mt-1 text-xs text-gray-500" data-i18n="reflectionCubeTexturesHint">Six image filenames for cube reflection, one per line. Leave empty to skip.</p>
@@ -726,6 +830,12 @@ function updateArtworksList() {
   });
   quillEditors = {};
 
+  // Drop selections referring to artworks no longer in the list
+  const livingArtworks = new Set(configData.artworks);
+  selectedArtworkSet.forEach((artwork) => {
+    if (!livingArtworks.has(artwork)) selectedArtworkSet.delete(artwork);
+  });
+
   artworksList.innerHTML = "";
   configData.artworks.forEach((artwork, index) => {
     normalizeArtworkData(artwork);
@@ -778,6 +888,8 @@ function updateArtworksList() {
   });
 
   exportBtn.disabled = configData.artworks.length === 0;
+
+  updateSelectionBar();
 
   // Show tooltip on hover only when name is actually truncated
   artworksList.querySelectorAll(".artwork-name").forEach((span) => {
@@ -1029,6 +1141,15 @@ exportBtn.addEventListener("click", () => {
       ) {
         delete artworkWithoutTexture.reflectionCubeTextures;
       }
+      if (!Number.isFinite(artworkWithoutTexture.initialPolarAngle)) {
+        delete artworkWithoutTexture.initialPolarAngle;
+      }
+      if (!Number.isFinite(artworkWithoutTexture.initialAzimuthAngle)) {
+        delete artworkWithoutTexture.initialAzimuthAngle;
+      }
+    } else {
+      delete artworkWithoutTexture.initialPolarAngle;
+      delete artworkWithoutTexture.initialAzimuthAngle;
     }
 
     return artworkWithoutTexture;
@@ -1076,6 +1197,42 @@ jsonInput.addEventListener("change", async () => {
 });
 
 // Global functions for artwork updates
+window.toggleArtworkSelection = (index, checked) => {
+  const artwork = configData.artworks[index];
+  if (!artwork) return;
+  if (checked) {
+    selectedArtworkSet.add(artwork);
+  } else {
+    selectedArtworkSet.delete(artwork);
+  }
+  const row = artworksList.children[index];
+  if (row) {
+    row.classList.toggle("ring-2", checked);
+    row.classList.toggle("ring-blue-500", checked);
+  }
+  updateSelectionBar();
+};
+
+window.selectAllArtworks = () => {
+  configData.artworks.forEach((a) => selectedArtworkSet.add(a));
+  Array.from(artworksList.children).forEach((child) => {
+    child.classList.add("ring-2", "ring-blue-500");
+    const cb = child.querySelector(".artwork-select");
+    if (cb) cb.checked = true;
+  });
+  updateSelectionBar();
+};
+
+window.clearArtworkSelection = () => {
+  selectedArtworkSet.clear();
+  Array.from(artworksList.children).forEach((child) => {
+    child.classList.remove("ring-2", "ring-blue-500");
+    const cb = child.querySelector(".artwork-select");
+    if (cb) cb.checked = false;
+  });
+  updateSelectionBar();
+};
+
 window.updateArtworkTitle = (index, value) => {
   configData.artworks[index].title = value;
 };
@@ -1125,6 +1282,22 @@ window.updateArtworkMovieField = (index, field, value) => {
 window.updateSculptureReflectionTextures = (index, value) => {
   const lines = value.split("\n").map((l) => l.trim()).filter(Boolean);
   configData.artworks[index].reflectionCubeTextures = lines;
+};
+
+window.updateSculptureInitialAngle = (index, field, value) => {
+  const artwork = configData.artworks[index];
+  if (!artwork) return;
+  const trimmed = String(value).trim();
+  if (trimmed === "") {
+    delete artwork[field];
+    return;
+  }
+  const num = parseFloat(trimmed);
+  if (!Number.isFinite(num)) {
+    delete artwork[field];
+    return;
+  }
+  artwork[field] = num;
 };
 
 window.updateArtworkCustomModalField = (index, field, value) => {
