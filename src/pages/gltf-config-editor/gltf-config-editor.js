@@ -1088,6 +1088,9 @@ exportBtn.addEventListener("click", () => {
   exportData.exhibition.aboutExhibitionDescripton = addNonBreakingSpaces(
     exportData.exhibition.aboutExhibitionDescripton
   );
+  exportData.exhibition.aboutExhibitionTitle = addNonBreakingSpaces(
+    exportData.exhibition.aboutExhibitionTitle
+  );
   exportData.exhibition.title = addNonBreakingSpaces(
     exportData.exhibition.title
   );
@@ -1535,7 +1538,7 @@ if (copyFormattedTextBtn) {
       return;
     }
 
-    const clipboardContent = formattedContent.replace(/"/g, '\\"');
+    const clipboardContent = addNonBreakingSpaces(formattedContent).replace(/"/g, '\\"');
 
     try {
       await navigator.clipboard.writeText(clipboardContent);
