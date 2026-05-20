@@ -24,6 +24,36 @@ const FONT_WEIGHTS = [
   { value: "800", label: "Extra Bold" },
 ];
 
+const ALL_WEIGHT_VALUES = FONT_WEIGHTS.map((w) => w.value);
+
+// Weights actually shipped for each font (matches the @font-face/Google Fonts
+// declarations in index.html). System fonts fall through to all weights since
+// the browser will synthesize what's missing.
+const FONT_WEIGHTS_AVAILABLE = {
+  Aptos: ["300", "400", "600", "700", "800"],
+  "Aptos Narrow": ["300", "400", "600", "700", "800"],
+  "Open Sans": ["300", "400", "500", "600", "700", "800"],
+  Roboto: ["300", "400", "500", "700"],
+  Lato: ["300", "400", "700"],
+  Montserrat: ["300", "400", "500", "600", "700"],
+  "Playfair Display": ["400", "500", "600", "700"],
+  Merriweather: ["300", "400", "700"],
+};
+
+function getAvailableWeights(fontFamily) {
+  return FONT_WEIGHTS_AVAILABLE[fontFamily] || ALL_WEIGHT_VALUES;
+}
+
+function pickClosestWeight(target, available) {
+  if (available.includes(target)) return target;
+  if (available.includes("400")) return "400";
+  if (available.includes("700")) return "700";
+  const targetNum = Number(target);
+  return available
+    .slice()
+    .sort((a, b) => Math.abs(Number(a) - targetNum) - Math.abs(Number(b) - targetNum))[0];
+}
+
 let lines = [];
 let nextLineId = 0;
 
@@ -176,17 +206,60 @@ function measureRow(rowTokens, line) {
   }, 0);
 }
 
-// Draw a single row of tokens at position (x, y)
-function drawRow(rowTokens, x, y, line) {
+// Draw a single row of tokens at position (x, y). `extraPerSpace` adds extra
+// pixels after each space token (used to justify the row).
+function drawRow(rowTokens, x, y, line, extraPerSpace = 0) {
   let curX = x;
   for (const token of rowTokens) {
     ctx.font = buildFont(line, token.italic);
     ctx.fillText(token.text, curX, y);
     curX += ctx.measureText(token.text).width;
+    if (extraPerSpace && token.isSpace) curX += extraPerSpace;
   }
 }
 
-function renderCanvas() {
+function isLightColor(hex) {
+  if (typeof hex !== "string" || !/^#([0-9a-fA-F]{6})$/.test(hex)) return false;
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.7;
+}
+
+const LIGHT_PREVIEW_BG =
+  "repeating-conic-gradient(#e5e7eb 0% 25%, transparent 0% 50%) 50% / 20px 20px";
+const DARK_PREVIEW_BG =
+  "repeating-conic-gradient(#4b5563 0% 25%, #374151 0% 50%) 50% / 20px 20px";
+
+function updatePreviewBackground() {
+  const container = document.getElementById("previewContainer");
+  if (!container) return;
+  const hasLightText = lines.some((l) => isLightColor(l.color));
+  container.style.background = hasLightText ? DARK_PREVIEW_BG : LIGHT_PREVIEW_BG;
+}
+
+async function ensureFontsLoaded() {
+  if (!document.fonts || typeof document.fonts.load !== "function") return;
+  const fontStrings = new Set();
+  for (const line of lines) {
+    fontStrings.add(buildFont(line, false));
+    fontStrings.add(buildFont(line, true));
+  }
+  try {
+    await Promise.all([...fontStrings].map((fs) => document.fonts.load(fs)));
+  } catch {
+    // Ignore — fall back to whatever the browser has.
+  }
+}
+
+async function renderCanvas() {
+  updatePreviewBackground();
+  await ensureFontsLoaded();
+  renderCanvasSync();
+}
+
+function renderCanvasSync() {
   const w = getCanvasW();
   const h = getCanvasH();
   canvas.width = w;
@@ -236,17 +309,28 @@ function renderCanvas() {
       const tokens = tokenize(segments);
       const rows = wrapTokens(tokens, textAreaWidth, line);
 
-      for (const rowTokens of rows) {
+      for (let i = 0; i < rows.length; i++) {
+        const rowTokens = rows[i];
+        const isLastRow = i === rows.length - 1;
         const rowWidth = measureRow(rowTokens, line);
         let startX;
+        let extraPerSpace = 0;
+
         if (line.textAlign === "center") {
           startX = mLeft + textAreaWidth / 2 - rowWidth / 2 + offsetX;
         } else if (line.textAlign === "right") {
           startX = mLeft + textAreaWidth - rowWidth + offsetX;
+        } else if (line.textAlign === "justify") {
+          startX = mLeft + offsetX;
+          const spaceCount = rowTokens.filter((t) => t.isSpace).length;
+          // Don't justify the last row of a paragraph or rows with no gaps.
+          if (!isLastRow && spaceCount > 0 && rowWidth < textAreaWidth) {
+            extraPerSpace = (textAreaWidth - rowWidth) / spaceCount;
+          }
         } else {
           startX = mLeft + offsetX;
         }
-        drawRow(rowTokens, startX, currentY + offsetY, line);
+        drawRow(rowTokens, startX, currentY + offsetY, line, extraPerSpace);
         currentY += lh;
       }
     }
@@ -287,7 +371,7 @@ function createLineElement(line) {
       <div>
         <label class="block text-xs text-gray-500 mb-0.5" data-i18n="textToPngWeight">Weight</label>
         <select class="line-weight w-full p-1.5 border border-gray-300 rounded text-sm focus:border-blue-500 outline-none">
-          ${FONT_WEIGHTS.map((fw) => `<option value="${fw.value}" ${fw.value === line.fontWeight ? "selected" : ""}>${fw.label}</option>`).join("")}
+          ${FONT_WEIGHTS.filter((fw) => getAvailableWeights(line.fontFamily).includes(fw.value)).map((fw) => `<option value="${fw.value}" ${fw.value === line.fontWeight ? "selected" : ""}>${fw.label}</option>`).join("")}
         </select>
       </div>
       <div>
@@ -307,6 +391,7 @@ function createLineElement(line) {
           <option value="left" ${line.textAlign === "left" ? "selected" : ""} data-i18n="textToPngAlignLeft">Left</option>
           <option value="center" ${line.textAlign === "center" ? "selected" : ""} data-i18n="textToPngAlignCenter">Center</option>
           <option value="right" ${line.textAlign === "right" ? "selected" : ""} data-i18n="textToPngAlignRight">Right</option>
+          <option value="justify" ${line.textAlign === "justify" ? "selected" : ""} data-i18n="textToPngAlignJustify">Justify</option>
         </select>
       </div>
       <div>
@@ -384,9 +469,35 @@ function createLineElement(line) {
     }, 0);
   });
 
-  bindInput(".line-font", "fontFamily");
+  const fontEl = div.querySelector(".line-font");
+  const weightEl = div.querySelector(".line-weight");
+
+  function rebuildWeightOptions() {
+    const available = getAvailableWeights(line.fontFamily);
+    const nextWeight = pickClosestWeight(line.fontWeight, available);
+    line.fontWeight = nextWeight;
+    weightEl.innerHTML = FONT_WEIGHTS.filter((fw) =>
+      available.includes(fw.value),
+    )
+      .map(
+        (fw) =>
+          `<option value="${fw.value}" ${fw.value === nextWeight ? "selected" : ""}>${fw.label}</option>`,
+      )
+      .join("");
+  }
+
+  fontEl.addEventListener("change", (e) => {
+    line.fontFamily = e.target.value;
+    rebuildWeightOptions();
+    renderCanvas();
+  });
+
+  weightEl.addEventListener("change", (e) => {
+    line.fontWeight = e.target.value;
+    renderCanvas();
+  });
+
   bindInput(".line-size", "fontSizePct", Number);
-  bindInput(".line-weight", "fontWeight");
   bindInput(".line-color", "color");
   bindInput(".line-italic", "italic");
   bindInput(".line-align", "textAlign");
@@ -425,8 +536,8 @@ marginBottomEl.addEventListener("input", renderCanvas);
 marginLeftEl.addEventListener("input", renderCanvas);
 marginRightEl.addEventListener("input", renderCanvas);
 
-downloadBtn.addEventListener("click", () => {
-  renderCanvas();
+downloadBtn.addEventListener("click", async () => {
+  await renderCanvas();
   const link = document.createElement("a");
   link.download = filenameInput.value || "text_transparent.png";
   link.href = canvas.toDataURL("image/png");

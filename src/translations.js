@@ -48,6 +48,7 @@ export const translations = {
     imageResizerDownloadOne: "Download",
     imageResizerCopyOne: "Copy",
     imageResizerCopiedOne: "Copied!",
+    customDimension: "Custom…",
 
     // Common form labels
     enable: "Enable",
@@ -367,6 +368,7 @@ export const translations = {
     textToPngAlignLeft: "Left",
     textToPngAlignCenter: "Center",
     textToPngAlignRight: "Right",
+    textToPngAlignJustify: "Justify",
     textToPngPlaceholder: "Enter text...",
     textToPngMargins: "Margins",
     textToPngMarginTop: "Top",
@@ -550,6 +552,7 @@ export const translations = {
     imageResizerDownloadOne: "Pobierz",
     imageResizerCopyOne: "Kopiuj",
     imageResizerCopiedOne: "Skopiowano!",
+    customDimension: "Własny…",
 
     // Common form labels
     enable: "Włącz",
@@ -876,6 +879,7 @@ export const translations = {
     textToPngAlignLeft: "Do lewej",
     textToPngAlignCenter: "Środek",
     textToPngAlignRight: "Do prawej",
+    textToPngAlignJustify: "Wyjustowanie",
     textToPngPlaceholder: "Wpisz tekst...",
     textToPngMargins: "Marginesy (%)",
     textToPngMarginTop: "Góra",

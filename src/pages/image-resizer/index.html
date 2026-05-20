@@ -70,7 +70,18 @@
             <option value="512">512 px</option>
             <option value="256">256 px</option>
             <option value="200">200 px</option>
+            <option value="custom" data-i18n="customDimension">Custom…</option>
           </select>
+          <input
+            id="customDimensionInput"
+            type="number"
+            min="1"
+            max="16384"
+            step="1"
+            value="800"
+            placeholder="px"
+            class="hidden mt-2 w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+          />
         </div>
 
         <div>

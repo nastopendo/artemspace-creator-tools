@@ -10,6 +10,14 @@ const progressContainer = document.getElementById("progressContainer");
 const progressBar = document.getElementById("progressBar");
 const progressText = document.getElementById("progressText");
 const formatSelect = document.getElementById("formatSelect");
+const dimensionSelect = document.getElementById("dimensionSelect");
+const customDimensionInput = document.getElementById("customDimensionInput");
+
+dimensionSelect.addEventListener("change", () => {
+  const isCustom = dimensionSelect.value === "custom";
+  customDimensionInput.classList.toggle("hidden", !isCustom);
+  if (isCustom) customDimensionInput.focus();
+});
 
 let loadedFiles = [];
 let tiles = [];
@@ -97,15 +105,21 @@ processBtn.addEventListener("click", async () => {
     return;
   }
 
-  const selectedSize = parseInt(
-    document.getElementById("dimensionSelect").value,
-    10
-  );
+  const selectedSize =
+    dimensionSelect.value === "custom"
+      ? parseInt(customDimensionInput.value, 10)
+      : parseInt(dimensionSelect.value, 10);
   const quality =
     parseInt(document.getElementById("qualityInput").value, 10) / 100;
   const outputFormat = formatSelect.value;
 
-  if (isNaN(selectedSize) || isNaN(quality) || quality < 0.01 || quality > 1) {
+  if (
+    isNaN(selectedSize) ||
+    selectedSize < 1 ||
+    isNaN(quality) ||
+    quality < 0.01 ||
+    quality > 1
+  ) {
     alert("Please enter valid dimension and quality values.");
     return;
   }
