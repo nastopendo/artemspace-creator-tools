@@ -1,3 +1,4 @@
+import JSZip from "jszip";
 import { languageService } from "../../services/languageService";
 
 const FONTS = [
@@ -545,5 +546,207 @@ downloadBtn.addEventListener("click", async () => {
 });
 
 window.addEventListener("resize", renderCanvas);
+
+// --- Bulk generation from JSON ---------------------------------------------
+
+const bulkToggle = document.getElementById("bulkToggle");
+const bulkPanel = document.getElementById("bulkPanel");
+const bulkToggleIcon = document.getElementById("bulkToggleIcon");
+const bulkJsonInput = document.getElementById("bulkJsonInput");
+const bulkFieldsSection = document.getElementById("bulkFieldsSection");
+const bulkFieldsEl = document.getElementById("bulkFields");
+const bulkFilenamePatternEl = document.getElementById("bulkFilenamePattern");
+const bulkGenerateBtn = document.getElementById("bulkGenerateBtn");
+const bulkStatus = document.getElementById("bulkStatus");
+
+let bulkRecords = [];
+
+bulkToggle.addEventListener("click", () => {
+  const hidden = bulkPanel.classList.toggle("hidden");
+  bulkToggleIcon.textContent = hidden ? "▼" : "▲";
+});
+
+function fillTemplate(template, params) {
+  return template.replace(/\{(\w+)\}/g, (_, k) =>
+    params[k] != null ? String(params[k]) : `{${k}}`,
+  );
+}
+
+// Substitute {fieldName} placeholders in text using a JSON record. Missing
+// or null fields collapse to "". Non-string values are stringified.
+function substitutePlaceholders(text, record) {
+  return text.replace(/\{([^}\s]+)\}/g, (_, key) => {
+    if (!Object.prototype.hasOwnProperty.call(record, key)) return "";
+    const val = record[key];
+    if (val == null) return "";
+    return String(val);
+  });
+}
+
+function sanitizeFilename(name) {
+  const cleaned = name
+    .replace(/[\\/:*?"<>|\n\r\t]/g, "_")
+    .replace(/\s+/g, " ")
+    .replace(/^[.\s]+|[.\s]+$/g, "")
+    .slice(0, 200);
+  return cleaned || "untitled";
+}
+
+function detectFields(records) {
+  const keys = new Set();
+  for (const r of records) {
+    if (r && typeof r === "object" && !Array.isArray(r)) {
+      for (const k of Object.keys(r)) keys.add(k);
+    }
+  }
+  return [...keys];
+}
+
+function renderFieldChips(fields) {
+  bulkFieldsEl.innerHTML = fields
+    .map(
+      (f) =>
+        `<button type="button" class="bulk-field-chip px-2 py-0.5 bg-gray-100 hover:bg-gray-200 text-xs rounded border border-gray-300 font-mono" data-field="${f}">{${f}}</button>`,
+    )
+    .join("");
+  bulkFieldsEl.querySelectorAll(".bulk-field-chip").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const placeholder = `{${btn.dataset.field}}`;
+      try {
+        await navigator.clipboard.writeText(placeholder);
+        bulkStatus.textContent = fillTemplate(
+          languageService.translate("textToPngBulkCopied"),
+          { placeholder },
+        );
+      } catch {
+        bulkStatus.textContent = placeholder;
+      }
+    });
+  });
+}
+
+bulkJsonInput.addEventListener("change", async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  bulkStatus.textContent = "";
+  try {
+    const text = await file.text();
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch (err) {
+      bulkStatus.textContent = fillTemplate(
+        languageService.translate("textToPngBulkInvalidJson"),
+        { msg: err.message },
+      );
+      bulkGenerateBtn.disabled = true;
+      return;
+    }
+    if (!Array.isArray(parsed)) {
+      bulkStatus.textContent = languageService.translate(
+        "textToPngBulkNeedArray",
+      );
+      bulkGenerateBtn.disabled = true;
+      return;
+    }
+    bulkRecords = parsed.filter(
+      (r) => r && typeof r === "object" && !Array.isArray(r),
+    );
+    if (bulkRecords.length === 0) {
+      bulkStatus.textContent = languageService.translate(
+        "textToPngBulkNoRecords",
+      );
+      bulkGenerateBtn.disabled = true;
+      return;
+    }
+    const fields = detectFields(bulkRecords);
+    renderFieldChips(fields);
+    bulkFieldsSection.classList.remove("hidden");
+    bulkGenerateBtn.disabled = false;
+    bulkStatus.textContent = fillTemplate(
+      languageService.translate("textToPngBulkLoaded"),
+      { n: bulkRecords.length },
+    );
+  } catch (err) {
+    bulkStatus.textContent = fillTemplate(
+      languageService.translate("textToPngBulkInvalidJson"),
+      { msg: err.message },
+    );
+    bulkGenerateBtn.disabled = true;
+  }
+});
+
+bulkGenerateBtn.addEventListener("click", async () => {
+  if (bulkRecords.length === 0) return;
+  bulkGenerateBtn.disabled = true;
+  const originalLines = lines;
+  const pattern = bulkFilenamePattern();
+  const zip = new JSZip();
+  const usedNames = new Set();
+
+  await ensureFontsLoaded();
+
+  try {
+    for (let i = 0; i < bulkRecords.length; i++) {
+      const record = bulkRecords[i];
+      bulkStatus.textContent = fillTemplate(
+        languageService.translate("textToPngBulkProgress"),
+        { i: i + 1, n: bulkRecords.length },
+      );
+
+      lines = originalLines.map((l) => ({
+        ...l,
+        text: substitutePlaceholders(l.text, record),
+      }));
+      renderCanvasSync();
+
+      let filename = sanitizeFilename(substitutePlaceholders(pattern, record));
+      if (!/\.png$/i.test(filename)) filename += ".png";
+
+      let unique = filename;
+      let n = 1;
+      while (usedNames.has(unique)) {
+        const base = filename.replace(/\.png$/i, "");
+        unique = `${base}_${n}.png`;
+        n++;
+      }
+      usedNames.add(unique);
+
+      const blob = await new Promise((resolve) =>
+        canvas.toBlob(resolve, "image/png"),
+      );
+      if (blob) zip.file(unique, blob);
+
+      // Yield so the status text repaints.
+      await new Promise((r) => setTimeout(r, 0));
+    }
+
+    bulkStatus.textContent = languageService.translate("textToPngBulkZipping");
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const link = document.createElement("a");
+    link.download = "text-to-png-bulk.zip";
+    link.href = URL.createObjectURL(zipBlob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(link.href);
+
+    bulkStatus.textContent = fillTemplate(
+      languageService.translate("textToPngBulkDone"),
+      { n: bulkRecords.length },
+    );
+  } catch (err) {
+    bulkStatus.textContent = `Error: ${err.message}`;
+  } finally {
+    lines = originalLines;
+    renderCanvasSync();
+    bulkGenerateBtn.disabled = false;
+  }
+});
+
+function bulkFilenamePattern() {
+  const v = bulkFilenamePatternEl.value.trim();
+  return v || "{numer_katalogowy}_{autor_nazwisko_imie}_transparent.png";
+}
 
 addLine("Sample Text");

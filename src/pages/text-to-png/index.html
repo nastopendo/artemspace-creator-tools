@@ -318,6 +318,73 @@
               Download PNG
             </button>
           </div>
+
+          <!-- Bulk generation from JSON -->
+          <div class="border-t border-gray-200 pt-4 mt-2">
+            <button
+              id="bulkToggle"
+              type="button"
+              class="flex items-center justify-between w-full text-left"
+            >
+              <span
+                class="font-semibold text-gray-700 text-sm"
+                data-i18n="textToPngBulkTitle"
+                >Bulk generation from JSON</span
+              >
+              <span id="bulkToggleIcon" class="text-gray-500 text-xs">▼</span>
+            </button>
+            <div id="bulkPanel" class="space-y-3 mt-3 hidden">
+              <p
+                class="text-xs text-gray-500"
+                data-i18n="textToPngBulkHint"
+              >
+                Upload a JSON array of records. Use {fieldName} placeholders in
+                the text lines above and in the filename pattern below.
+              </p>
+              <div>
+                <input
+                  type="file"
+                  id="bulkJsonInput"
+                  accept=".json,application/json"
+                  class="text-sm w-full"
+                />
+              </div>
+              <div id="bulkFieldsSection" class="hidden">
+                <label
+                  class="block text-xs text-gray-500 mb-1"
+                  data-i18n="textToPngBulkFields"
+                  >Detected fields (click to copy placeholder):</label
+                >
+                <div id="bulkFields" class="flex flex-wrap gap-1"></div>
+              </div>
+              <div>
+                <label
+                  class="block text-xs text-gray-500 mb-1"
+                  data-i18n="textToPngBulkFilename"
+                  >Filename pattern</label
+                >
+                <input
+                  id="bulkFilenamePattern"
+                  type="text"
+                  value="{numer_katalogowy}_{autor_nazwisko_imie}_transparent.png"
+                  placeholder="{numer_katalogowy}_{autor_nazwisko_imie}_transparent.png"
+                  class="w-full p-2 border border-gray-300 rounded-md text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                />
+              </div>
+              <div class="flex items-center gap-3 flex-wrap">
+                <button
+                  id="bulkGenerateBtn"
+                  type="button"
+                  disabled
+                  class="px-4 py-2 bg-purple-500 text-white rounded-md hover:bg-purple-600 disabled:bg-gray-300 disabled:cursor-not-allowed font-semibold text-sm"
+                  data-i18n="textToPngBulkGenerate"
+                >
+                  Generate ZIP
+                </button>
+                <span id="bulkStatus" class="text-sm text-gray-600"></span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Right panel: Preview -->

@@ -375,6 +375,20 @@ export const translations = {
     textToPngMarginBottom: "Bottom",
     textToPngMarginLeft: "Left",
     textToPngMarginRight: "Right",
+    textToPngBulkTitle: "Bulk generation from JSON",
+    textToPngBulkHint:
+      "Upload a JSON array of records. Use {fieldName} placeholders in the text lines above and in the filename pattern below.",
+    textToPngBulkFields: "Detected fields (click to copy placeholder):",
+    textToPngBulkFilename: "Filename pattern",
+    textToPngBulkGenerate: "Generate ZIP",
+    textToPngBulkLoaded: "Loaded {n} records.",
+    textToPngBulkProgress: "Generating {i}/{n}…",
+    textToPngBulkZipping: "Packing ZIP…",
+    textToPngBulkDone: "Done — {n} images packed.",
+    textToPngBulkInvalidJson: "Invalid JSON: {msg}",
+    textToPngBulkNeedArray: "JSON root must be an array of records.",
+    textToPngBulkNoRecords: "No usable records found in the JSON file.",
+    textToPngBulkCopied: "Copied {placeholder}",
 
     // Photos to Video
     photoToVideoTitle: "Photos to Video",
@@ -886,6 +900,20 @@ export const translations = {
     textToPngMarginBottom: "Dół",
     textToPngMarginLeft: "Lewo",
     textToPngMarginRight: "Prawo",
+    textToPngBulkTitle: "Generowanie wsadowe z pliku JSON",
+    textToPngBulkHint:
+      "Prześlij plik JSON (tablica rekordów). Użyj {nazwaPola} jako placeholdera w liniach tekstu powyżej oraz we wzorcu nazwy pliku poniżej.",
+    textToPngBulkFields: "Wykryte pola (kliknij, aby skopiować placeholder):",
+    textToPngBulkFilename: "Wzorzec nazwy pliku",
+    textToPngBulkGenerate: "Generuj ZIP",
+    textToPngBulkLoaded: "Wczytano {n} rekordów.",
+    textToPngBulkProgress: "Generowanie {i}/{n}…",
+    textToPngBulkZipping: "Pakowanie ZIP…",
+    textToPngBulkDone: "Gotowe — spakowano {n} obrazów.",
+    textToPngBulkInvalidJson: "Nieprawidłowy JSON: {msg}",
+    textToPngBulkNeedArray: "JSON musi być tablicą rekordów.",
+    textToPngBulkNoRecords: "Nie znaleziono rekordów w pliku JSON.",
+    textToPngBulkCopied: "Skopiowano {placeholder}",
 
     // Photos to Video
     photoToVideoTitle: "Zdjęcia do wideo",

@@ -1111,7 +1111,9 @@ exportBtn.addEventListener("click", () => {
             type: movieData.source[0].type || DEFAULT_MOVIE_SOURCE_TYPE,
           },
         ],
-        poster: "",
+        poster: artwork.image
+          ? `images/objects/movie-posters/${artwork.image}`
+          : "",
         autoplay: movieData.autoplay,
         loop: movieData.loop,
         muted: movieData.muted,
