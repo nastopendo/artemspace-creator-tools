@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="markdownSplitterTitle">Markdown Splitter</title>
+    <link rel="stylesheet" href="../../style.css" />
+  </head>
+  <body class="bg-gray-100 text-gray-800 min-h-screen py-8 px-4">
+    <header>
+      <nav>
+        <a
+          href="/"
+          data-link
+          class="text-blue-600 hover:text-blue-800"
+          data-i18n="backToTools"
+          >← Back to Tools</a
+        >
+      </nav>
+    </header>
+
+    <div class="max-w-5xl mx-auto animate-fade-in">
+      <h1
+        class="text-3xl font-bold text-center text-gray-800 mb-2"
+        data-i18n="markdownSplitterTitle"
+      >
+        ✂️ Markdown Splitter
+      </h1>
+      <p
+        class="text-center text-gray-600 mb-8"
+        data-i18n="markdownSplitterDesc"
+      >
+        Split long Markdown text into chunks below a character limit for TTS
+        (e.g. ElevenLabs).
+      </p>
+
+      <!-- Input -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6 space-y-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <label
+            class="block font-semibold text-gray-700"
+            for="mdInput"
+            data-i18n="mdSplitterInputLabel"
+            >Paste text or load a .md / .txt file</label
+          >
+          <div class="flex items-center gap-2">
+            <input
+              type="file"
+              id="mdFileInput"
+              accept=".md,.txt,.markdown,text/markdown,text/plain"
+              class="hidden"
+            />
+            <button
+              id="mdLoadFileBtn"
+              class="px-3 py-1.5 bg-gray-600 text-white rounded-md text-sm hover:bg-gray-700"
+              data-i18n="mdSplitterSelectFile"
+            >
+              Load file
+            </button>
+            <button
+              id="mdClearBtn"
+              class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded-md text-sm hover:bg-gray-300"
+              data-i18n="mdSplitterClearBtn"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+        <textarea
+          id="mdInput"
+          rows="10"
+          class="w-full p-3 border border-gray-300 rounded-md font-mono text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+          data-i18n-placeholder="mdSplitterInputPlaceholder"
+          placeholder="Paste your Markdown text here, or drop a file onto this area…"
+        ></textarea>
+        <p class="text-sm text-gray-500">
+          <span data-i18n="mdSplitterInputChars">Input characters:</span>
+          <span id="mdInputCount" class="font-semibold">0</span>
+        </p>
+      </div>
+
+      <!-- Options -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6 space-y-4">
+        <h2
+          class="text-lg font-semibold text-gray-800"
+          data-i18n="mdSplitterOptions"
+        >
+          Options
+        </h2>
+        <div class="flex items-center gap-3">
+          <label
+            class="font-medium text-gray-700"
+            for="mdMaxChars"
+            data-i18n="mdSplitterMaxChars"
+            >Max characters per fragment</label
+          >
+          <input
+            type="number"
+            id="mdMaxChars"
+            min="100"
+            step="100"
+            value="5000"
+            class="w-28 p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+          />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdPauseH1" class="w-4 h-4" />
+            <span data-i18n="mdSplitterPauseAfterH1"
+              >Add [pause] after chapter titles (#)</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdPauseH2" class="w-4 h-4" />
+            <span data-i18n="mdSplitterPauseAfterH2"
+              >Add [pause] after subchapter titles (##)</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdPauseH3" class="w-4 h-4" />
+            <span data-i18n="mdSplitterPauseAfterH3"
+              >Add [pause] after section titles (###)</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdPauseSection" class="w-4 h-4" />
+            <span data-i18n="mdSplitterPauseEndSection"
+              >Add [pause] at the end of each section</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdPauseFragmentStart" class="w-4 h-4" />
+            <span data-i18n="mdSplitterPauseStartFragment"
+              >Add [pause] at the beginning of each fragment</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdPauseFragment" class="w-4 h-4" />
+            <span data-i18n="mdSplitterPauseEndFragment"
+              >Add [pause] at the end of each fragment</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdUpperH1" class="w-4 h-4" />
+            <span data-i18n="mdSplitterUpperH1"
+              >Chapter titles (#) in UPPERCASE</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdUpperH2" class="w-4 h-4" />
+            <span data-i18n="mdSplitterUpperH2"
+              >Subchapter titles (##) in UPPERCASE</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdUpperH3" class="w-4 h-4" />
+            <span data-i18n="mdSplitterUpperH3"
+              >Section titles (###) in UPPERCASE</span
+            >
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" id="mdStripMarkdown" class="w-4 h-4" />
+            <span data-i18n="mdSplitterStripMarkdown"
+              >Strip Markdown syntax</span
+            >
+          </label>
+        </div>
+        <button
+          id="mdSplitBtn"
+          class="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transform hover:-translate-y-0.5 transition-all font-semibold"
+          data-i18n="mdSplitterSplitBtn"
+        >
+          Split text
+        </button>
+      </div>
+
+      <!-- Export bar -->
+      <div
+        id="mdExportBar"
+        class="bg-white rounded-lg shadow-md p-6 mb-6 hidden flex-wrap items-center gap-3"
+      >
+        <input
+          type="text"
+          id="mdFilename"
+          value="fragments"
+          class="w-44 p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+        />
+        <button
+          id="mdDownloadSingle"
+          class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+          data-i18n="mdSplitterDownloadSingle"
+        >
+          Download single file
+        </button>
+        <button
+          id="mdDownloadZip"
+          class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+          data-i18n="mdSplitterDownloadZip"
+        >
+          Download separate files (ZIP)
+        </button>
+        <button
+          id="mdDownloadIndex"
+          class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700"
+          data-i18n="mdSplitterDownloadIndex"
+        >
+          Download index (chapters → fragments)
+        </button>
+        <span id="mdSummary" class="text-sm text-gray-600 ml-auto"></span>
+      </div>
+
+      <!-- Results -->
+      <div id="mdResults" class="space-y-4"></div>
+    </div>
+
+    <script type="module" src="./markdown-splitter.js"></script>
+  </body>
+</html>
