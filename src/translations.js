@@ -553,6 +553,30 @@ export const translations = {
     mdSplitterFileSeparator: "=== Fragment {n} ({chars} characters) ===",
     mdSplitterFileChapter:
       "##################################################\n# CHAPTER: {chapter}\n##################################################",
+    // Extract tab
+    mdSplitterTabSplit: "Split into fragments",
+    mdSplitterTabExtract: "Extract for LLM",
+    mdSplitterExtractHeading: "Extract outline for LLM reading",
+    mdSplitterExtractDesc:
+      "Pick which elements to keep. The single-block result updates live as you type or change options.",
+    mdSplitterExtractInclude: "Include elements",
+    mdSplitterIncludeH1: "Titles (#)",
+    mdSplitterIncludeH2: "Subtitles (##)",
+    mdSplitterIncludeH3: "Sub-subtitles (###)",
+    mdSplitterIncludeH4: "Level 4 (####)",
+    mdSplitterIncludeH5: "Level 5 (#####)",
+    mdSplitterIncludeH6: "Level 6 (######)",
+    mdSplitterIncludeOther: "Body text (other)",
+    mdSplitterExtractFormat: "Formatting",
+    mdSplitterExtractStrip: "Strip Markdown syntax",
+    mdSplitterExtractUpper: "Headings in UPPERCASE",
+    mdSplitterExtractPauseAfterHeading: "Add [pause] after each heading",
+    mdSplitterExtractPauseAfterBody: "Add [pause] after each paragraph",
+    mdSplitterExtractPauseBeforeHeading:
+      "Add [pause] before each heading (section break)",
+    mdSplitterExtractBlankLines: "Separate items with blank lines",
+    mdSplitterExtractOutput: "Generated text",
+    mdSplitterExtractDownload: "Download .txt",
   },
   pl: {
     // Common
@@ -1116,5 +1140,29 @@ export const translations = {
     mdSplitterFileSeparator: "=== Fragment {n} ({chars} znaków) ===",
     mdSplitterFileChapter:
       "##################################################\n# ROZDZIAŁ: {chapter}\n##################################################",
+    // Extract tab
+    mdSplitterTabSplit: "Podział na fragmenty",
+    mdSplitterTabExtract: "Wyciąg pod LLM",
+    mdSplitterExtractHeading: "Wyciąg tekstu pod czytanie przez LLM",
+    mdSplitterExtractDesc:
+      "Wybierz, które elementy zachować. Wynik w jednym bloku aktualizuje się na żywo w miarę pisania lub zmiany opcji.",
+    mdSplitterExtractInclude: "Uwzględnij elementy",
+    mdSplitterIncludeH1: "Tytuły (#)",
+    mdSplitterIncludeH2: "Podtytuły (##)",
+    mdSplitterIncludeH3: "Pod-podtytuły (###)",
+    mdSplitterIncludeH4: "Poziom 4 (####)",
+    mdSplitterIncludeH5: "Poziom 5 (#####)",
+    mdSplitterIncludeH6: "Poziom 6 (######)",
+    mdSplitterIncludeOther: "Treść (pozostałe)",
+    mdSplitterExtractFormat: "Formatowanie",
+    mdSplitterExtractStrip: "Usuń składnię Markdown",
+    mdSplitterExtractUpper: "Nagłówki WIELKIMI literami",
+    mdSplitterExtractPauseAfterHeading: "Dodaj [pause] po każdym nagłówku",
+    mdSplitterExtractPauseAfterBody: "Dodaj [pause] po każdym akapicie",
+    mdSplitterExtractPauseBeforeHeading:
+      "Dodaj [pause] przed każdym nagłówkiem (przerwa między sekcjami)",
+    mdSplitterExtractBlankLines: "Oddzielaj elementy pustą linią",
+    mdSplitterExtractOutput: "Wygenerowany tekst",
+    mdSplitterExtractDownload: "Pobierz .txt",
   },
 };

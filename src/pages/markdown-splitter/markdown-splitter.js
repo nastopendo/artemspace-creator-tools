@@ -27,6 +27,31 @@ const downloadIndexBtn = document.getElementById("mdDownloadIndex");
 const summaryEl = document.getElementById("mdSummary");
 const resultsEl = document.getElementById("mdResults");
 
+// ---- Tabs ----
+const tabBtnSplit = document.getElementById("mdTabBtnSplit");
+const tabBtnExtract = document.getElementById("mdTabBtnExtract");
+const tabSplit = document.getElementById("mdTabSplit");
+const tabExtract = document.getElementById("mdTabExtract");
+
+// ---- Extract tab DOM ----
+const exH1El = document.getElementById("mdExH1");
+const exH2El = document.getElementById("mdExH2");
+const exH3El = document.getElementById("mdExH3");
+const exH4El = document.getElementById("mdExH4");
+const exH5El = document.getElementById("mdExH5");
+const exH6El = document.getElementById("mdExH6");
+const exOtherEl = document.getElementById("mdExOther");
+const exStripEl = document.getElementById("mdExStrip");
+const exUpperEl = document.getElementById("mdExUpper");
+const exPauseAfterHeadingEl = document.getElementById("mdExPauseAfterHeading");
+const exPauseAfterBodyEl = document.getElementById("mdExPauseAfterBody");
+const exPauseBeforeHeadingEl = document.getElementById("mdExPauseBeforeHeading");
+const exBlankLinesEl = document.getElementById("mdExBlankLines");
+const exOutputEl = document.getElementById("mdExOutput");
+const exCountEl = document.getElementById("mdExCount");
+const exCopyBtn = document.getElementById("mdExCopyBtn");
+const exDownloadBtn = document.getElementById("mdExDownloadBtn");
+
 // Localized placeholder (languageService only handles textContent)
 const phKey = inputEl.getAttribute("data-i18n-placeholder");
 if (phKey) inputEl.placeholder = languageService.translate(phKey);
@@ -464,15 +489,121 @@ function downloadIndex() {
   downloadBlob(blob, `${buildBaseName()}-index.txt`);
 }
 
+// ---- Extract tab: outline for LLM reading ----
+// Parse the raw text into an ordered list of blocks: headings (with level) and
+// body paragraphs (consecutive non-blank, non-heading lines).
+function buildOutline(text) {
+  const lines = text.split(/\r?\n/);
+  const blocks = [];
+  let para = [];
+  const flushPara = () => {
+    if (para.length) {
+      blocks.push({ type: "body", text: para.join("\n") });
+      para = [];
+    }
+  };
+  for (const line of lines) {
+    const m = line.match(/^(#{1,6})[ \t]+(.*)$/);
+    if (m) {
+      flushPara();
+      blocks.push({ type: "heading", level: m[1].length, text: m[2].trim() });
+    } else if (line.trim() === "") {
+      flushPara();
+    } else {
+      para.push(line);
+    }
+  }
+  flushPara();
+  return blocks;
+}
+
+function getExtractOptions() {
+  return {
+    levels: {
+      1: exH1El.checked,
+      2: exH2El.checked,
+      3: exH3El.checked,
+      4: exH4El.checked,
+      5: exH5El.checked,
+      6: exH6El.checked,
+    },
+    other: exOtherEl.checked,
+    strip: exStripEl.checked,
+    upper: exUpperEl.checked,
+    pauseAfterHeading: exPauseAfterHeadingEl.checked,
+    pauseAfterBody: exPauseAfterBodyEl.checked,
+    pauseBeforeHeading: exPauseBeforeHeadingEl.checked,
+    blankLines: exBlankLinesEl.checked,
+  };
+}
+
+function generateExtract() {
+  const opts = getExtractOptions();
+  const blocks = buildOutline(inputEl.value);
+  const out = [];
+
+  for (const b of blocks) {
+    if (b.type === "heading") {
+      if (!opts.levels[b.level]) continue;
+      let title = b.text;
+      if (opts.strip) title = stripInline(title).trim();
+      if (opts.upper) title = title.toLocaleUpperCase();
+      const prefix = opts.strip ? "" : `${"#".repeat(b.level)} `;
+      if (!title) continue;
+      if (opts.pauseBeforeHeading && out.length) out.push("[pause]");
+      out.push(`${prefix}${title}`);
+      if (opts.pauseAfterHeading) out.push("[pause]");
+    } else {
+      if (!opts.other) continue;
+      let body = opts.strip ? stripMarkdownText(b.text) : b.text;
+      body = body.trim();
+      if (!body) continue;
+      out.push(body);
+      if (opts.pauseAfterBody) out.push("[pause]");
+    }
+  }
+
+  const sep = opts.blankLines ? "\n\n" : "\n";
+  return dedupePauses(out.join(sep)).trim();
+}
+
+function updateExtract() {
+  const text = generateExtract();
+  exOutputEl.value = text;
+  exCountEl.textContent = String(text.length);
+}
+
+// ---- Tab switching ----
+function activateTab(name) {
+  const isSplit = name === "split";
+  tabSplit.classList.toggle("hidden", !isSplit);
+  tabExtract.classList.toggle("hidden", isSplit);
+
+  const active = "border-blue-500 text-blue-600";
+  const inactive = "border-transparent text-gray-500 hover:text-gray-700";
+  const setState = (btn, on) => {
+    btn.classList.remove(...active.split(" "), ...inactive.split(" "));
+    btn.classList.add(...(on ? active : inactive).split(" "));
+  };
+  setState(tabBtnSplit, isSplit);
+  setState(tabBtnExtract, !isSplit);
+
+  if (!isSplit) updateExtract();
+}
+
 // ---- File loading ----
 async function loadFile(file) {
   if (!file) return;
   inputEl.value = await file.text();
   updateInputCount();
+  if (!tabExtract.classList.contains("hidden")) updateExtract();
 }
 
 // ---- Events ----
-inputEl.addEventListener("input", updateInputCount);
+inputEl.addEventListener("input", () => {
+  updateInputCount();
+  if (!tabExtract.classList.contains("hidden")) updateExtract();
+});
 
 loadFileBtn.addEventListener("click", () => fileInput.click());
 fileInput.addEventListener("change", () => loadFile(fileInput.files[0]));
@@ -496,6 +627,7 @@ clearBtn.addEventListener("click", () => {
   fragments = [];
   updateInputCount();
   renderResults();
+  updateExtract();
 });
 
 splitBtn.addEventListener("click", () => {
@@ -513,6 +645,45 @@ downloadSingleBtn.addEventListener("click", downloadSingle);
 downloadZipBtn.addEventListener("click", downloadZip);
 downloadIndexBtn.addEventListener("click", downloadIndex);
 
+// ---- Extract tab events ----
+tabBtnSplit.addEventListener("click", () => activateTab("split"));
+tabBtnExtract.addEventListener("click", () => activateTab("extract"));
+
+[
+  exH1El,
+  exH2El,
+  exH3El,
+  exH4El,
+  exH5El,
+  exH6El,
+  exOtherEl,
+  exStripEl,
+  exUpperEl,
+  exPauseAfterHeadingEl,
+  exPauseAfterBodyEl,
+  exPauseBeforeHeadingEl,
+  exBlankLinesEl,
+].forEach((el) => el.addEventListener("change", updateExtract));
+
+exCopyBtn.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(exOutputEl.value);
+    exCopyBtn.textContent = t("mdSplitterCopied");
+    setTimeout(() => (exCopyBtn.textContent = t("mdSplitterCopy")), 1500);
+  } catch {
+    /* clipboard unavailable */
+  }
+});
+
+exDownloadBtn.addEventListener("click", () => {
+  if (!exOutputEl.value.trim()) return;
+  const blob = new Blob([exOutputEl.value], {
+    type: "text/plain;charset=utf-8",
+  });
+  downloadBlob(blob, `${buildBaseName()}-extract.txt`);
+});
+
 // ---- Init ----
 updateInputCount();
 renderResults();
+updateExtract();
